@@ -7,17 +7,17 @@ from typing import Any, Dict, Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 
-from app.renderer import render_creatomate_payload_to_mp4
+from app.renderer import render_timeline_payload_to_mp4
 
-RENDERS_DIR = os.environ.get("RENDERS_DIR", "/tmp/creatomate_renders")
+RENDERS_DIR = os.environ.get("RENDERS_DIR", "/tmp/bytefyi_renders")
 os.makedirs(RENDERS_DIR, exist_ok=True)
 
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "").rstrip("/")
 GCS_BUCKET_NAME = os.environ.get("GCS_BUCKET_NAME", "").strip()
 
 app = FastAPI(
-    title="Creatomate-Compatible Institutional Video Renderer",
-    description="Drop-in self-hosted replacement for Creatomate (/v1/renders) powered by Pillow + FFmpeg on Google Cloud Run.",
+    title="ByteFYI Institutional Video Render Engine",
+    description="Cloud-native JSON timeline video rendering microservice (/v1/renders) powered by Pillow + FFmpeg on Google Cloud Run.",
     version="1.0.0",
 )
 
@@ -65,7 +65,7 @@ def _maybe_upload_to_gcs(local_mp4: str, render_id: str) -> Optional[str]:
 def health_check() -> Dict[str, Any]:
     return {
         "status": "ok",
-        "service": "creatomate-render-service",
+        "service": "bytefyi-render-engine",
         "version": "1.0.0",
         "renders_dir": RENDERS_DIR,
     }
@@ -74,9 +74,8 @@ def health_check() -> Dict[str, Any]:
 @app.post("/v1/renders")
 async def create_render(request: Request) -> JSONResponse:
     """
-    Drop-in replacement for POST https://api.creatomate.com/v1/renders.
-    Accepts `{ "source": { ... } }` and renders the MP4 synchronously within ~6-10s
-    so Cloud Run CPU stays allocated for the entire render.
+    Render a declarative JSON timeline payload (`{ "source": { ... } }`) into an H.264/AAC MP4 video.
+    Renders synchronously within the HTTP request so Cloud Run CPU stays allocated for the full render.
     """
     _cleanup_old_renders()
     try:
@@ -84,7 +83,6 @@ async def create_render(request: Request) -> JSONResponse:
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Invalid JSON payload: {exc}")
 
-    # Creatomate sometimes receives a list or single object
     if isinstance(body, list):
         if not body:
             raise HTTPException(status_code=400, detail="Empty payload list")
@@ -96,7 +94,6 @@ async def create_render(request: Request) -> JSONResponse:
     base_url = _resolve_base_url(request)
     video_url = f"{base_url}/renders/{render_id}.mp4"
 
-    # Write initial 'rendering' metadata
     initial_meta = {
         "id": render_id,
         "status": "rendering",
@@ -108,7 +105,7 @@ async def create_render(request: Request) -> JSONResponse:
         json.dump(initial_meta, f)
 
     try:
-        stats = render_creatomate_payload_to_mp4(body, mp4_path)
+        stats = render_timeline_payload_to_mp4(body, mp4_path)
     except Exception as exc:
         failed_meta = {
             "id": render_id,
@@ -146,8 +143,8 @@ async def create_render(request: Request) -> JSONResponse:
 @app.api_route("/v1/renders/{render_id}", methods=["GET", "HEAD"])
 def get_render_status(render_id: str, request: Request):
     """
-    Drop-in replacement for GET https://api.creatomate.com/v1/renders/{id}.
-    Also serves the MP4 file if requested with a `.mp4` suffix.
+    Retrieve status and download URL for a completed or active render (`GET /v1/renders/{id}`).
+    Also streams the MP4 file directly if requested with a `.mp4` suffix.
     """
     if render_id.endswith(".mp4"):
         clean_id = render_id[:-4]

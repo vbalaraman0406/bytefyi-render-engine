@@ -64,7 +64,7 @@ def get_font(font_family: str, font_weight: str, size_px: int) -> ImageFont.Free
 
 
 def parse_dim(val: Any, ref: float, default: float = 0.0) -> float:
-    """Parse Creatomate dimension ('50%', '540px', 540) relative to ref."""
+    """Parse timeline dimension ('50%', '540px', 540) relative to ref."""
     if val is None:
         return default
     if isinstance(val, (int, float)):
@@ -424,7 +424,7 @@ def render_image_layer(
         return
     try:
         if src_url not in _IMAGE_CACHE:
-            req = urllib.request.Request(src_url, headers={"User-Agent": "CreatomateRenderEngine/1.0"})
+            req = urllib.request.Request(src_url, headers={"User-Agent": "ByteFYIRenderEngine/1.0"})
             with urllib.request.urlopen(req, timeout=15) as resp:
                 data = resp.read()
             tmp_f = tempfile.NamedTemporaryFile(delete=False, suffix=".img")
@@ -521,7 +521,7 @@ def download_audio_to_temp(audio_url: str) -> Optional[str]:
     try:
         req = urllib.request.Request(
             audio_url,
-            headers={"User-Agent": "Mozilla/5.0 (compatible; CreatomateRenderEngine/1.0)"},
+            headers={"User-Agent": "Mozilla/5.0 (compatible; ByteFYIRenderEngine/1.0)"},
         )
         with urllib.request.urlopen(req, timeout=30) as resp:
             audio_bytes = resp.read()
@@ -536,14 +536,14 @@ def download_audio_to_temp(audio_url: str) -> Optional[str]:
         return None
 
 
-def render_creatomate_payload_to_mp4(
+def render_timeline_payload_to_mp4(
     payload: Dict[str, Any],
     output_mp4_path: str,
     save_preview_frames_dir: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    Render a Creatomate-compatible payload dictionary into an H.264 + AAC MP4 file.
-    Uses RGB canvas + scene-interval caching so 90+ second 1080x1920 30fps videos render in ~8-14 seconds.
+    Render a declarative JSON timeline payload dictionary into an H.264 + AAC MP4 file.
+    Uses RGB canvas + scene-interval caching so 90+ second 1080x1920 30fps videos render in ~8-16 seconds.
     """
     t0 = time.time()
     source = payload.get("source", payload)

@@ -1,1 +1,1 @@
-"""Creatomate-compatible institutional video rendering engine."""
+"""ByteFYI Institutional Video Render Engine."""

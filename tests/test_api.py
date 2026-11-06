@@ -1,6 +1,5 @@
 import json
 import os
-import subprocess
 
 from fastapi.testclient import TestClient
 
@@ -14,10 +13,10 @@ def test_health_endpoint():
     assert resp.status_code == 200
     data = resp.json()
     assert data["status"] == "ok"
-    assert data["service"] == "creatomate-render-service"
+    assert data["service"] == "bytefyi-render-engine"
 
 
-def test_full_creatomate_render_and_status_flow():
+def test_full_timeline_render_and_status_flow():
     fixture_path = os.path.join(os.path.dirname(__file__), "fixtures", "execution_6550_payload.json")
     with open(fixture_path) as f:
         payload = json.load(f)
@@ -58,7 +57,11 @@ def test_full_creatomate_render_and_status_flow():
     assert status_data["id"] == render_id
     assert status_data["status"] == "succeeded"
 
-    # Download MP4 via /renders/{id}.mp4
+    # Verify HEAD and GET on /renders/{id}.mp4
+    head_resp = client.head(f"/renders/{render_id}.mp4")
+    assert head_resp.status_code == 200
+    assert head_resp.headers["content-type"] == "video/mp4"
+
     mp4_resp = client.get(f"/renders/{render_id}.mp4")
     assert mp4_resp.status_code == 200
     assert mp4_resp.headers["content-type"] == "video/mp4"

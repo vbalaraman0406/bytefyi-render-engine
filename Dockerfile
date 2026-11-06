@@ -3,7 +3,7 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8080 \
-    RENDERS_DIR=/tmp/creatomate_renders
+    RENDERS_DIR=/tmp/bytefyi_renders
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
