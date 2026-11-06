@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import time
@@ -105,7 +106,7 @@ async def create_render(request: Request) -> JSONResponse:
         json.dump(initial_meta, f)
 
     try:
-        stats = render_timeline_payload_to_mp4(body, mp4_path)
+        stats = await asyncio.to_thread(render_timeline_payload_to_mp4, body, mp4_path)
     except Exception as exc:
         failed_meta = {
             "id": render_id,
@@ -140,12 +141,39 @@ async def create_render(request: Request) -> JSONResponse:
     return JSONResponse(content=final_meta, status_code=200)
 
 
+def _get_latest_render_meta(request: Request) -> JSONResponse:
+    """Return the most recently completed render metadata in RENDERS_DIR."""
+    try:
+        json_files = [
+            os.path.join(RENDERS_DIR, fn)
+            for fn in os.listdir(RENDERS_DIR)
+            if fn.endswith(".json")
+        ]
+        json_files.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+        for jf in json_files:
+            with open(jf) as f:
+                meta = json.load(f)
+            if meta.get("status") == "succeeded":
+                return JSONResponse(content=meta)
+    except Exception:
+        pass
+    raise HTTPException(status_code=404, detail="No completed renders found")
+
+
+@app.get("/v1/renders")
+@app.get("/v1/renders/")
+def get_latest_render(request: Request):
+    return _get_latest_render_meta(request)
+
+
 @app.api_route("/v1/renders/{render_id}", methods=["GET", "HEAD"])
 def get_render_status(render_id: str, request: Request):
     """
     Retrieve status and download URL for a completed or active render (`GET /v1/renders/{id}`).
     Also streams the MP4 file directly if requested with a `.mp4` suffix.
     """
+    if render_id in ("undefined", "null", ""):
+        return _get_latest_render_meta(request)
     if render_id.endswith(".mp4"):
         clean_id = render_id[:-4]
         return serve_rendered_mp4(clean_id)
