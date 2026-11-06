@@ -143,7 +143,7 @@ async def create_render(request: Request) -> JSONResponse:
     return JSONResponse(content=final_meta, status_code=200)
 
 
-@app.get("/v1/renders/{render_id}")
+@app.api_route("/v1/renders/{render_id}", methods=["GET", "HEAD"])
 def get_render_status(render_id: str, request: Request):
     """
     Drop-in replacement for GET https://api.creatomate.com/v1/renders/{id}.
@@ -176,7 +176,7 @@ def get_render_status(render_id: str, request: Request):
     raise HTTPException(status_code=404, detail=f"Render {render_id} not found")
 
 
-@app.get("/renders/{render_id}.mp4")
+@app.api_route("/renders/{render_id}.mp4", methods=["GET", "HEAD"])
 def serve_rendered_mp4(render_id: str):
     """Stream the rendered MP4 video with proper video/mp4 MIME headers for YouTube & Instagram."""
     mp4_path = os.path.join(RENDERS_DIR, f"{render_id}.mp4")

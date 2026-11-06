@@ -40,12 +40,14 @@ gcloud run deploy creatomate-renderer \
 
 ## 3. Verifying the Deployed Service
 
+- **Production Cloud Run Service URL**: `https://creatomate-renderer-427780532217.us-central1.run.app`
+
 ```bash
 # 1. Health check
-curl -sS https://<CLOUD_RUN_URL>/health
+curl -sS https://creatomate-renderer-427780532217.us-central1.run.app/health
 
 # 2. Trigger a test render
-curl -sS -X POST https://<CLOUD_RUN_URL>/v1/renders \
+curl -sS -X POST https://creatomate-renderer-427780532217.us-central1.run.app/v1/renders \
   -H "Content-Type: application/json" \
   -d @tests/fixtures/execution_6550_payload.json
 ```
