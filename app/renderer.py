@@ -58,7 +58,7 @@ def get_font(font_family: str, font_weight: str, size_px: int) -> ImageFont.Free
     if not os.path.exists(fpath):
         fpath = os.path.join(FONTS_DIR, "Inter-Bold.ttf")
 
-    font = ImageFont.truetype(fpath, size_px)
+    font = ImageFont.truetype(fpath, max(8, size_px))
     _FONT_CACHE[key] = font
     return font
 
@@ -86,7 +86,7 @@ def parse_dim(val: Any, ref: float, default: float = 0.0) -> float:
 
 
 def parse_color(color_str: Optional[str], opacity_mult: float = 1.0) -> Tuple[int, int, int, int]:
-    """Parse hex or rgba() color string into (R, G, B, A) tuple."""
+    """Parse hex (#RGB, #RRGGBB, #RRGGBBAA) or rgba() color string into (R, G, B, A) tuple."""
     if not color_str:
         return (0, 0, 0, 0)
     s = str(color_str).strip()
@@ -258,8 +258,10 @@ def render_shape_layer(
     bottom = top + h
 
     fill_rgba = parse_color(el.get("fill_color"), opacity)
-    stroke_rgba = parse_color(el.get("stroke_color"), opacity) if el.get("stroke_color") else (0, 0, 0, 0)
-    stroke_w = parse_dim(el.get("stroke_width"), W, 0.0)
+    raw_stroke_color = el.get("stroke_color") or el.get("border_color")
+    raw_stroke_width = el.get("stroke_width") if el.get("stroke_width") is not None else el.get("border_width")
+    stroke_rgba = parse_color(raw_stroke_color, opacity) if raw_stroke_color else (0, 0, 0, 0)
+    stroke_w = parse_dim(raw_stroke_width, W, 0.0)
     radius = parse_dim(el.get("border_radius"), min(w, h), 0.0)
 
     # Full-canvas solid background
@@ -268,7 +270,7 @@ def render_shape_layer(
         draw.rectangle([0, 0, W, H], fill=fill_rgba)
         return
 
-    # Crisp thin grid lines / VWAP line (alpha-blended onto RGB canvas via RGBA draw mode)
+    # Crisp thin grid lines / VWAP line
     if (w <= 4 or h <= 4) and radius == 0:
         draw = ImageDraw.Draw(canvas, "RGBA")
         if h == 3 and str(el.get("fill_color", "")).upper() == "#FACC15":
@@ -280,7 +282,6 @@ def render_shape_layer(
         )
         return
 
-    # 2x supersampled patch for rounded rectangles and stroked cards
     pad = int(math.ceil(stroke_w + 10))
     p_left = max(0, int(math.floor(left - pad)))
     p_top = max(0, int(math.floor(top - pad)))
@@ -302,7 +303,6 @@ def render_shape_layer(
     rr = radius * scale
     sw = int(round(stroke_w * scale))
 
-    # Subtle outer luminescence on candlestick bodies
     if 28 <= w <= 36 and radius == 4 and fill_rgba[3] > 200:
         glow_col = (fill_rgba[0], fill_rgba[1], fill_rgba[2], int(36 * opacity))
         pdraw.rounded_rectangle(
@@ -336,15 +336,12 @@ def render_text_layer(
     if not raw_text.strip():
         return
 
-    w = parse_dim(el.get("width"), W, W * 0.8)
-    h = parse_dim(el.get("height"), H, 100.0)
+    w = parse_dim(el.get("width"), W, W * 0.86)
     cx = parse_dim(el.get("x"), W, W / 2.0)
     cy = parse_dim(el.get("y"), H, H / 2.0) + y_offset
 
     x_anchor = parse_dim(el.get("x_anchor"), 1.0, 0.5)
     y_anchor = parse_dim(el.get("y_anchor"), 1.0, 0.5)
-    box_left = cx - w * x_anchor
-    box_top = cy - h * y_anchor
 
     font_size = int(round(parse_dim(el.get("font_size"), H, 28.0)))
     font_family = str(el.get("font_family") or "Inter")
@@ -354,6 +351,17 @@ def render_text_layer(
     line_height_mult = parse_dim(el.get("line_height"), 1.0, 1.22)
     if line_height_mult <= 0:
         line_height_mult = 1.22
+
+    icon_type, clean_text = extract_leading_icon(raw_text)
+    icon_advance = (font_size * 1.15) if icon_type else 0.0
+
+    lines = wrap_text_lines(clean_text, font, max(60.0, w - icon_advance))
+    line_px = font_size * line_height_mult
+    total_text_h = font_size + max(0, len(lines) - 1) * line_px
+
+    h = parse_dim(el.get("height"), H, total_text_h)
+    box_left = cx - w * x_anchor
+    box_top = cy - h * y_anchor
 
     t_align = str(el.get("text_alignment") or "").strip().lower()
     if not t_align:
@@ -367,13 +375,6 @@ def render_text_layer(
 
     y_align = parse_dim(el.get("y_alignment"), 1.0, 0.5)
     fill_rgba = parse_color(el.get("fill_color", "#FFFFFF"), opacity)
-
-    icon_type, clean_text = extract_leading_icon(raw_text)
-    icon_advance = (font_size * 1.15) if icon_type else 0.0
-
-    lines = wrap_text_lines(clean_text, font, max(60.0, w - icon_advance))
-    line_px = font_size * line_height_mult
-    total_text_h = font_size + max(0, len(lines) - 1) * line_px
 
     if y_align <= 0.15:
         start_y = box_top
@@ -418,14 +419,14 @@ def render_image_layer(
     opacity: float = 1.0,
     y_offset: float = 0.0,
 ) -> None:
-    """Render an external/cached image element onto RGB canvas."""
+    """Render an external/cached image element onto RGB canvas with optional border_radius."""
     src_url = el.get("source")
     if not src_url:
         return
     try:
         if src_url not in _IMAGE_CACHE:
             req = urllib.request.Request(src_url, headers={"User-Agent": "ByteFYIRenderEngine/1.0"})
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=20) as resp:
                 data = resp.read()
             tmp_f = tempfile.NamedTemporaryFile(delete=False, suffix=".img")
             tmp_f.write(data)
@@ -433,20 +434,40 @@ def render_image_layer(
             _IMAGE_CACHE[src_url] = Image.open(tmp_f.name).convert("RGBA")
             os.unlink(tmp_f.name)
         img = _IMAGE_CACHE[src_url]
-        w = int(round(parse_dim(el.get("width"), W, img.width)))
-        h = int(round(parse_dim(el.get("height"), H, img.height)))
+        w = max(1, int(round(parse_dim(el.get("width"), W, img.width))))
+        h = max(1, int(round(parse_dim(el.get("height"), H, img.height))))
         cx = parse_dim(el.get("x"), W, W / 2.0)
         cy = parse_dim(el.get("y"), H, H / 2.0) + y_offset
-        left = int(round(cx - w / 2.0))
-        top = int(round(cy - h / 2.0))
-        resized = img.resize((max(1, w), max(1, h)), Image.Resampling.LANCZOS)
+
+        fit_mode = str(el.get("fit") or "cover").lower()
+        if fit_mode == "contain":
+            scale = min(w / float(img.width), h / float(img.height))
+            nw = max(1, int(round(img.width * scale)))
+            nh = max(1, int(round(img.height * scale)))
+            resized = img.resize((nw, nh), Image.Resampling.LANCZOS)
+            left = int(round(cx - nw / 2.0))
+            top = int(round(cy - nh / 2.0))
+        else:
+            resized = img.resize((w, h), Image.Resampling.LANCZOS)
+            left = int(round(cx - w / 2.0))
+            top = int(round(cy - h / 2.0))
+
+        radius = parse_dim(el.get("border_radius"), min(resized.width, resized.height), 0.0)
+        if radius > 0:
+            mask = Image.new("L", resized.size, 0)
+            mdraw = ImageDraw.Draw(mask)
+            mdraw.rounded_rectangle([0, 0, resized.width, resized.height], radius=radius, fill=255)
+            r, g, b, a = resized.split()
+            a = Image.composite(a, Image.new("L", resized.size, 0), mask)
+            resized = Image.merge("RGBA", (r, g, b, a))
+
         if opacity < 1.0:
             r, g, b, a = resized.split()
             a = a.point(lambda p: int(p * opacity))
             resized = Image.merge("RGBA", (r, g, b, a))
         canvas.paste(resized, (left, top), resized)
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"[renderer] Image load warning ({src_url}): {exc}")
 
 
 def draw_scene_progress_bar(frame: Image.Image, W: int, prog: float) -> None:
@@ -475,6 +496,7 @@ def render_composite_frame_at_time(
     W: int,
     H: int,
     scene_windows: List[Tuple[float, float]],
+    show_desk_progress: bool = False,
 ) -> Image.Image:
     """Render a single composite RGB frame at timestamp t (seconds)."""
     frame = bg_canvas.copy()
@@ -505,35 +527,178 @@ def render_composite_frame_at_time(
         elif etype == "image":
             render_image_layer(frame, el, W, H, opacity=opacity, y_offset=y_offset)
 
-    for s_start, s_end in scene_windows:
-        if s_start <= t < s_end and (s_end - s_start) > 10.0:
-            prog = max(0.0, min(1.0, (t - s_start) / (s_end - s_start)))
-            draw_scene_progress_bar(frame, W, prog)
-            break
+    if show_desk_progress:
+        for s_start, s_end in scene_windows:
+            if s_start <= t < s_end and (s_end - s_start) > 10.0:
+                prog = max(0.0, min(1.0, (t - s_start) / (s_end - s_start)))
+                draw_scene_progress_bar(frame, W, prog)
+                break
 
     return frame
 
 
-def download_audio_to_temp(audio_url: str) -> Optional[str]:
-    """Download voiceover audio (e.g. Google Drive direct download link) to a temporary file."""
-    if not audio_url:
+def download_url_to_temp(url: str, suffix: str = ".bin") -> Optional[str]:
+    """Download media URL (audio or video clip) to a temporary file."""
+    if not url:
         return None
     try:
         req = urllib.request.Request(
-            audio_url,
+            url,
             headers={"User-Agent": "Mozilla/5.0 (compatible; ByteFYIRenderEngine/1.0)"},
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            audio_bytes = resp.read()
-        if not audio_bytes or len(audio_bytes) < 500:
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            data = resp.read()
+        if not data or len(data) < 500:
             return None
-        tmp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
-        tmp_audio.write(audio_bytes)
-        tmp_audio.close()
-        return tmp_audio.name
+        tmp_f = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+        tmp_f.write(data)
+        tmp_f.close()
+        return tmp_f.name
     except Exception as exc:
-        print(f"[renderer] Warning: could not download audio from {audio_url}: {exc}")
+        print(f"[renderer] Warning: could not download {url}: {exc}")
         return None
+
+
+def _render_template_modifications_to_mp4(payload: Dict[str, Any], output_mp4_path: str) -> Dict[str, Any]:
+    """
+    Support multi-clip template modifications payload (used by Daliy-AI-Videos-V3):
+    { "template_id": "...", "modifications": { "duration": ..., "video_1.source": ..., "Audio-1.source": ... } }
+    """
+    t0 = time.time()
+    mods = payload.get("modifications") or {}
+    W, H, fps = 1080, 1920, 30
+    total_duration = float(mods.get("duration") or 60.0)
+
+    clip_specs: List[Tuple[str, float]] = []
+    for idx in range(1, 12):
+        v_url = mods.get(f"video_{idx}.source") or mods.get(f"Video-{idx}.source")
+        v_dur = float(mods.get(f"video_{idx}.duration") or (total_duration / 6.0))
+        if v_url:
+            clip_specs.append((str(v_url), v_dur))
+
+    audio_url = mods.get("Audio-1.source") or mods.get("audio_1.source") or mods.get("audio.source")
+    audio_path = download_url_to_temp(str(audio_url), suffix=".mp3") if audio_url else None
+
+    temp_files: List[str] = []
+    segment_files: List[str] = []
+    try:
+        for i, (v_url, v_dur) in enumerate(clip_specs):
+            raw_clip = download_url_to_temp(v_url, suffix=f"_raw_{i}.mp4")
+            if not raw_clip:
+                continue
+            temp_files.append(raw_clip)
+            seg_out = tempfile.NamedTemporaryFile(delete=False, suffix=f"_seg_{i}.mp4").name
+            temp_files.append(seg_out)
+            cmd = [
+                "ffmpeg",
+                "-y",
+                "-stream_loop",
+                "-1",
+                "-i",
+                raw_clip,
+                "-t",
+                f"{v_dur:.2f}",
+                "-vf",
+                f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={fps}",
+                "-an",
+                "-c:v",
+                "libx264",
+                "-preset",
+                "ultrafast",
+                "-crf",
+                "21",
+                "-pix_fmt",
+                "yuv420p",
+                seg_out,
+            ]
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            segment_files.append(seg_out)
+
+        if not segment_files:
+            raise RuntimeError("No valid video clips could be downloaded from modifications")
+
+        concat_list = tempfile.NamedTemporaryFile(delete=False, mode="w", suffix="_concat.txt")
+        for sf in segment_files:
+            concat_list.write(f"file '{sf}'\n")
+        concat_list.close()
+        temp_files.append(concat_list.name)
+
+        os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
+        final_cmd = ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", concat_list.name]
+        if audio_path and os.path.exists(audio_path):
+            temp_files.append(audio_path)
+            final_cmd.extend(["-i", audio_path, "-c:a", "aac", "-b:a", "192k", "-shortest"])
+        else:
+            final_cmd.extend(
+                [
+                    "-f",
+                    "lavfi",
+                    "-i",
+                    "anullsrc=channel_layout=stereo:sample_rate=44100",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "128k",
+                    "-t",
+                    f"{total_duration:.2f}",
+                ]
+            )
+        final_cmd.extend(["-c:v", "copy", "-movflags", "+faststart", output_mp4_path])
+        subprocess.run(final_cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    finally:
+        for tf in temp_files:
+            if os.path.exists(tf):
+                try:
+                    os.unlink(tf)
+                except OSError:
+                    pass
+
+    return {
+        "width": W,
+        "height": H,
+        "frame_rate": fps,
+        "duration": total_duration,
+        "file_size": os.path.getsize(output_mp4_path),
+        "render_time_seconds": round(time.time() - t0, 2),
+    }
+
+
+def extract_bg_video_frame(video_url: str, W: int, H: int) -> Optional[Image.Image]:
+    """Extract a high-resolution frame from a background video element for fast compositing."""
+    tmp_vid = download_url_to_temp(video_url, suffix=".mp4")
+    if not tmp_vid:
+        return None
+    tmp_png = tempfile.NamedTemporaryFile(delete=False, suffix=".png").name
+    try:
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-ss",
+                "00:00:01",
+                "-i",
+                tmp_vid,
+                "-frames:v",
+                "1",
+                "-vf",
+                f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}",
+                tmp_png,
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        img = Image.open(tmp_png).convert("RGB")
+        return img
+    except Exception:
+        return None
+    finally:
+        for p in (tmp_vid, tmp_png):
+            if os.path.exists(p):
+                try:
+                    os.unlink(p)
+                except OSError:
+                    pass
 
 
 def render_timeline_payload_to_mp4(
@@ -543,8 +708,11 @@ def render_timeline_payload_to_mp4(
 ) -> Dict[str, Any]:
     """
     Render a declarative JSON timeline payload dictionary into an H.264 + AAC MP4 file.
-    Uses RGB canvas + scene-interval caching so 90+ second 1080x1920 30fps videos render in ~8-16 seconds.
+    Supports both `{ "source": { "elements": [...] } }` and `{ "template_id": "...", "modifications": {...} }`.
     """
+    if "modifications" in payload and "source" not in payload:
+        return _render_template_modifications_to_mp4(payload, output_mp4_path)
+
     t0 = time.time()
     source = payload.get("source", payload)
     W = int(source.get("width") or 1080)
@@ -560,14 +728,20 @@ def render_timeline_payload_to_mp4(
     total_duration = float(source.get("duration") or max_el_end or 60.0)
     total_frames = max(1, int(round(total_duration * fps)))
 
+    show_desk_progress = any("LIVE AI DESK NOTE" in str(el.get("text") or "") for el in elements)
+
     bg_elements: List[Dict[str, Any]] = []
     fg_elements: List[Dict[str, Any]] = []
     audio_elements: List[Dict[str, Any]] = []
+    video_bg_elements: List[Dict[str, Any]] = []
 
     for el in elements:
         etype = el.get("type")
         if etype == "audio":
             audio_elements.append(el)
+            continue
+        if etype == "video":
+            video_bg_elements.append(el)
             continue
         el_t = float(el.get("time") or 0.0)
         el_d = float(el.get("duration") or total_duration)
@@ -577,8 +751,12 @@ def render_timeline_payload_to_mp4(
         else:
             fg_elements.append(el)
 
-    # Pre-render static background canvas in RGB mode (RGBA draw operations alpha-blend automatically)
     bg_canvas = Image.new("RGB", (W, H), (9, 13, 22))
+    if video_bg_elements:
+        vid_frame = extract_bg_video_frame(str(video_bg_elements[0].get("source") or ""), W, H)
+        if vid_frame is not None:
+            bg_canvas = vid_frame
+
     for el in bg_elements:
         if el.get("type") == "shape":
             render_shape_layer(bg_canvas, el, W, H)
@@ -609,14 +787,14 @@ def render_timeline_payload_to_mp4(
     for s_idx, (s_start, s_end) in enumerate(scene_windows):
         mid_t = s_start + min(1.5, (s_end - s_start) * 0.5)
         steady_scene_cache[s_idx] = render_composite_frame_at_time(
-            mid_t, fg_elements, bg_canvas, W, H, scene_windows=[]
+            mid_t, fg_elements, bg_canvas, W, H, scene_windows=[], show_desk_progress=False
         )
 
     if save_preview_frames_dir:
         os.makedirs(save_preview_frames_dir, exist_ok=True)
         for s_idx, (s_start, s_end) in enumerate(scene_windows):
             preview_img = steady_scene_cache[s_idx].copy()
-            if (s_end - s_start) > 10.0:
+            if show_desk_progress and (s_end - s_start) > 10.0:
                 draw_scene_progress_bar(preview_img, W, 0.5)
             preview_img.save(os.path.join(save_preview_frames_dir, f"scene_{s_idx + 1}.png"))
 
@@ -625,7 +803,7 @@ def render_timeline_payload_to_mp4(
     if audio_elements:
         audio_url = audio_elements[0].get("source")
         audio_fade_out = float(audio_elements[0].get("audio_fade_out") or 0.5)
-        audio_path = download_audio_to_temp(audio_url)
+        audio_path = download_url_to_temp(str(audio_url), suffix=".mp3")
 
     os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
 
@@ -717,13 +895,13 @@ def render_timeline_payload_to_mp4(
                 frame_rgb = Image.blend(bg_canvas, steady_scene_cache[active_s_idx], eased)
             else:
                 frame_rgb = steady_scene_cache[active_s_idx].copy()
-            if (s_end - s_start) > 10.0:
+            if show_desk_progress and (s_end - s_start) > 10.0:
                 prog = max(0.0, min(1.0, rel_t / (s_end - s_start)))
                 draw_scene_progress_bar(frame_rgb, W, prog)
             proc.stdin.write(frame_rgb.tobytes())
         else:
             frame_rgb = render_composite_frame_at_time(
-                t, fg_elements, bg_canvas, W, H, scene_windows=scene_windows
+                t, fg_elements, bg_canvas, W, H, scene_windows=scene_windows, show_desk_progress=show_desk_progress
             )
             proc.stdin.write(frame_rgb.tobytes())
 
