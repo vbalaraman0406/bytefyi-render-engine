@@ -263,6 +263,8 @@ def render_shape_layer(
     stroke_rgba = parse_color(raw_stroke_color, opacity) if raw_stroke_color else (0, 0, 0, 0)
     stroke_w = parse_dim(raw_stroke_width, W, 0.0)
     radius = parse_dim(el.get("border_radius"), min(w, h), 0.0)
+    if "A 50 50" in str(el.get("path") or ""):
+        radius = min(w, h) / 2.0
 
     # Full-canvas solid background
     if left <= 0 and top <= 0 and right >= W and bottom >= H and radius == 0:
@@ -812,22 +814,29 @@ def render_timeline_payload_to_mp4(
         elif el.get("type") == "image":
             render_image_layer(bg_canvas, el, W, H)
 
-    boundaries = sorted(
+    raw_boundaries = sorted(
         {0.0, round(total_duration, 3)}
         | {
             round(float(e.get("time") or 0.0), 3)
             for e in fg_elements
-            if float(e.get("duration") or 0.0) > 2.0 and float(e.get("time") or 0.0) > 1.0
+            if float(e.get("duration") or 0.0) >= 2.0 and float(e.get("time") or 0.0) > 1.0
         }
         | {
             round(float(e.get("time") or 0.0) + float(e.get("duration") or 0.0), 3)
             for e in fg_elements
-            if float(e.get("duration") or 0.0) > 2.0
+            if float(e.get("duration") or 0.0) >= 2.0
         }
     )
+    boundaries: List[float] = []
+    for b in raw_boundaries:
+        if not boundaries or (b - boundaries[-1]) >= 0.8:
+            boundaries.append(b)
+    if boundaries[-1] != round(total_duration, 3):
+        boundaries[-1] = round(total_duration, 3)
+
     scene_windows: List[Tuple[float, float]] = []
     for i in range(len(boundaries) - 1):
-        if boundaries[i + 1] - boundaries[i] > 1.0:
+        if boundaries[i + 1] - boundaries[i] >= 1.0:
             scene_windows.append((boundaries[i], boundaries[i + 1]))
 
     steady_scene_cache: Dict[int, Image.Image] = {}
@@ -845,12 +854,16 @@ def render_timeline_payload_to_mp4(
                 draw_scene_progress_bar(preview_img, W, 0.5)
             preview_img.save(os.path.join(save_preview_frames_dir, f"scene_{s_idx + 1}.png"))
 
-    audio_path = None
-    audio_fade_out = 0.5
-    if audio_elements:
-        audio_url = audio_elements[0].get("source")
-        audio_fade_out = float(audio_elements[0].get("audio_fade_out") or 0.5)
-        audio_path = download_url_to_temp(str(audio_url), suffix=".mp3")
+    audio_paths: List[Tuple[str, float, float]] = []
+    for a_el in audio_elements[:2]:
+        a_url = a_el.get("source")
+        if not a_url:
+            continue
+        a_path = download_url_to_temp(str(a_url), suffix=".mp3")
+        if a_path and os.path.exists(a_path):
+            vol = parse_dim(a_el.get("volume"), 1.0, 1.0)
+            fade_out = float(a_el.get("audio_fade_out") or 0.8)
+            audio_paths.append((a_path, vol, fade_out))
 
     os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
 
@@ -871,13 +884,40 @@ def render_timeline_payload_to_mp4(
         "-",
     ]
 
-    if audio_path and os.path.exists(audio_path):
-        ffmpeg_cmd.extend(["-i", audio_path])
+    if len(audio_paths) >= 2:
+        p0, vol0, fade0 = audio_paths[0]
+        p1, vol1, fade1 = audio_paths[1]
+        audio_fade_out = max(fade0, fade1, 0.8)
         fade_start = max(0.0, total_duration - audio_fade_out)
+        ffmpeg_cmd.extend(["-i", p0, "-stream_loop", "-1", "-i", p1])
+        filter_complex = (
+            f"[1:a]volume={vol0:.3f},apad=whole_dur={total_duration:.2f}[a0];"
+            f"[2:a]volume={vol1:.3f}[a1];"
+            f"[a0][a1]amix=inputs=2:duration=first:dropout_transition=2,"
+            f"volume=2.0,afade=t=out:st={fade_start:.2f}:d={audio_fade_out:.2f}[aout]"
+        )
+        ffmpeg_cmd.extend(
+            [
+                "-filter_complex",
+                filter_complex,
+                "-map",
+                "0:v",
+                "-map",
+                "[aout]",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "192k",
+            ]
+        )
+    elif len(audio_paths) == 1:
+        p0, vol0, audio_fade_out = audio_paths[0]
+        fade_start = max(0.0, total_duration - audio_fade_out)
+        ffmpeg_cmd.extend(["-i", p0])
         ffmpeg_cmd.extend(
             [
                 "-af",
-                f"afade=t=out:st={fade_start:.2f}:d={audio_fade_out:.2f}",
+                f"volume={vol0:.3f},apad=whole_dur={total_duration:.2f},afade=t=out:st={fade_start:.2f}:d={audio_fade_out:.2f}",
                 "-c:a",
                 "aac",
                 "-b:a",
@@ -903,9 +943,13 @@ def render_timeline_payload_to_mp4(
             "-c:v",
             "libx264",
             "-preset",
-            "ultrafast",
+            "veryfast",
             "-crf",
-            "20",
+            "23",
+            "-maxrate",
+            "2500k",
+            "-bufsize",
+            "5000k",
             "-pix_fmt",
             "yuv420p",
             "-movflags",
@@ -956,11 +1000,12 @@ def render_timeline_payload_to_mp4(
     stderr_out = proc.stderr.read().decode("utf-8", errors="ignore") if proc.stderr else ""
     ret = proc.wait()
 
-    if audio_path and os.path.exists(audio_path):
-        try:
-            os.unlink(audio_path)
-        except OSError:
-            pass
+    for a_path, _, _ in audio_paths:
+        if a_path and os.path.exists(a_path):
+            try:
+                os.unlink(a_path)
+            except OSError:
+                pass
 
     if ret != 0:
         raise RuntimeError(f"FFmpeg exited with code {ret}: {stderr_out[-600:]}")
