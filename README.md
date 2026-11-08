@@ -122,7 +122,37 @@ Returns the render metadata (`status: "succeeded"`, `url`, `output_format: "mp4"
 ### 3. `GET /renders/{render_id}.mp4` (and `HEAD /renders/{render_id}.mp4`)
 Streams the rendered `.mp4` binary with `Content-Type: video/mp4` for n8n's `Download Video` node (YouTube Shorts upload) and Meta's Instagram Graph API (`IG Create` `video_url`).
 
-### 4. `GET /health`
+### 4. `POST /v1/image` (Aliases: `POST /v1/html-to-image`, `POST /api/v1/generateImage`)
+Drop-in replacement for **HTMLCSSToImg / PDFMunk**. Renders any HTML/CSS document or snippet via headless Chromium into a crisp `.png` image (`1080x1920` default).
+
+- **Request Body**:
+  ```json
+  {
+    "html_content": "<!DOCTYPE html><html>...</html>",
+    "css_content": "",
+    "width": 1080,
+    "height": 1920
+  }
+  ```
+- **Response (`200 OK`)**:
+  ```json
+  {
+    "id": "e184f2a1-3b7d-4e90-811b-82f01c908212",
+    "status": "succeeded",
+    "image_url": "https://<cloud-run-service-url>/renders/e184f2a1-3b7d-4e90-811b-82f01c908212.png",
+    "url": "https://<cloud-run-service-url>/renders/e184f2a1-3b7d-4e90-811b-82f01c908212.png",
+    "output_format": "png",
+    "width": 1080,
+    "height": 1920,
+    "file_size": 184210,
+    "render_time_seconds": 1.15
+  }
+  ```
+
+### 5. `GET /renders/{render_id}.png` (and `HEAD /renders/{render_id}.png`)
+Streams the rendered `.png` image with `Content-Type: image/png` for n8n's `Download PNG` node.
+
+### 6. `GET /health`
 Returns `{"status": "ok", "service": "bytefyi-render-engine", "version": "1.0.0"}`.
 
 ---

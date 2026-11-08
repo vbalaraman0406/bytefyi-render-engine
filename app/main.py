@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 
-from app.renderer import render_timeline_payload_to_mp4
+from app.renderer import render_html_to_png, render_timeline_payload_to_mp4
 
 RENDERS_DIR = os.environ.get("RENDERS_DIR", "/tmp/bytefyi_renders")
 os.makedirs(RENDERS_DIR, exist_ok=True)
@@ -212,3 +212,62 @@ def serve_rendered_mp4(render_id: str):
         media_type="video/mp4",
         filename=f"{render_id}.mp4",
     )
+
+
+@app.post("/v1/image")
+@app.post("/v1/html-to-image")
+@app.post("/api/v1/generateImage")
+async def create_html_image(request: Request) -> JSONResponse:
+    """
+    Render an HTML/CSS snippet into a PNG image (drop-in replacement for HTMLCSSToImg / PDFMunk).
+    Returns `image_url` and `url` pointing to `/renders/{id}.png`.
+    """
+    _cleanup_old_renders()
+    try:
+        body = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON payload: {exc}")
+
+    if isinstance(body, list):
+        if not body:
+            raise HTTPException(status_code=400, detail="Empty payload list")
+        body = body[0]
+
+    render_id = str(uuid.uuid4())
+    png_path = os.path.join(RENDERS_DIR, f"{render_id}.png")
+    base_url = _resolve_base_url(request)
+    image_url = f"{base_url}/renders/{render_id}.png"
+
+    try:
+        stats = await asyncio.to_thread(render_html_to_png, body, png_path)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"HTML-to-image render failed: {exc}")
+
+    result = {
+        "id": render_id,
+        "status": "succeeded",
+        "image_url": image_url,
+        "url": image_url,
+        "output_format": "png",
+        "width": stats["width"],
+        "height": stats["height"],
+        "file_size": stats["file_size"],
+        "render_time_seconds": stats["render_time_seconds"],
+    }
+    return JSONResponse(content=result, status_code=200)
+
+
+@app.api_route("/renders/{render_id}.png", methods=["GET", "HEAD"])
+def serve_rendered_png(render_id: str):
+    """Stream the rendered PNG image with proper image/png MIME headers."""
+    png_path = os.path.join(RENDERS_DIR, f"{render_id}.png")
+    if not os.path.exists(png_path):
+        raise HTTPException(status_code=404, detail=f"Image {render_id}.png not found")
+    return FileResponse(
+        png_path,
+        media_type="image/png",
+        filename=f"{render_id}.png",
+    )
+

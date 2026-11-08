@@ -66,3 +66,32 @@ def test_full_timeline_render_and_status_flow():
     assert mp4_resp.status_code == 200
     assert mp4_resp.headers["content-type"] == "video/mp4"
     assert len(mp4_resp.content) > 10000
+
+
+def test_html_to_image_endpoint():
+    html_payload = {
+        "html_content": (
+            "<!DOCTYPE html><html><head><style>"
+            "body{width:1080px;height:1920px;margin:0;background:linear-gradient(135deg,#0d47a1,#c62828);"
+            "color:#fff;font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center}"
+            "h1{font-size:64px}"
+            "</style></head><body><h1>NFL WEEK 10 AI PREDICTIONS</h1></body></html>"
+        ),
+        "width": 1080,
+        "height": 1920,
+    }
+    resp = client.post("/v1/image", json=html_payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "succeeded"
+    assert data["output_format"] == "png"
+    assert data["width"] == 1080
+    assert data["height"] == 1920
+    assert data["image_url"].endswith(".png")
+    render_id = data["id"]
+
+    png_resp = client.get(f"/renders/{render_id}.png")
+    assert png_resp.status_code == 200
+    assert png_resp.headers["content-type"] == "image/png"
+    assert png_resp.content[:8] == b"\x89PNG\r\n\x1a\n"
+

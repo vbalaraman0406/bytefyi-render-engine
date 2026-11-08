@@ -3,10 +3,15 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8080 \
-    RENDERS_DIR=/tmp/bytefyi_renders
+    RENDERS_DIR=/tmp/bytefyi_renders \
+    CHROMIUM_BIN=/usr/bin/chromium
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
+    chromium \
+    fonts-liberation \
+    fonts-dejavu-core \
+    fonts-noto-color-emoji \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 

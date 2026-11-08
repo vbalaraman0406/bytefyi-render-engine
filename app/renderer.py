@@ -576,12 +576,55 @@ def _render_template_modifications_to_mp4(payload: Dict[str, Any], output_mp4_pa
         if v_url:
             clip_specs.append((str(v_url), v_dur))
 
-    audio_url = mods.get("Audio-1.source") or mods.get("audio_1.source") or mods.get("audio.source")
+    audio_url = (
+        mods.get("Audio-1.source")
+        or mods.get("Audio-TTS.source")
+        or mods.get("audio_1.source")
+        or mods.get("audio.source")
+    )
     audio_path = download_url_to_temp(str(audio_url), suffix=".mp3") if audio_url else None
+
+    image_url = (
+        mods.get("Image-2.source")
+        or mods.get("Image-1.source")
+        or mods.get("image_1.source")
+        or mods.get("image.source")
+    )
 
     temp_files: List[str] = []
     segment_files: List[str] = []
     try:
+        if not clip_specs and image_url:
+            raw_img = download_url_to_temp(str(image_url), suffix="_raw_img.png")
+            if raw_img:
+                temp_files.append(raw_img)
+                seg_out = tempfile.NamedTemporaryFile(delete=False, suffix="_seg_img.mp4").name
+                temp_files.append(seg_out)
+                cmd = [
+                    "ffmpeg",
+                    "-y",
+                    "-loop",
+                    "1",
+                    "-i",
+                    raw_img,
+                    "-t",
+                    f"{total_duration:.2f}",
+                    "-vf",
+                    f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1,fps={fps}",
+                    "-an",
+                    "-c:v",
+                    "libx264",
+                    "-preset",
+                    "veryfast",
+                    "-crf",
+                    "24",
+                    "-pix_fmt",
+                    "yuv420p",
+                    seg_out,
+                ]
+                subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                segment_files.append(seg_out)
+
         for i, (v_url, v_dur) in enumerate(clip_specs):
             raw_clip = download_url_to_temp(v_url, suffix=f"_raw_{i}.mp4")
             if not raw_clip:
@@ -932,3 +975,114 @@ def render_timeline_payload_to_mp4(
         "file_size": file_size,
         "render_time_seconds": elapsed,
     }
+
+
+def _find_chromium_binary() -> Optional[str]:
+    """Locate headless Chromium or Chrome binary across Cloud Run (Debian) and macOS dev."""
+    import shutil
+
+    candidates = [
+        os.environ.get("CHROMIUM_BIN", ""),
+        "/usr/bin/chromium",
+        "/usr/bin/chromium-browser",
+        "/usr/bin/google-chrome",
+        "/usr/bin/google-chrome-stable",
+        shutil.which("chromium") or "",
+        shutil.which("chromium-browser") or "",
+        shutil.which("google-chrome") or "",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    ]
+    for c in candidates:
+        if c and os.path.isfile(c) and os.access(c, os.X_OK):
+            return c
+    return None
+
+
+def render_html_to_png(
+    payload: Dict[str, Any],
+    output_png_path: str,
+) -> Dict[str, Any]:
+    """
+    Render an HTML/CSS payload (drop-in replacement for HTMLCSSToImg / PDFMunk) into a PNG image.
+    Supports fields:
+      - `html_content` or `html`
+      - `css_content` or `css` (optional)
+      - `width` or `viewport_width` (default 1080)
+      - `height` or `viewport_height` (default 1920)
+    """
+    t0 = time.time()
+    html_str = str(payload.get("html_content") or payload.get("html") or "").strip()
+    css_str = str(payload.get("css_content") or payload.get("css") or "").strip()
+    if not html_str:
+        raise ValueError("Missing 'html_content' or 'html' in request payload")
+
+    W = int(payload.get("width") or payload.get("viewport_width") or 1080)
+    H = int(payload.get("height") or payload.get("viewport_height") or 1920)
+    scale = float(payload.get("device_scale_factor") or 1.0)
+
+    # Inject optional css_content and ensure exact viewport sizing
+    extra_style = f"<style>html,body{{margin:0;padding:0;}}{css_str}</style>"
+    if "</head>" in html_str:
+        full_html = html_str.replace("</head>", f"{extra_style}</head>", 1)
+    elif "<html" in html_str.lower():
+        full_html = f"{extra_style}{html_str}"
+    else:
+        full_html = (
+            f"<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+            f"<meta name='viewport' content='width={W},height={H}'>"
+            f"{extra_style}</head><body>{html_str}</body></html>"
+        )
+
+    os.makedirs(os.path.dirname(os.path.abspath(output_png_path)), exist_ok=True)
+    tmp_html = tempfile.NamedTemporaryFile(delete=False, suffix=".html", mode="w", encoding="utf-8")
+    tmp_html.write(full_html)
+    tmp_html.close()
+
+    try:
+        chrome_bin = _find_chromium_binary()
+        if not chrome_bin:
+            raise RuntimeError("No Chromium/Chrome binary found for HTML-to-PNG rendering")
+
+        cmd = [
+            chrome_bin,
+            "--headless",
+            "--disable-gpu",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-software-rasterizer",
+            "--hide-scrollbars",
+            f"--force-device-scale-factor={scale}",
+            f"--window-size={W},{H}",
+            f"--screenshot={output_png_path}",
+            f"file://{tmp_html.name}",
+        ]
+        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=45)
+        if res.returncode != 0 or not os.path.exists(output_png_path):
+            stderr_msg = res.stderr.decode("utf-8", errors="ignore")[-500:]
+            raise RuntimeError(f"Chromium screenshot failed (code {res.returncode}): {stderr_msg}")
+
+        # Verify dimensions and normalize PNG
+        with Image.open(output_png_path) as im:
+            target_w = int(round(W * scale))
+            target_h = int(round(H * scale))
+            if im.size != (target_w, target_h):
+                im_cropped = im.crop((0, 0, min(im.width, target_w), min(im.height, target_h)))
+                if im_cropped.size != (target_w, target_h):
+                    im_cropped = im_cropped.resize((target_w, target_h), Image.Resampling.LANCZOS)
+                im_cropped.save(output_png_path, format="PNG")
+    finally:
+        if os.path.exists(tmp_html.name):
+            try:
+                os.unlink(tmp_html.name)
+            except OSError:
+                pass
+
+    file_size = os.path.getsize(output_png_path)
+    elapsed = round(time.time() - t0, 2)
+    return {
+        "width": W,
+        "height": H,
+        "file_size": file_size,
+        "render_time_seconds": elapsed,
+    }
+
