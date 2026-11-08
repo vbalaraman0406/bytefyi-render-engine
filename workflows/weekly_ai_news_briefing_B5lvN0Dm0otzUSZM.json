@@ -1,0 +1,1236 @@
+{
+  "id": "B5lvN0Dm0otzUSZM",
+  "name": "Weekly AI News Briefing - NYT Style",
+  "active": true,
+  "isArchived": false,
+  "versionId": "6ce7a692-9b86-47f3-be3e-73bcbd6b0e8b",
+  "activeVersionId": "6ce7a692-9b86-47f3-be3e-73bcbd6b0e8b",
+  "triggerCount": 1,
+  "nodeCount": 34,
+  "createdAt": "2026-10-02T02:14:41.363Z",
+  "updatedAt": "2026-11-07T00:26:54.290Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "description": "Automated Friday morning AI news briefing covering data centers, AI investments, M&A, and frontier models in a New York Times editorial broadsheet style.",
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Schedule Trigger (Friday 7am EST)": {
+      "main": [
+        [
+          {
+            "node": "RSS - Data Center Dynamics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Data Center Knowledge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - TechCrunch Startups & VC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - TechCrunch AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - MarkTechPost",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - The Verge AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Ars Technica AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Tom's Hardware AI & Chips",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - SiliconANGLE AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - Data Center Dynamics": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge - All AI Feeds": {
+      "main": [
+        [
+          {
+            "node": "Filter - Weekly AI & Infrastructure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - TechCrunch Startups & VC": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "RSS - TechCrunch AI": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "RSS - The Verge AI": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "RSS - Ars Technica AI": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Run Now (Manual Test)": {
+      "main": [
+        [
+          {
+            "node": "RSS - Data Center Dynamics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Data Center Knowledge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - TechCrunch Startups & VC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - TechCrunch AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - MarkTechPost",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - The Verge AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Ars Technica AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Tom's Hardware AI & Chips",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - SiliconANGLE AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - Weekly AI & Infrastructure": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Editorial Scriptwriter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Editorial Scriptwriter": {
+      "main": [
+        [
+          {
+            "node": "Code - Prepare Voiceover & Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Prepare Voiceover & Metadata": {
+      "main": [
+        [
+          {
+            "node": "ElevenLabs TTS (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ElevenLabs TTS (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "Move & Rename Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move & Rename Binary Data": {
+      "main": [
+        [
+          {
+            "node": "GCS - Upload Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCS - Upload Audio": {
+      "main": [
+        [
+          {
+            "node": "Build NYT AI Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build NYT AI Video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Creatomate Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Creatomate Generate Video": {
+      "main": [
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - Creatomate Rendering": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Poll Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Poll Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Check - Creatomate Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check - Creatomate Status": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Download Video for Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Check to Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to Update Status": {
+      "main": [
+        [
+          {
+            "node": "Send YouTube Email Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Creation": {
+      "main": [
+        [
+          {
+            "node": "Check Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Container Status": {
+      "main": [
+        [
+          {
+            "node": "Check Media Ready for Publish in IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Ready for Publish in IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Publish Reels": {
+      "main": [
+        [
+          {
+            "node": "Send Instagram Email Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - Data Center Knowledge": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Download Video for Upload": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Create Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - MarkTechPost": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "RSS - Tom's Hardware AI & Chips": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "RSS - SiliconANGLE AI": {
+      "main": [
+        [
+          {
+            "node": "Merge - All AI Feeds",
+            "type": "main",
+            "index": 8
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a4453ed5-3a4e-4e50-8eec-7ed46a97b001",
+      "name": "Schedule Trigger (Friday 7am EST)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        288
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 7,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "57bcb038-f5b4-4da9-9949-0a84d967b2ff",
+      "name": "RSS - Data Center Dynamics",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "url": "https://www.datacenterdynamics.com/en/rss/"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "644310de-703c-4c19-a2db-d58566a7e588",
+      "name": "Merge - All AI Feeds",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "numberInputs": 9
+      }
+    },
+    {
+      "id": "6992e1a2-0173-4049-bed5-adb7903ceddc",
+      "name": "RSS - Data Center Knowledge",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        192
+      ],
+      "parameters": {
+        "url": "https://www.datacenterknowledge.com/rss.xml",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "44eb011a-6b57-4c31-b4a9-79159f88d484",
+      "name": "RSS - TechCrunch Startups & VC",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        384
+      ],
+      "parameters": {
+        "url": "https://techcrunch.com/category/startups/feed/"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "c2faa4c2-1525-4170-979e-2ec837a1dd94",
+      "name": "RSS - TechCrunch AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        576
+      ],
+      "parameters": {
+        "url": "https://techcrunch.com/category/artificial-intelligence/feed/"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "a772fd68-565b-40c6-a14a-56dac93cd781",
+      "name": "RSS - MarkTechPost",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        768
+      ],
+      "parameters": {
+        "url": "https://www.marktechpost.com/feed/",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "0cfb9892-eabd-4116-9bfa-da4e9a07ee10",
+      "name": "RSS - The Verge AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        960
+      ],
+      "parameters": {
+        "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "04727f24-b8b7-4d0b-a9f8-1115e9396a4d",
+      "name": "RSS - Ars Technica AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1152
+      ],
+      "parameters": {
+        "url": "https://arstechnica.com/tag/ai/feed/"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cc9b746a-82bb-452b-bbca-5f4fdd41f5a8",
+      "name": "Run Now (Manual Test)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1248
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "e44948b0-4a09-4f7e-9c43-380eea328c4b",
+      "name": "Filter - Weekly AI & Infrastructure",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        528
+      ],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;\n\nconst DOM = [\n  ['datacenterdynamics', 'Data Center Dynamics'],\n  ['datacenterknowledge', 'Data Center Knowledge'],\n  ['tomshardware', \"Tom's Hardware\"],\n  ['siliconangle', 'SiliconANGLE'],\n  ['marktechpost', 'MarkTechPost'],\n  ['techcrunch.com/category/startups', 'TechCrunch VC'],\n  ['techcrunch.com', 'TechCrunch AI'],\n  ['theverge', 'The Verge'],\n  ['arstechnica', 'Ars Technica']\n];\n\nconst p1_keywords = ['frontier', 'foundation model', 'reasoning model', 'llm', 'deepseek', 'gpt-5', 'o3', 'claude 3.5', 'gemini 2', 'meta llama', 'weights', 'inference model', 'reinforcement learning', 'transformer', 'rag', 'agent'];\nconst p2_keywords = ['nvidia', 'blackwell', 'rubin', 'b200', 'gpu', 'tpu', 'semiconductor', 'foundry', 'tsmc', 'asml', 'amd', 'mi300', 'intel 18a', 'airjet', 'cooling', 'wafer', 'transistor', 'packaging', 'co-packaged'];\nconst p3_keywords = ['data center', 'datacenter', 'nuclear', 'power grid', 'gigawatt', 'megawatt', 'smr', 'substation', 'utility', 'energy', 'ppa', 'geothermal', 'transmission', 'hyperscale', 'blackstone'];\nconst p4_keywords = ['equity', 'million', 'raises', 'valuation', 'funding', 'billion', 'acquisition', 'venture', 'series a', 'series b', 'series c', 'debt', 'private equity', 'capital raise', 'buyout', 'ipo', 'acqui-hire', 'stake'];\nconst p5_keywords = ['enterprise', 'shadow ai', 'governance', 'regulation', 'ftc', 'antitrust', 'compliance', 'security', 'enterprise adoption', 'cio', 'ciso', 'workforce'];\n\nconst seen = new Set();\nconst cleanStr = s => (s || '').toString().toLowerCase();\n\nconst scored = items.map(it => {\n  const j = it.json;\n  const title = (j.title || '').toString();\n  const desc = (j.contentSnippet || j.content || j.description || '').toString();\n  const ds = j.isoDate || j.pubDate;\n  const dt = ds ? new Date(ds).getTime() : 0;\n  const text = cleanStr(title + ' ' + desc);\n  const blob = cleanStr(JSON.stringify(j));\n\n  let source = 'AI Intelligence Desk';\n  for (const [dom, name] of DOM) {\n    if (blob.includes(dom)) { source = name; break; }\n  }\n\n  const s1 = p1_keywords.reduce((a, k) => a + (text.includes(k) ? 2 : 0), 0);\n  const s2 = p2_keywords.reduce((a, k) => a + (text.includes(k) ? 2 : 0), 0);\n  const s3 = p3_keywords.reduce((a, k) => a + (text.includes(k) ? 2 : 0), 0);\n  const s4 = p4_keywords.reduce((a, k) => a + (text.includes(k) ? 2 : 0), 0);\n  const s5 = p5_keywords.reduce((a, k) => a + (text.includes(k) ? 2 : 0), 0);\n\n  let pillar = 'ENTERPRISE AI & GOVERNANCE';\n  let maxScore = s5;\n  if (s1 >= maxScore && s1 > 0) { pillar = 'FRONTIER MODELS & RESEARCH'; maxScore = s1; }\n  if (s2 > maxScore) { pillar = 'AI SILICON & SEMICONDUCTORS'; maxScore = s2; }\n  if (s3 > maxScore) { pillar = 'DATA CENTERS & POWER'; maxScore = s3; }\n  if (s4 > maxScore) { pillar = 'AI INVESTMENT & M&A'; maxScore = s4; }\n\n  return { title, desc, dt, s1, s2, s3, s4, s5, source, pillar, maxScore };\n})\n.filter(x => x.title && (x.dt >= cutoff || x.dt === 0) && x.maxScore > 0)\n.filter(x => {\n  const k = x.title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 40);\n  if (seen.has(k)) return false;\n  seen.add(k);\n  return true;\n});\n\nconst p1List = scored.filter(x => x.pillar === 'FRONTIER MODELS & RESEARCH').sort((a,b) => b.s1 - a.s1 || b.dt - a.dt);\nconst p2List = scored.filter(x => x.pillar === 'AI SILICON & SEMICONDUCTORS').sort((a,b) => b.s2 - a.s2 || b.dt - a.dt);\nconst p3List = scored.filter(x => x.pillar === 'DATA CENTERS & POWER').sort((a,b) => b.s3 - a.s3 || b.dt - a.dt);\nconst p4List = scored.filter(x => x.pillar === 'AI INVESTMENT & M&A').sort((a,b) => b.s4 - a.s4 || b.dt - a.dt);\nconst p5List = scored.filter(x => x.pillar === 'ENTERPRISE AI & GOVERNANCE').sort((a,b) => b.s5 - a.s5 || b.dt - a.dt);\n\nconst selected = [];\nif (p1List[0]) selected.push(p1List[0]);\nif (p2List[0]) selected.push(p2List[0]);\nif (p3List[0]) selected.push(p3List[0]);\nif (p4List[0]) selected.push(p4List[0]);\nif (p1List[1]) selected.push(p1List[1]);\nif (p2List[1]) selected.push(p2List[1]);\nif (p3List[1]) selected.push(p3List[1]);\nif (p4List[1]) selected.push(p4List[1]);\nif (p5List[0]) selected.push(p5List[0]);\n\nconst remaining = scored.filter(x => !selected.includes(x)).sort((a,b) => b.maxScore - a.maxScore || b.dt - a.dt);\nwhile (selected.length < 9 && remaining.length) {\n  selected.push(remaining.shift());\n}\n\nreturn selected.slice(0, 9).map((x, i) => ({\n  json: {\n    index: i + 1,\n    title: x.title,\n    content: x.desc.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 600),\n    source: x.source,\n    pillar: x.pillar\n  }\n}));"
+      }
+    },
+    {
+      "id": "fa8ddfaf-2528-4367-ac4c-0bd50b2c803b",
+      "name": "OpenAI - Editorial Scriptwriter",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        896,
+        528
+      ],
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "You are an elite senior tech journalist writing for a mobile executive AI intelligence briefing (\"The AI Dispatch\"). For the given weekly AI story, output ONLY valid JSON (no markdown, no code block, no extra text) with these exact keys:\n{\n  \"script\": \"a calm, authoritative spoken anchor line, strictly 20 to 25 words, clear analytical tone, no stage directions or emojis\",\n  \"headline\": \"a clear, compelling headline in Title Case, 6 to 9 words e.g. Nvidia Expands Beyond Silicon With Open Foundation Models\",\n  \"category\": \"one of: FRONTIER MODELS, SILICON ARCHITECTURE, DATA CENTERS & POWER, VENTURE & CAPITAL, ENTERPRISE GOVERNANCE\",\n  \"analysis\": \"1 plain-English analytical sentence (16 to 22 words) explaining what happened and why it matters\",\n  \"implication\": \"1 high-impact strategic takeaway sentence (12 to 18 words) on how this shifts the AI industry or enterprise strategy\",\n  \"metric1_lbl\": \"2-3 word metric label in ALL CAPS e.g. CAPITAL COMMITTED, MODEL SCALE, MARKETPLACE SCOPE\",\n  \"metric1_val\": \"complete concise benchmark (max 18 characters, never abbreviate mid-word) e.g. $1.3 BILLION, 770B PARAMS, IT & SECURITY\",\n  \"metric2_lbl\": \"2-3 word metric label in ALL CAPS e.g. VALUATION, HARDWARE TARGET, AGENT MODEL\",\n  \"metric2_val\": \"complete concise stat (max 18 characters, never abbreviate mid-word) e.g. $16.0 BILLION, 8,000 BLACKWELL, PREBUILT AGENTS\"\n}\nEnsure metrics and facts are strictly derived from the provided story.",
+              "role": "system"
+            },
+            {
+              "content": "=Headline: {{ $json.title }}\\nSource: {{ $json.source }}\\nPillar: {{ $json.pillar }}\\nContent: {{ $json.content }}"
+            }
+          ]
+        },
+        "modelId": {
+          "__rl": true,
+          "cachedResultName": "GPT-4O",
+          "mode": "list",
+          "value": "gpt-4o"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "id": "1d3c8260-b6a3-4753-b54c-14cf800973de",
+      "name": "Code - Prepare Voiceover & Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        528
+      ],
+      "parameters": {
+        "jsCode": "const outs = $input.all();\nconst filt = $('Filter - Weekly AI & Infrastructure').all();\nconst parse = c => { try { const m = String(c).match(/\\{[\\s\\S]*\\}/); return m ? JSON.parse(m[0]) : null; } catch(e){ return null; } };\nconst clean = t => String(t).replace(/[<>]/g,'').trim();\n\nconst stories = [];\nconst scripts = [];\n\nfor (let i = 0; i < outs.length; i++) {\n  const content = (outs[i].json.message && outs[i].json.message.content) || outs[i].json.content || outs[i].json.text || '';\n  const p = parse(content) || {};\n  const f = filt[i] ? filt[i].json : {};\n  const script = clean(p.script || content);\n  if (!script) continue;\n  scripts.push(script);\n\n  stories.push({\n    index: i + 1,\n    headline: clean(p.headline || f.title || 'AI Development').slice(0, 75),\n    source: clean(f.source || 'AI Intelligence Desk'),\n    category: clean(p.category || f.pillar || 'AI INTELLIGENCE').slice(0, 35),\n    metric1_lbl: clean(p.metric1_lbl || 'KEY BENCHMARK').slice(0, 26),\n    metric1_val: clean(p.metric1_val || 'HIGH IMPACT').slice(0, 24),\n    metric2_lbl: clean(p.metric2_lbl || 'DEPLOYMENT SCALE').slice(0, 26),\n    metric2_val: clean(p.metric2_val || 'ENTERPRISE').slice(0, 24),\n    analysis: clean(p.analysis || 'Strategic AI development transforming compute architecture and enterprise deployment.').slice(0, 145),\n    implication: clean(p.implication || 'Accelerates enterprise adoption of next-generation AI infrastructure and autonomous workflows.').slice(0, 135),\n    script,\n    words: script.split(/\\s+/).filter(Boolean).length\n  });\n}\n\nif (!stories.length) throw new Error('No AI stories to build');\n\nconst now = new Date();\nconst date = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;\nconst dateFormatted = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });\n\nconst anchorIntro = \"Good morning. From the tech desk, this is The A.I. Dispatch for Friday. Here is this week\u2019s comprehensive executive briefing on frontier models, silicon architecture, hyperscale power, and venture capital.\";\nconst introWords = anchorIntro.split(/\\s+/).filter(Boolean).length;\n\nconst anchorOutro = \"That concludes this week\u2019s executive briefing. The A.I. Dispatch publishes every Friday morning. Subscribe to byte f y i for authoritative intelligence fit to compute.\";\nconst outroWords = anchorOutro.split(/\\s+/).filter(Boolean).length;\n\nconst voiceover = anchorIntro + \"  \" + scripts.join(\"  \") + \"  \" + anchorOutro;\n\nlet cumulativeSec = 14;\nconst chapters = ['0:00 - Executive Briefing Intro'];\nstories.forEach((s, idx) => {\n  const m = Math.floor(cumulativeSec / 60);\n  const sec = Math.floor(cumulativeSec % 60);\n  chapters.push(`${m}:${String(sec).padStart(2, '0')} - Story ${idx + 1}: [${s.category}] ${s.headline}`);\n  cumulativeSec += (s.words * 0.44);\n});\nconst outroMin = Math.floor(cumulativeSec / 60);\nconst outroSec = Math.floor(cumulativeSec % 60);\nchapters.push(`${outroMin}:${String(outroSec).padStart(2, '0')} - Strategic Takeaway & Signoff`);\n\nconst ytTitle = clean(`The AI Dispatch: Frontier Models, Silicon & Gigawatt Data Centers (${date})`).slice(0, 95);\nconst ytDescription = clean(`The AI Dispatch - Friday Executive Intelligence Briefing (${dateFormatted}):\\n\\n` +\n  chapters.join('\\n') + '\\n\\n' +\n  \"THIS WEEK'S COVERAGE:\\n\" +\n  stories.map((s,i) => `${i+1}. [${s.category}] ${s.headline} (${s.source})\\n- What Happened: ${s.analysis}\\n- Impact: ${s.implication}`).join('\\n\\n') +\n  `\\n\\nPublished weekly by @bytefyi.\\n\\n#ArtificialIntelligence #DataCenters #AIChips #Nvidia #OpenAI #TechNews #Semiconductors #VentureCapital`).slice(0, 4200);\n\nconst ytTags = ['ai news', 'weekly ai news', 'data centers', 'ai silicon', 'nvidia', 'openai', 'the ai dispatch', 'frontier models', 'semiconductors'].join(',');\nconst igCaption = `\u26a1 The AI Dispatch (${date})\\n\\nWeekly executive briefing on frontier models, silicon, and hyperscale energy:\\n\\n` +\n  stories.map((s, i) => `${i+1}. [${s.category}] ${s.headline}`).join('\\n') +\n  `\\n\\nFollow @bytefyi for weekly AI intelligence \ud83d\udee1\ufe0f\\n\\n#ArtificialIntelligence #DataCenters #AIChips #TechNews #OpenAI`;\n\nreturn [{ json: { fullScriptForCreatomate: voiceover, anchorIntro, anchorOutro, stories, introWords, outroWords, dateFormatted, currentDateFormatted: date, ytTitle, ytDescription, ytTags, igCaption } }];"
+      }
+    },
+    {
+      "id": "f7553e71-d052-479a-a6c9-5062475555bc",
+      "name": "ElevenLabs TTS (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1344,
+        528
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/xyat7D2ZXEzXOykdSKco/with-timestamps?output_format=mp3_44100_128",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.fullScriptForCreatomate, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.55, similarity_boost: 0.8, style: 0.15, use_speaker_boost: true, speed: 1.02 } }) }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "IMEJ5zrKdaA6SoK5",
+          "name": "ElevenLabs Native Auth"
+        }
+      }
+    },
+    {
+      "id": "da723565-4301-489e-ad0e-966829853afd",
+      "name": "Move & Rename Binary Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        528
+      ],
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst j = item.json;\nconst audioBase64 = j.audioContent || j.audio_base64;\nif (!audioBase64) throw new Error('No audio base64 from ElevenLabs');\n\nconst align = j.alignment || j.normalized_alignment;\nlet exactDuration = 0;\nif (align && Array.isArray(align.character_end_times_seconds) && align.character_end_times_seconds.length) {\n  exactDuration = Math.ceil(align.character_end_times_seconds[align.character_end_times_seconds.length - 1] + 1);\n}\n\nconst prep = $('Code - Prepare Voiceover & Metadata').first().json;\nconst stories = prep.stories || [];\nconst dur = exactDuration || Math.max(15, Math.ceil(stories.reduce((a, s) => a + (s.words || 1), 0) * 0.42 + 6));\nconst filename = `ai_editorial_narration_${Date.now()}.mp3`;\n\nconst buffer = Buffer.from(audioBase64, 'base64');\n\nreturn [{\n  json: {\n    audioDuration: dur,\n    ytTitle: prep.ytTitle,\n    ytDescription: prep.ytDescription,\n    ytTags: prep.ytTags,\n    igCaption: prep.igCaption\n  },\n  binary: {\n    data: {\n      data: buffer.toString('base64'),\n      mimeType: 'audio/mpeg',\n      fileName: filename\n    }\n  }\n}];"
+      }
+    },
+    {
+      "id": "201a7285-344f-4601-9f89-91356d91f408",
+      "name": "GCS - Upload Audio",
+      "type": "n8n-nodes-base.googleCloudStorage",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        528
+      ],
+      "parameters": {
+        "resource": "object",
+        "operation": "create",
+        "bucketName": "bytesized-truths-audio-shorts",
+        "objectName": "={{ $binary.data.fileName }}",
+        "createBinaryPropertyName": "=data"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleCloudStorageOAuth2Api": {
+          "id": "c3fdpvl2qV0PHHhz",
+          "name": "Google Cloud Storage account"
+        }
+      }
+    },
+    {
+      "id": "9e05e483-9933-451d-bf4a-846a607e534d",
+      "name": "Build NYT AI Video",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        528
+      ],
+      "parameters": {
+        "jsCode": "const d = $('Code - Prepare Voiceover & Metadata').first().json;\nconst stories = d.stories || [];\nconst date = d.currentDateFormatted || '';\nconst audioUrl = $json.mediaLink;\nconst dur = Math.max(30, ($('Move & Rename Binary Data').first().json.audioDuration) || 105);\nconst introWords = d.introWords || 28;\nconst outroWords = d.outroWords || 22;\nconst anchorIntro = d.anchorIntro || 'Good morning. From the tech desk, this is The AI Dispatch for Friday\u2014covering frontier models, silicon architecture, hyperscale power, and venture capital.';\nconst anchorOutro = d.anchorOutro || 'That concludes this week\u2019s executive briefing. The AI Dispatch publishes every Friday morning. Follow @bytefyi.';\n\nconst total = Math.max(30, Math.ceil(dur * 10) / 10);\nconst storyWords = stories.reduce((a, s) => a + (s.words || 22), 0) || 1;\nconst grand = introWords + storyWords + outroWords;\n\nconst RECT = 'M 0 0 L 100 0 L 100 100 L 0 100 Z';\nconst F = 'Montserrat';\nconst BG = '#060B14';\nconst WHITE = '#FFFFFF';\nconst SLATE = '#94A3B8';\nconst CYAN = '#38BDF8';\nconst AMBER = '#FBBF24';\nconst INDIGO = '#6366F1';\nconst EMERALD = '#10B981';\n\nconst getIllustration = (cat) => {\n  const c = String(cat || '').toUpperCase();\n  if (c.includes('DATA CENTER') || c.includes('POWER') || c.includes('ENERGY') || c.includes('GRID')) {\n    return 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_datacenter_illustration.png';\n  }\n  if (c.includes('SILICON') || c.includes('CHIP') || c.includes('HARDWARE') || c.includes('GPU')) {\n    return 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_silicon_illustration.png';\n  }\n  if (c.includes('VENTURE') || c.includes('CAPITAL') || c.includes('FUNDING') || c.includes('ACQUISITION') || c.includes('INVESTMENT')) {\n    return 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_venture_illustration.png';\n  }\n  if (c.includes('ENTERPRISE') || c.includes('GOVERNANCE') || c.includes('POLICY') || c.includes('REGULATION')) {\n    return 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_enterprise_illustration.png';\n  }\n  return 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_frontier_illustration.png';\n};\n\nconst els = [];\nconst fade = [{ type: 'fade', duration: 0.25 }];\nconst box = o => els.push(Object.assign({ type: 'shape', path: RECT }, o));\nconst txt = o => els.push(Object.assign({\n  type: 'text',\n  font_family: F,\n  fill_color: WHITE,\n  x_anchor: '50%',\n  y_anchor: '50%',\n  x_alignment: '50%',\n  y_alignment: '50%',\n  text_alignment: 'center'\n}, o));\n\n// 1. Dark Executive Canvas + Top Safe-Zone Guard (0..210px clear for Instagram Reels UI)\nbox({ x: '50%', y: '50%', width: '100%', height: '100%', fill_color: BG, time: 0, duration: total });\nbox({ x: '50%', y: '105px', width: '100%', height: '210px', fill_color: '#04070E', time: 0, duration: total });\n\n// 2. Crisp Modern Masthead Card (\"THE AI DISPATCH\" at y=280px, completely below Instagram Reels header)\nbox({ x: '50%', y: '280px', width: '90%', height: '110px', border_radius: '20px', fill_color: '#0B1528', border_color: '#253B5E', border_width: '2px', time: 0, duration: total });\nbox({ x: '16.5%', y: '280px', width: '17%', height: '74px', border_radius: '14px', fill_color: INDIGO, time: 0, duration: total });\ntxt({ text: 'AI\\nWEEKLY', x: '16.5%', y: '280px', width: '16%', font_size: '22px', font_weight: '800', line_height: '105%', fill_color: WHITE, time: 0, duration: total });\ntxt({ text: 'THE AI DISPATCH', x: '52%', y: '262px', width: '48%', font_size: '32px', font_weight: '800', fill_color: WHITE, text_alignment: 'left', time: 0, duration: total });\ntxt({ text: `EXECUTIVE INTELLIGENCE \u2022 ${date}`, x: '52%', y: '302px', width: '48%', font_size: '18px', font_weight: '700', fill_color: CYAN, text_alignment: 'left', time: 0, duration: total });\nbox({ x: '85.5%', y: '280px', width: '14%', height: '64px', border_radius: '14px', fill_color: '#112240', border_color: CYAN, border_width: '1.5px', time: 0, duration: total });\n\n// 3. Intro Scene\nconst nStories = Math.max(1, stories.length);\nconst intro_dur = (introWords / grand) * total;\ntxt({ text: 'INTRO', x: '85.5%', y: '280px', width: '13%', font_size: '22px', font_weight: '800', fill_color: CYAN, time: 0, duration: intro_dur });\nbox({ x: '50%', y: '865px', width: '90%', height: '970px', border_radius: '28px', fill_color: '#091324', border_color: '#1E3A5F', border_width: '2px', time: 0, duration: intro_dur, animations: fade });\nbox({ x: '50%', y: '383px', width: '90%', height: '6px', border_radius: '3px', fill_color: INDIGO, time: 0, duration: intro_dur });\nbox({ x: '50%', y: '560px', width: '82%', height: '270px', border_radius: '20px', fill_color: '#F8FAFC', border_color: '#38BDF888', border_width: '2px', time: 0, duration: intro_dur });\nels.push({ type: 'image', source: 'https://storage.googleapis.com/bytesized-truths-audio-shorts/nyt_frontier_illustration.png', x: '50%', y: '560px', width: '78%', height: '250px', fit: 'contain', border_radius: '16px', time: 0, duration: intro_dur });\ntxt({ text: 'THIS WEEK IN ARTIFICIAL INTELLIGENCE', x: '50%', y: '785px', width: '82%', font_size: '42px', font_weight: '800', line_height: '115%', fill_color: WHITE, time: 0, duration: intro_dur });\nbox({ x: '50%', y: '985px', width: '82%', height: '165px', border_radius: '18px', fill_color: '#0D1B33', border_color: '#1E3A5F', border_width: '1.5px', time: 0, duration: intro_dur });\ntxt({ text: `${nStories} PIVOTAL AI BREAKTHROUGHS`, x: '50%', y: '955px', width: '78%', font_size: '36px', font_weight: '800', fill_color: CYAN, time: 0, duration: intro_dur });\ntxt({ text: 'FRONTIER MODELS \u2022 SILICON \u2022 GIGAWATT POWER \u2022 VENTURE', x: '50%', y: '1022px', width: '78%', font_size: '21px', font_weight: '700', fill_color: AMBER, time: 0, duration: intro_dur });\nbox({ x: '50%', y: '1210px', width: '82%', height: '190px', border_radius: '20px', fill_color: '#06281E', border_color: EMERALD, border_width: '2px', time: 0, duration: intro_dur });\ntxt({ text: 'FRIDAY EXECUTIVE DOSSIER', x: '50%', y: '1170px', width: '76%', font_size: '22px', font_weight: '800', fill_color: EMERALD, time: 0, duration: intro_dur });\ntxt({ text: 'Structured 60-second intelligence briefing for builders, operators, and investors.', x: '50%', y: '1235px', width: '76%', font_size: '27px', font_weight: '600', line_height: '122%', fill_color: '#ECFDF5', time: 0, duration: intro_dur });\nbox({ x: '50%', y: '1465px', width: '90%', height: '175px', border_radius: '22px', fill_color: '#0B1528', border_color: '#38BDF866', border_width: '1.5px', time: 0, duration: intro_dur });\ntxt({ text: 'LIVE VOICEOVER TRANSCRIPT', x: '50%', y: '1406px', width: '82%', font_size: '19px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: 0, duration: intro_dur });\ntxt({ text: `\"${anchorIntro}\"`, x: '50%', y: '1482px', width: '82%', font_size: '24px', font_weight: '600', line_height: '122%', fill_color: '#E2E8F0', text_alignment: 'left', time: 0, duration: intro_dur });\n\n// 4. Dynamic Story Scenes\nlet cum = introWords;\nstories.forEach((s, idx) => {\n  const s_words = s.words || 22;\n  const s_start = (cum / grand) * total;\n  const s_dur = (s_words / grand) * total;\n  cum += s_words;\n\n  const illUrl = getIllustration(s.category);\n  const headline = String(s.headline || 'AI Breakthrough');\n  const m1_lbl = String(s.metric1_lbl || 'KEY BENCHMARK').toUpperCase();\n  const m1_val = String(s.metric1_val || 'ENTERPRISE').toUpperCase();\n  const m2_lbl = String(s.metric2_lbl || 'DEPLOYMENT SCALE').toUpperCase();\n  const m2_val = String(s.metric2_val || 'PRODUCTION').toUpperCase();\n\n  // Masthead Counter + 9-Segment Progress Bar\n  txt({ text: `${idx + 1} / ${nStories}`, x: '85.5%', y: '280px', width: '13%', font_size: '26px', font_weight: '800', fill_color: CYAN, time: s_start, duration: s_dur });\n  for (let k = 0; k < nStories; k++) {\n    const segW = (90 - (nStories - 1) * 1.0) / nStories;\n    const segX = 5 + segW / 2 + k * (segW + 1.0);\n    const segCol = k === idx ? INDIGO : (k < idx ? '#0284C7' : '#1E293B');\n    box({ x: `${segX.toFixed(2)}%`, y: '356px', width: `${segW.toFixed(2)}%`, height: '8px', border_radius: '4px', fill_color: segCol, time: s_start, duration: s_dur });\n  }\n\n  // Main Story Card\n  box({ x: '50%', y: '865px', width: '90%', height: '970px', border_radius: '28px', fill_color: '#091324', border_color: '#1E3A5F', border_width: '2px', time: s_start, duration: s_dur, animations: fade });\n  box({ x: '50%', y: '383px', width: '90%', height: '6px', border_radius: '3px', fill_color: INDIGO, time: s_start, duration: s_dur });\n\n  // Category Pill (Left) + Source Pill (Right)\n  box({ x: '30%', y: '430px', width: '42%', height: '48px', border_radius: '12px', fill_color: '#1E1B4B', border_color: INDIGO, border_width: '1.5px', time: s_start, duration: s_dur });\n  txt({ text: String(s.category || 'AI INTELLIGENCE').toUpperCase(), x: '30%', y: '430px', width: '40%', font_size: '20px', font_weight: '800', fill_color: '#C7D2FE', time: s_start, duration: s_dur });\n\n  box({ x: '73%', y: '430px', width: '36%', height: '48px', border_radius: '12px', fill_color: '#0F1D36', border_color: '#F59E0B88', border_width: '1.5px', time: s_start, duration: s_dur });\n  txt({ text: `SOURCE: ${String(s.source || 'AI DESK').toUpperCase()}`, x: '73%', y: '430px', width: '34%', font_size: '19px', font_weight: '700', fill_color: AMBER, time: s_start, duration: s_dur });\n\n  // Split Hero Row: Framed Illustration (Left) + 2 Labeled Benchmark Cards (Right)\n  box({ x: '24.5%', y: '582px', width: '31%', height: '212px', border_radius: '18px', fill_color: '#F8FAFC', border_color: '#38BDF888', border_width: '2px', time: s_start, duration: s_dur });\n  els.push({ type: 'image', source: illUrl, x: '24.5%', y: '582px', width: '29%', height: '196px', fit: 'contain', border_radius: '14px', time: s_start, duration: s_dur });\n\n  box({ x: '66.5%', y: '526px', width: '49%', height: '100px', border_radius: '16px', fill_color: '#0E1E38', border_color: '#1E3A5F', border_width: '1.5px', time: s_start, duration: s_dur });\n  box({ x: '42.5%', y: '526px', width: '6px', height: '100px', border_radius: '3px', fill_color: CYAN, time: s_start, duration: s_dur });\n  txt({ text: m1_lbl, x: '67.5%', y: '500px', width: '44%', font_size: '18px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: s_start, duration: s_dur });\n  txt({ text: m1_val, x: '67.5%', y: '544px', width: '44%', font_size: m1_val.length > 16 ? '24px' : '28px', font_weight: '800', fill_color: WHITE, text_alignment: 'left', time: s_start, duration: s_dur });\n\n  box({ x: '66.5%', y: '638px', width: '49%', height: '100px', border_radius: '16px', fill_color: '#0E1E38', border_color: '#1E3A5F', border_width: '1.5px', time: s_start, duration: s_dur });\n  box({ x: '42.5%', y: '638px', width: '6px', height: '100px', border_radius: '3px', fill_color: AMBER, time: s_start, duration: s_dur });\n  txt({ text: m2_lbl, x: '67.5%', y: '612px', width: '44%', font_size: '18px', font_weight: '800', fill_color: AMBER, text_alignment: 'left', time: s_start, duration: s_dur });\n  txt({ text: m2_val, x: '67.5%', y: '656px', width: '44%', font_size: m2_val.length > 16 ? '24px' : '28px', font_weight: '800', fill_color: WHITE, text_alignment: 'left', time: s_start, duration: s_dur });\n\n  // Left-Aligned Headline\n  txt({ text: headline, x: '50%', y: '772px', width: '82%', font_size: headline.length > 58 ? '36px' : '40px', font_weight: '800', line_height: '116%', fill_color: WHITE, text_alignment: 'left', time: s_start, duration: s_dur, animations: fade });\n\n  // Box 1: 1. WHAT HAPPENED & WHY IT MATTERS\n  box({ x: '50%', y: '948px', width: '82%', height: '195px', border_radius: '18px', fill_color: '#0D1B33', border_color: '#1E3A5F', border_width: '1.5px', time: s_start, duration: s_dur });\n  box({ x: '9.5%', y: '948px', width: '8px', height: '195px', border_radius: '4px', fill_color: CYAN, time: s_start, duration: s_dur });\n  txt({ text: '1. WHAT HAPPENED & WHY IT MATTERS', x: '51%', y: '882px', width: '76%', font_size: '20px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: s_start, duration: s_dur });\n  txt({ text: String(s.analysis || ''), x: '51%', y: '965px', width: '76%', font_size: '27px', font_weight: '600', line_height: '122%', fill_color: WHITE, text_alignment: 'left', time: s_start, duration: s_dur, animations: fade });\n\n  // Box 2: 2. STRATEGIC INDUSTRY IMPACT\n  box({ x: '50%', y: '1192px', width: '82%', height: '235px', border_radius: '20px', fill_color: '#06281E', border_color: EMERALD, border_width: '2px', time: s_start, duration: s_dur, animations: fade });\n  box({ x: '32%', y: '1112px', width: '42%', height: '40px', border_radius: '10px', fill_color: EMERALD, time: s_start, duration: s_dur });\n  txt({ text: '2. STRATEGIC INDUSTRY IMPACT', x: '32%', y: '1112px', width: '40%', font_size: '19px', font_weight: '800', fill_color: '#022C22', time: s_start, duration: s_dur });\n  txt({ text: String(s.implication || ''), x: '50%', y: '1214px', width: '76%', font_size: '28px', font_weight: '700', line_height: '124%', fill_color: '#ECFDF5', text_alignment: 'left', time: s_start, duration: s_dur });\n\n  // Live Voiceover Teleprompter Bar\n  box({ x: '50%', y: '1465px', width: '90%', height: '175px', border_radius: '22px', fill_color: '#0B1528', border_color: '#38BDF866', border_width: '1.5px', time: s_start, duration: s_dur });\n  txt({ text: 'LIVE VOICEOVER TRANSCRIPT', x: '50%', y: '1406px', width: '82%', font_size: '19px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: s_start, duration: s_dur });\n  txt({ text: `\"${String(s.script || '')}\"`, x: '50%', y: '1482px', width: '82%', font_size: '25px', font_weight: '600', line_height: '122%', fill_color: '#E2E8F0', text_alignment: 'left', time: s_start, duration: s_dur });\n});\n\n// 5. Outro Scene\nconst outro_start = (cum / grand) * total;\nconst outro_dur = Math.max(1.5, total - outro_start);\ntxt({ text: 'DONE', x: '85.5%', y: '280px', width: '13%', font_size: '24px', font_weight: '800', fill_color: EMERALD, time: outro_start, duration: outro_dur });\nbox({ x: '50%', y: '865px', width: '90%', height: '970px', border_radius: '28px', fill_color: '#091324', border_color: '#1E3A5F', border_width: '2px', time: outro_start, duration: outro_dur, animations: fade });\nbox({ x: '50%', y: '383px', width: '90%', height: '6px', border_radius: '3px', fill_color: INDIGO, time: outro_start, duration: outro_dur });\ntxt({ text: 'THAT CONCLUDES THIS WEEK\u2019S\\nAI EXECUTIVE BRIEFING', x: '50%', y: '620px', width: '82%', font_size: '46px', font_weight: '800', line_height: '115%', fill_color: WHITE, time: outro_start, duration: outro_dur, animations: fade });\nbox({ x: '50%', y: '840px', width: '78%', height: '120px', border_radius: '22px', fill_color: INDIGO, time: outro_start, duration: outro_dur, animations: fade });\ntxt({ text: 'FOLLOW @bytefyi', x: '50%', y: '840px', width: '74%', font_size: '50px', font_weight: '800', fill_color: WHITE, time: outro_start, duration: outro_dur });\ntxt({ text: 'PUBLISHED EVERY FRIDAY MORNING', x: '50%', y: '1010px', width: '82%', font_size: '30px', font_weight: '700', fill_color: AMBER, time: outro_start, duration: outro_dur, animations: fade });\ntxt({ text: 'Frontier Models \u2022 Silicon \u2022 Hyperscale Power \u2022 Venture Capital', x: '50%', y: '1095px', width: '82%', font_size: '25px', font_weight: '600', fill_color: SLATE, time: outro_start, duration: outro_dur });\nbox({ x: '50%', y: '1465px', width: '90%', height: '175px', border_radius: '22px', fill_color: '#0B1528', border_color: '#38BDF866', border_width: '1.5px', time: outro_start, duration: outro_dur });\ntxt({ text: 'LIVE VOICEOVER TRANSCRIPT', x: '50%', y: '1406px', width: '82%', font_size: '19px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: outro_start, duration: outro_dur });\ntxt({ text: `\"${anchorOutro}\"`, x: '50%', y: '1482px', width: '82%', font_size: '24px', font_weight: '600', line_height: '122%', fill_color: '#E2E8F0', text_alignment: 'left', time: outro_start, duration: outro_dur });\n\n// 6. Audio & Safe-Zone Footer\nels.push({ type: 'audio', name: 'VO', source: audioUrl, time: 0, duration: total });\ntxt({ text: '@bytefyi  \u2022  The AI Dispatch  \u2022  Friday Executive Edition', x: '50%', y: '1595px', width: '84%', font_size: '22px', font_weight: '600', fill_color: SLATE, time: 0, duration: total });\n\nreturn { json: { output_format: 'mp4', width: 1080, height: 1920, frame_rate: 30, fill_color: BG, duration: total, elements: els } };"
+      }
+    },
+    {
+      "id": "9942563b-b363-4e93-8e58-60db13cbd45d",
+      "name": "HTTP Request - Creatomate Generate Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        528
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source: $json }) }}"
+      }
+    },
+    {
+      "id": "2ae9bce0-04c6-4fe4-aefa-21c969c1ace9",
+      "name": "Wait - Creatomate Rendering",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2464,
+        528
+      ],
+      "parameters": {
+        "amount": 12,
+        "unit": "seconds"
+      },
+      "webhookId": "caf4a52f-4ae8-4a94-9825-8be31e6e8bb1"
+    },
+    {
+      "id": "7838a9bd-1e4e-4ee3-b912-5cbbf30d7532",
+      "name": "HTTP Request - Poll Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2688,
+        464
+      ],
+      "parameters": {
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id || $('HTTP Request - Creatomate Generate Video').first().json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "b2814fdc-cbaa-492c-ade0-e69e2a1f5be3",
+      "name": "Check - Creatomate Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2912,
+        528
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.status }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "succeeded"
+            }
+          ],
+          "combinator": "or"
+        }
+      }
+    },
+    {
+      "id": "b2f70255-cd46-4ccf-86ab-20be16d82656",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3136,
+        528
+      ],
+      "parameters": {
+        "amount": 3,
+        "unit": "seconds"
+      },
+      "webhookId": "8bae666c-27da-4df5-85c0-8d87d0c22f9f"
+    },
+    {
+      "id": "e6a495e6-613a-44d2-a352-aba1d24acdc0",
+      "name": "HTTP Request - Download Video for Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3360,
+        528
+      ],
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "8628cf02-a05b-415e-9635-85fea0bde8fa",
+      "name": "Upload to YouTube Short",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        3600,
+        400
+      ],
+      "parameters": {
+        "binaryProperty": "=data",
+        "categoryId": "28",
+        "operation": "upload",
+        "options": {
+          "description": "={{ $('Code - Prepare Voiceover & Metadata').first().json.ytDescription }}",
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false,
+          "tags": "={{ $('Code - Prepare Voiceover & Metadata').first().json.ytTags }}"
+        },
+        "regionCode": "US",
+        "resource": "video",
+        "title": "={{ $('Code - Prepare Voiceover & Metadata').first().json.ytTitle }}"
+      },
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "id": "9a7d0782-bab3-4f7b-afee-b366ac61ac62",
+      "name": "Check to Update Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3824,
+        400
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "or",
+          "conditions": [
+            {
+              "id": "yt_c1",
+              "leftValue": "={{ $json.uploadId }}",
+              "operator": {
+                "operation": "notEmpty",
+                "singleValue": true,
+                "type": "string"
+              },
+              "rightValue": ""
+            },
+            {
+              "id": "yt_c2",
+              "leftValue": "={{ $json.uploadId }}",
+              "operator": {
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "failed"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        }
+      }
+    },
+    {
+      "id": "fda66567-8bd0-4acc-a47d-38016c23413e",
+      "name": "Send YouTube Email Alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4048,
+        400
+      ],
+      "parameters": {
+        "message": "=<p>Hello,</p><p>Your Weekly AI Dispatch YouTube Short has been successfully uploaded!</p><p><strong>Title:</strong> {{ $('Code - Prepare Voiceover & Metadata').first().json.ytTitle }}</p><p><strong>Video Link:</strong> <a href=\"https://youtube.com/shorts/{{ $json.id }}\">https://youtube.com/shorts/{{ $json.id }}</a></p><p>Best regards,<br>Your n8n Automation</p>",
+        "options": {},
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Weekly AI Dispatch: YouTube Short Uploaded"
+      },
+      "webhookId": "ed5544fb-937f-4827-8d9d-a7a20d1e9053",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "id": "78907d96-f4c7-486a-9b08-31f768d5e249",
+      "name": "Instagram Create Media Container",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3600,
+        650
+      ],
+      "parameters": {
+        "edge": "media",
+        "graphApiVersion": "v23.0",
+        "httpRequestMethod": "POST",
+        "node": "17841404200133843",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_url",
+                "value": "={{ $('HTTP Request - Creatomate Generate Video').item.json.url }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "id": "dc826ce3-8821-4f81-a9a7-85113c0726c8",
+      "name": "Wait for Media Creation",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3824,
+        650
+      ],
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "webhookId": "166e7f0a-ce30-4c22-8229-91774f276147"
+    },
+    {
+      "id": "a1e0b8a2-db8f-499d-ae7c-57c6b8071122",
+      "name": "Check Container Status",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4048,
+        650
+      ],
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "id": "a30bc434-7c97-4173-9ed8-444b39fbac30",
+      "name": "Check Media Ready for Publish in IG",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4272,
+        650
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ig_c1",
+              "leftValue": "={{ $json.status_code }}",
+              "operator": {
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "FINISHED"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        }
+      }
+    },
+    {
+      "id": "19973d56-8a5d-4231-8169-798a8522a09e",
+      "name": "Instagram Publish Reels",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4496,
+        650
+      ],
+      "parameters": {
+        "edge": "media_publish",
+        "graphApiVersion": "v23.0",
+        "httpRequestMethod": "POST",
+        "node": "17841404200133843",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Code - Prepare Voiceover & Metadata').first().json.igCaption }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "id": "f176e4b7-f14b-4820-9375-1374bdee75a5",
+      "name": "Send Instagram Email Alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4720,
+        650
+      ],
+      "parameters": {
+        "message": "=<p>Hello,</p><p>Your Weekly AI Dispatch Instagram Reels video has been successfully published!</p><p><strong>Title:</strong> {{ $('Code - Prepare Voiceover & Metadata').first().json.ytTitle }}</p><p>Best regards,<br>Your n8n Automation</p>",
+        "options": {},
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Weekly AI Dispatch: Instagram Reels Published"
+      },
+      "webhookId": "edaeff78-838d-42f3-a7fd-1a3a155ab7ea",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "id": "de235cc1-a0a5-4726-a738-39d3b5c0de2d",
+      "name": "RSS - Tom's Hardware AI & Chips",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1344
+      ],
+      "parameters": {
+        "options": {},
+        "url": "https://www.tomshardware.com/feeds/all"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "58da6336-638e-4def-9ff1-b73d63055471",
+      "name": "RSS - SiliconANGLE AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1536
+      ],
+      "parameters": {
+        "options": {},
+        "url": "https://siliconangle.com/category/ai/feed/"
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "sameAsDraft": true
+  },
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}

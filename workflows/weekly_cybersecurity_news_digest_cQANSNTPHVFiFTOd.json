@@ -1,0 +1,1259 @@
+{
+  "id": "cQANSNTPHVFiFTOd",
+  "name": "AI Hacker News Automation -V3",
+  "active": true,
+  "isArchived": false,
+  "versionId": "ef6d608c-0e92-4cfe-a15b-bf91fbccad31",
+  "activeVersionId": "ef6d608c-0e92-4cfe-a15b-bf91fbccad31",
+  "triggerCount": 1,
+  "nodeCount": 37,
+  "createdAt": "2025-10-20T20:52:33.499Z",
+  "updatedAt": "2026-11-06T23:20:56.750Z",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timezone": "America/Los_Angeles"
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read TheHackerNews",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS krebsonsecurity",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read BleeppingComputer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read DarkReading",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read SecurityWeek",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read CISA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read Zero Days News",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read HackerNews All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read TheHackerNews": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS krebsonsecurity": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RSS Read BleeppingComputer": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "RSS Read DarkReading": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "RSS Read SecurityWeek": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "RSS Read CISA": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge - All Cyber News": {
+      "main": [
+        [
+          {
+            "node": "Filter - Latest & Relevant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Generate Script": {
+      "main": [
+        [
+          {
+            "node": "Code - Limit Total Script Length",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - Latest & Relevant": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Generate Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move & Rename Binary Data": {
+      "main": [
+        [
+          {
+            "node": "GCS - Upload Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Creatomate Generate Video": {
+      "main": [
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - Creatomate Rendering": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Poll Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Poll Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Check - Creatomate Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check - Creatomate Status": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request -Download Video for Uplaod",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Check to Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to Update Status": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Limit Total Script Length": {
+      "main": [
+        [
+          {
+            "node": "Code-Prepare-TTS-Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Publish Reels": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Ready for Publish in IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Container Status": {
+      "main": [
+        [
+          {
+            "node": "Check Media Ready for Publish in IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Creation": {
+      "main": [
+        [
+          {
+            "node": "Check Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read Zero Days News": {
+      "main": [
+        [
+          {
+            "node": "Merge - All Cyber News",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Code-Prepare-TTS-Payload": {
+      "main": [
+        [
+          {
+            "node": "ElevenLabs TTS (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ElevenLabs TTS (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "Move & Rename Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCS - Upload Audio": {
+      "main": [
+        [
+          {
+            "node": "Build Cyber Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Cyber Video": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Creatomate Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request -Download Video for Uplaod": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Create Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -752,
+        -272
+      ],
+      "id": "ae49cd14-177a-4ea4-9afb-37e05a47a75b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://krebsonsecurity.com/feed/",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        -752
+      ],
+      "id": "abb6dc04-71cd-4959-9160-50b6eb401578",
+      "name": "RSS krebsonsecurity",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.bleepingcomputer.com/feed/",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        -560
+      ],
+      "id": "ab3acd6e-3c9b-42b1-aa64-a34d90d01ce9",
+      "name": "RSS Read BleeppingComputer",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://darkreading.com/rss.xml",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        -368
+      ],
+      "id": "ad6ab25d-7084-4c0d-801a-9e7b7da20622",
+      "name": "RSS Read DarkReading",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.securityweek.com/feed/",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        -176
+      ],
+      "id": "fbd44ea9-dd81-4fc7-a389-36cc373ba232",
+      "name": "RSS Read SecurityWeek",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://thehackernews.com/rss.xml",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        -944
+      ],
+      "id": "18555178-3fa2-48a8-9ddd-569979dc62a4",
+      "name": "RSS Read TheHackerNews",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        16
+      ],
+      "id": "f6ecd522-459f-47c2-ad2b-801aa815b9b3",
+      "name": "RSS Read CISA",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "numberInputs": 8
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -304,
+        -368
+      ],
+      "id": "76265964-5094-4c0c-933b-83711c3df9bb",
+      "name": "Merge - All Cyber News"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an elite cybersecurity news anchor creating a mobile vertical briefing. For the given story, output ONLY valid JSON (no markdown, no extra text) with these exact keys:\n{\n  \"script\": \"a clear, authoritative spoken anchor line explaining what happened and how to stay safe, strictly 18 to 24 words, no headers or stage directions\",\n  \"severity\": \"a 2-4 word severity tag in ALL CAPS, e.g. 'CRITICAL ZERO-DAY', 'HIGH RISK \u2022 ACTIVE EXPLOIT', 'RANSOMWARE ALERT', or 'MALWARE CAMPAIGN'\",\n  \"headline\": \"a clear, specific 6-9 word headline in Title Case explaining what happened (avoid vague 3-word titles)\",\n  \"whatHappened\": \"1 plain-English sentence (15-21 words) explaining clearly how the vulnerability, breach, or attack works\",\n  \"whoAffected\": \"1 concise phrase (10-15 words) naming the specific software, devices, or users at risk\",\n  \"howToStaySafe\": \"1 concrete, actionable step (12-18 words) telling viewers exactly how to protect themselves right now\"\n}",
+              "role": "system"
+            },
+            {
+              "content": "=Headline: {{ $json.title }}\nSource: {{ $json.source }}\nSummary: {{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        144,
+        -272
+      ],
+      "id": "4527e693-6c1f-489d-a2c9-8a2266ccdcb0",
+      "name": "OpenAI - Generate Script",
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst priority = ['zero-day','zero day','actively exploited','exploited in the wild','critical','ransomware','breach','cve-','rce','backdoor','supply chain','nation-state','apt','malware campaign'];\nconst general = ['vulnerability','exploit','malware','phishing','cyberattack','patch','trojan','spyware','ddos','data leak','hacked','compromise','threat actor','botnet','credential','infostealer'];\nconst cutoff = Date.now() - 24*60*60*1000;\nconst DOM = [['thehackernews','The Hacker News'],['krebsonsecurity','Krebs on Security'],['bleepingcomputer','BleepingComputer'],['darkreading','Dark Reading'],['securityweek','SecurityWeek'],['cisa.gov','CISA'],['cisa.','CISA'],['zerodayinitiative','Zero Day Initiative']];\nconst seen = new Set();\nlet rel = items.map(it => {\n  const j = it.json;\n  const title = (j.title || '').toString();\n  const desc = (j.contentSnippet || j.content || j.description || '').toString();\n  const ds = j.isoDate || j.pubDate;\n  const dt = ds ? new Date(ds).getTime() : 0;\n  const text = (title + ' ' + desc).toLowerCase();\n  const blob = JSON.stringify(j).toLowerCase();\n  let source = 'Cyber Desk';\n  for (const [d, n] of DOM) {\n    if (blob.includes(d)) { source = n; break; }\n  }\n  return { title, desc, dt, isPrio: priority.some(k => text.includes(k)), isGen: general.some(k => text.includes(k)), source };\n})\n.filter(x => x.title && (x.dt >= cutoff || x.dt === 0) && (x.isPrio || x.isGen))\n.filter(x => {\n  const k = x.title.toLowerCase().slice(0, 60);\n  if (seen.has(k)) return false;\n  seen.add(k);\n  return true;\n});\nrel.sort((a, b) => (b.isPrio - a.isPrio) || (b.dt - a.dt));\nreturn rel.slice(0, 4).map(x => ({\n  json: {\n    title: x.title,\n    content: x.desc.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500),\n    source: x.source\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        -272
+      ],
+      "id": "945717e7-c4d7-48d6-bf17-040ded64a0c5",
+      "name": "Filter - Latest & Relevant"
+    },
+    {
+      "parameters": {
+        "resource": "object",
+        "operation": "create",
+        "bucketName": "bytesized-truths-audio-shorts",
+        "objectName": "={{ \n  \"audio_\" + \n  (typeof $json[\"title\"] !== \"undefined\" ? $json[\"title\"] + \"_\" : \"\") + \n  new Date().toISOString().split(\"T\")[0] + \n  \".mp3\"\n  | trim\n}}",
+        "createBinaryPropertyName": "=data",
+        "createData": {},
+        "createQuery": {},
+        "encryptionHeaders": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.googleCloudStorage",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -272
+      ],
+      "id": "c25561de-8e2c-4845-afc9-03c8adf0340a",
+      "name": "GCS - Upload Audio",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleCloudStorageOAuth2Api": {
+          "id": "c3fdpvl2qV0PHHhz",
+          "name": "Google Cloud Storage account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const src = $('Code-Prepare-TTS-Payload').first().json;\nconst out = [];\nfor (const item of $input.all()){\n  const j = item.json;\n  const b64 = j.audioContent || j.audio_base64;\n  const align = j.alignment || j.normalized_alignment;\n  let audioDuration = 0;\n  if (align && Array.isArray(align.character_end_times_seconds) && align.character_end_times_seconds.length){ audioDuration = align.character_end_times_seconds[align.character_end_times_seconds.length-1]; }\n  if (!audioDuration){ const w = (src.stories||[]).reduce((a,s)=>a+(s.words||0),0); audioDuration = Math.max(20, Math.round(w/2.6)); }\n  if (b64 && typeof b64==='string' && b64.length){\n    const buffer = Buffer.from(b64,'base64');\n    item.binary = { data: { mimeType:'audio/mpeg', data: buffer.toString('base64') } };\n    item.json = { fileName: `cyber_${src.currentDateFormatted}_${Date.now()}.mp3`, combinedTitle: src.combinedTitle, currentDateFormatted: src.currentDateFormatted, audioDuration, stories: src.stories, fullScriptForCreatomate: src.fullScriptForCreatomate };\n  } else {\n    item.json.error = 'Audio content empty';\n  }\n  out.push(item);\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        -272
+      ],
+      "id": "686affba-dba3-485b-a682-9aab402a6373",
+      "name": "Move & Rename Binary Data",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source: $json }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1616,
+        -272
+      ],
+      "id": "7faf3da5-2d59-470e-b1eb-d9ddb4ca1edb",
+      "name": "HTTP Request - Creatomate Generate Video"
+    },
+    {
+      "parameters": {
+        "jsCode": "const outs = $input.all();\nconst filt = $('Filter - Latest & Relevant').all();\nconst parse = c => { try { const m = String(c).match(/\\{[\\s\\S]*\\}/); return m ? JSON.parse(m[0]) : null; } catch(e){ return null; } };\nconst clean = t => String(t).replace(/[<>]/g,'').trim();\nconst stories = []; const scripts = [];\nfor (let i=0;i<outs.length;i++){\n  const content = (outs[i].json.message && outs[i].json.message.content) || outs[i].json.content || outs[i].json.text || '';\n  const p = parse(content) || {};\n  const f = filt[i] ? filt[i].json : {};\n  const script = clean(p.script || content);\n  if (!script) continue;\n  scripts.push(script);\n  const whatHappened = clean(p.whatHappened || p.why || f.content || '').slice(0, 145);\n  const whoAffected = clean(p.whoAffected || `Systems and users running software covered in this ${f.source || 'security'} alert.`).slice(0, 120);\n  const howToStaySafe = clean(p.howToStaySafe || p.action || 'Apply the latest security patch immediately and audit system access logs.').slice(0, 140);\n  const severity = clean(p.severity || 'HIGH RISK \u2022 SECURITY ALERT').toUpperCase().slice(0, 32);\n  stories.push({\n    headline: clean(p.headline || f.title || 'Security Alert').slice(0, 68),\n    source: clean(f.source || 'Security'),\n    severity,\n    whatHappened,\n    whoAffected,\n    howToStaySafe,\n    why: whatHappened,\n    action: howToStaySafe,\n    script,\n    words: script.split(/\\s+/).filter(Boolean).length\n  });\n}\nif (!stories.length) throw new Error('No cyber stories to build');\nconst now = new Date();\nconst date = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;\nconst cta = 'Follow byte f y i for daily cyber security alerts. Subscribe and stay one step ahead.';\nconst ctaWords = cta.split(/\\s+/).filter(Boolean).length;\nconst voiceover = scripts.join('  ') + '  ' + cta;\nconst ytTitle = clean(`Cyber Security News ${date} | ${stories.length} Threats You Must Know Today`);\nconst ytDescription = clean(`Today's top cybersecurity threats (${date}):\\n\\n` + stories.map((s,i)=>`${i+1}. ${s.headline} (${s.source})\\n   \u2022 What happened: ${s.whatHappened}\\n   \u2022 Who is affected: ${s.whoAffected}\\n   \u2022 How to stay safe: ${s.howToStaySafe}`).join('\\n\\n') + `\\n\\nStay secure and FOLLOW @bytefyi for daily cyber news.\\n\\n#CyberSecurity #InfoSec #Hacking #DataBreach #Ransomware #ZeroDay #Shorts #TechNews #CyberAwareness`);\nconst ytTags = ['cybersecurity','cyber security news','infosec','hacking news','data breach','ransomware','zero day','vulnerability','tech news','daily cyber news'].join(',');\nconst igCaption = `\ud83d\udd12 Cyber News ${date}\\n\\n` + stories.map((s,i)=>`${i+1}. ${s.headline}\\n   \u2705 Fix: ${s.howToStaySafe}`).join('\\n\\n') + `\\n\\nFollow @bytefyi for daily cyber alerts \ud83d\udee1\ufe0f\\n\\n#CyberSecurity #InfoSec #Hacking #DataBreach #Ransomware #Shorts`;\nconst combinedTitle = `${date} - Cyber News: ${stories.slice(0,3).map(s=>s.headline).join(' | ')}`.slice(0,190);\nreturn [{ json: { fullScriptForCreatomate: voiceover, stories, ctaWords, combinedTitle, currentDateFormatted: date, ytTitle, ytDescription, ytTags, igCaption } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -272
+      ],
+      "id": "b59f8724-94d5-47b7-8ec1-0f37f87ff2d4",
+      "name": "Code-Prepare-TTS-Payload"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        -272
+      ],
+      "id": "9f93dd3a-6576-4b9d-90cc-a649c0d31be5",
+      "name": "Wait - Creatomate Rendering",
+      "webhookId": "59f41e65-670f-4efb-863e-27b1e7eacaca"
+    },
+    {
+      "parameters": {
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id || $('HTTP Request - Creatomate Generate Video').first().json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2064,
+        -336
+      ],
+      "id": "9e0bd6d3-3f05-48b0-b9ee-ed2cd5192a10",
+      "name": "HTTP Request - Poll Creatomate",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "82613f0a-96d0-4436-8537-d82e11f8c989",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "succeeded",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2288,
+        -272
+      ],
+      "id": "9af9769e-2e69-4d66-adfe-35e85a64b291",
+      "name": "Check - Creatomate Status"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Code-Prepare-TTS-Payload').first().json.ytTitle }}",
+        "regionCode": "US",
+        "categoryId": "23",
+        "binaryProperty": "=data",
+        "options": {
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false,
+          "tags": "={{ $('Code-Prepare-TTS-Payload').first().json.ytTags }}",
+          "description": "={{ $('Code-Prepare-TTS-Payload').first().json.ytDescription }}"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        -128
+      ],
+      "id": "17643061-de83-4e2c-8f20-69653af2f698",
+      "name": "Upload to YouTube Short",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2289ccca-bc0c-46b5-85d1-64d64b34e2e1",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1b5d3718-6c3c-402f-b47a-f41b85116496",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2960,
+        -128
+      ],
+      "id": "2420da12-aefc-4e64-8cf3-261fefffb370",
+      "name": "Check to Update Status"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2512,
+        -272
+      ],
+      "id": "d058db5b-7152-4d0c-b682-f2d49967846e",
+      "name": "HTTP Request -Download Video for Uplaod"
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "AI Hacker News Short Uploaded: Cyber New Daily",
+        "message": "=<p>Hello,</p> <p>Your AI Hacker News Short video has been successfully generated and is ready for review!</p> <p><strong>Title:</strong> {{ $json.combinedTitle }}</p> <p><strong>Video Link:</strong> <a href=\"{{ $json.finalVideoUrl }}\">{{ $json.finalVideoUrl }}</a></p> <p>You can now proceed to upload it to YouTube and Instagram.</p> <p>Best regards,<br>Your n8n Automation</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3184,
+        -128
+      ],
+      "id": "33a0fd31-351d-424b-9429-c2a48129208f",
+      "name": "Send a message",
+      "webhookId": "ac2032ef-c421-4ed9-b208-676d73c30d08",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pass-through: assembly happens in the next node.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -272
+      ],
+      "id": "e01bfa25-4828-400d-afbc-3d2e8f3f8c5a",
+      "name": "Code - Limit Total Script Length"
+    },
+    {
+      "parameters": {
+        "content": "# Cyber News Content Generation from RSS feeds",
+        "height": 1728,
+        "width": 1776,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        -1040
+      ],
+      "typeVersion": 1,
+      "id": "1c92775b-5bfa-4ee8-bb19-79b769f1e3fb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Audio Generation using Google TTS",
+        "height": 1312,
+        "width": 804,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -880
+      ],
+      "typeVersion": 1,
+      "id": "e027e88a-ac44-42b6-bfb7-8f1c6bccb7bd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Video generation using Creatomate API",
+        "height": 1312,
+        "width": 864
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1616,
+        -880
+      ],
+      "typeVersion": 1,
+      "id": "7fcd3120-26a6-434a-8665-bdf833de221c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Upload Video to Youtube",
+        "height": 1312,
+        "width": 1520,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2496,
+        -880
+      ],
+      "typeVersion": 1,
+      "id": "a3a05987-8482-4cc5-9882-6c401266a7ef",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_url",
+                "value": "={{ $('HTTP Request - Creatomate Generate Video').item.json.url }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        -368
+      ],
+      "id": "ff6543b0-1aed-4b61-9dfc-b54d2cdab9ab",
+      "name": "Instagram Create Media Container",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Code-Prepare-TTS-Payload').first().json.igCaption }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3632,
+        -368
+      ],
+      "id": "e2c92fba-3f2e-4f8d-9c80-143c1720fe8a",
+      "name": "Instagram Publish Reels",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "AI Hacker News Short Uploaded: Cyber New Daily",
+        "message": "=<p>Hello,</p> <p>Your AI Hacker News Instagram Reels video has been successfully generated and published</p> <p><strong>Title:</strong> {{ $json.combinedTitle }}</p> <p><strong>Video Link:</strong> <a href=\"{{ $json.finalVideoUrl }}\">{{ $json.finalVideoUrl }}</a></p> <p>You can now proceed to upload it to YouTube and Instagram.</p> <p>Best regards,<br>Your n8n Automation</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3856,
+        -368
+      ],
+      "id": "8304004e-3782-4b03-9f1a-1bc6b4778b95",
+      "name": "Send a message1",
+      "webhookId": "409ce467-089f-4d08-8ed1-463afa4a5307",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d70a62df-c0be-423a-be3d-0b7976616cfa",
+              "leftValue": "={{ $json.status_code }}",
+              "rightValue": "FINISHED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3408,
+        -368
+      ],
+      "id": "6389f3f4-5e6b-483d-9190-8fbd396d0c93",
+      "name": "Check Media Ready for Publish in IG"
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        3184,
+        -432
+      ],
+      "id": "04f43dde-a3ab-4cec-b9d0-1d0572e04aca",
+      "name": "Check Container Status",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2960,
+        -368
+      ],
+      "id": "e5d364f7-c3af-403b-a153-b56af7ce4927",
+      "name": "Wait for Media Creation",
+      "webhookId": "daaaf557-4735-49e5-9a95-274f0a70c472"
+    },
+    {
+      "parameters": {
+        "url": "https://www.zerodayinitiative.com/blog?format=rss",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        208
+      ],
+      "id": "2ea2b94b-5e19-413a-b02e-6c2c706b21a8",
+      "name": "RSS Read Zero Days News",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://hnrss.org/newest",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -528,
+        400
+      ],
+      "id": "a7c0c40a-3f34-4477-acba-a4cad052b5b8",
+      "name": "RSS Read HackerNews All",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "xyat7D2ZXEzXOykdSKco",
+          "mode": "list",
+          "cachedResultName": "News Guy - cool calm and collected"
+        },
+        "text": "={{ $json.fullScriptForCreatomate }}",
+        "additionalOptions": {
+          "voiceSettings": "{\n  \"stability\": 1,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"use_speaker_boost\": true,\n  \"speed\": 0.8\n}"
+        },
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        944,
+        -272
+      ],
+      "id": "8bb42280-8d2b-4e15-bec7-7aaa739e0226",
+      "name": "ElevenLabs TTS",
+      "disabled": true,
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "9KZkH6t2u5cUT4bg",
+          "name": "ElevenLabs account"
+        }
+      }
+    },
+    {
+      "id": "847245c7-8141-4a25-a4fb-f6eb56649982",
+      "name": "ElevenLabs TTS (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        944,
+        -72
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/xyat7D2ZXEzXOykdSKco/with-timestamps?output_format=mp3_44100_128",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.fullScriptForCreatomate, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.2, use_speaker_boost: true, speed: 1.05 } }) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "IMEJ5zrKdaA6SoK5",
+          "name": "ElevenLabs Native Auth"
+        }
+      }
+    },
+    {
+      "id": "52d89c7b-06d9-4a7f-8c6e-d08c75a31e48",
+      "name": "Build Cyber Video",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        -72
+      ],
+      "parameters": {
+        "jsCode": "const d = $('Code-Prepare-TTS-Payload').first().json;\nconst stories = d.stories || [];\nconst date = d.currentDateFormatted || '';\nconst audioUrl = $json.mediaLink;\nconst dur = Math.max(12, ($('Move & Rename Binary Data').first().json.audioDuration) || 45);\nconst ctaWords = d.ctaWords || 14;\n\nconst F = 'Montserrat', BG = '#050B16', RED = '#E11D48', CYAN = '#38BDF8', AMBER = '#FBBF24', EMERALD = '#10B981', WHITE = '#FFFFFF', SLATE = '#94A3B8';\nconst RECT = 'M 0 0 L 100 0 L 100 100 L 0 100 Z';\nconst BGVID = 'https://videos.pexels.com/video-files/39463971/16809077_1080_1920_30fps.mp4';\n\nconst els = [];\nconst fade = [{ type: 'fade', duration: 0.25 }];\nconst txt = o => els.push(Object.assign({ type: 'text', font_family: F, fill_color: WHITE, x_alignment: '50%', y_alignment: '50%', text_alignment: 'center' }, o));\nconst box = o => els.push(Object.assign({ type: 'shape', path: RECT }, o));\n\nconst total = Math.max(12, Math.ceil(dur * 10) / 10);\nconst storyWords = stories.reduce((a, s) => a + (s.words || 1), 0) || 1;\nconst grand = storyWords + ctaWords;\n\n// Static Masthead below Instagram profile overlay (y=285px, spans 230px..340px \u2014 leaves 0..220px clear for IG username/audio)\nbox({ x: '50%', y: '105px', width: '100%', height: '210px', fill_color: '#030710E6', time: 0, duration: total });\nbox({ x: '50%', y: '285px', width: '90%', height: '110px', border_radius: '20px', fill_color: '#0B1528F5', border_color: '#1E3A5F', border_width: '2px', time: 0, duration: total });\nbox({ x: '16.5%', y: '285px', width: '17%', height: '74px', border_radius: '14px', fill_color: RED, time: 0, duration: total });\ntxt({ text: 'CYBER\\nNEWS', x: '16.5%', y: '285px', width: '16%', font_size: '23px', font_weight: '800', line_height: '105%', fill_color: WHITE, time: 0, duration: total });\ntxt({ text: 'DAILY THREAT BRIEFING', x: '52%', y: '266px', width: '48%', font_size: '28px', font_weight: '800', fill_color: WHITE, text_alignment: 'left', time: 0, duration: total });\ntxt({ text: `BYTEFYI SECURITY DESK \u2022 ${date}`, x: '52%', y: '304px', width: '48%', font_size: '19px', font_weight: '600', fill_color: CYAN, text_alignment: 'left', time: 0, duration: total });\nbox({ x: '85.5%', y: '285px', width: '14%', height: '64px', border_radius: '14px', fill_color: '#112240', border_color: CYAN, border_width: '1.5px', time: 0, duration: total });\n\nlet cum = 0;\nconst nStories = Math.max(1, stories.length);\nstories.forEach((s, i) => {\n  const start = (cum / grand) * total;\n  const d2 = Math.max(2, (s.words / grand) * total);\n  cum += s.words || 1;\n\n  // Step counter in masthead (e.g. \"3 / 4\")\n  txt({ text: `${i + 1} / ${nStories}`, x: '85.5%', y: '285px', width: '13%', font_size: '28px', font_weight: '800', fill_color: CYAN, time: start, duration: d2 });\n\n  // Segmented Story Progress Bar (y=362px)\n  for (let k = 0; k < nStories; k++) {\n    const segW = (90 - (nStories - 1) * 1.8) / nStories;\n    const segX = 5 + segW / 2 + k * (segW + 1.8);\n    const segCol = k === i ? RED : (k < i ? '#2563EB' : '#1E293B');\n    box({ x: `${segX.toFixed(2)}%`, y: '362px', width: `${segW.toFixed(2)}%`, height: '8px', border_radius: '4px', fill_color: segCol, time: start, duration: d2 });\n  }\n\n  // Main Intelligence Card (y=870px, height=960px -> spans 390px to 1350px)\n  box({ x: '50%', y: '870px', width: '90%', height: '960px', border_radius: '28px', fill_color: '#081121FA', border_color: '#1E3A5F', border_width: '2px', time: start, duration: d2, animations: fade });\n  box({ x: '50%', y: '393px', width: '90%', height: '6px', border_radius: '3px', fill_color: RED, time: start, duration: d2 });\n\n  // Top Severity Badge (Left) + Source Pill (Right)\n  box({ x: '29%', y: '442px', width: '40%', height: '50px', border_radius: '12px', fill_color: '#3B0A18', border_color: RED, border_width: '1.5px', time: start, duration: d2 });\n  txt({ text: String(s.severity || `THREAT ${i + 1} OF ${nStories} \u2022 HIGH RISK`).toUpperCase(), x: '29%', y: '442px', width: '38%', font_size: '20px', font_weight: '800', fill_color: '#FDA4AF', time: start, duration: d2 });\n\n  box({ x: '72%', y: '442px', width: '38%', height: '50px', border_radius: '12px', fill_color: '#0F1D36', border_color: '#F59E0B88', border_width: '1.5px', time: start, duration: d2 });\n  txt({ text: `SOURCE: ${String(s.source || 'CYBER DESK').toUpperCase()}`, x: '72%', y: '442px', width: '36%', font_size: '19px', font_weight: '700', fill_color: AMBER, time: start, duration: d2 });\n\n  // Clear Left-Aligned Headline\n  txt({ text: String(s.headline || 'Critical Security Alert'), x: '50%', y: '548px', width: '82%', font_size: '42px', font_weight: '800', line_height: '116%', fill_color: WHITE, text_alignment: 'left', time: start, duration: d2, animations: fade });\n\n  // Section 1: 1. WHAT HAPPENED\n  box({ x: '50%', y: '715px', width: '82%', height: '185px', border_radius: '18px', fill_color: '#0D1B33', border_color: '#1E3A5F', border_width: '1.5px', time: start, duration: d2 });\n  box({ x: '9.5%', y: '715px', width: '8px', height: '185px', border_radius: '4px', fill_color: CYAN, time: start, duration: d2 });\n  txt({ text: '1. WHAT HAPPENED', x: '51%', y: '652px', width: '76%', font_size: '21px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: start, duration: d2 });\n  txt({ text: String(s.whatHappened || s.why || ''), x: '51%', y: '732px', width: '76%', font_size: '27px', font_weight: '600', line_height: '122%', fill_color: WHITE, text_alignment: 'left', time: start, duration: d2, animations: fade });\n\n  // Section 2: 2. WHO IS AFFECTED\n  box({ x: '50%', y: '925px', width: '82%', height: '175px', border_radius: '18px', fill_color: '#0D1B33', border_color: '#1E3A5F', border_width: '1.5px', time: start, duration: d2 });\n  box({ x: '9.5%', y: '925px', width: '8px', height: '175px', border_radius: '4px', fill_color: AMBER, time: start, duration: d2 });\n  txt({ text: '2. WHO IS AFFECTED', x: '51%', y: '866px', width: '76%', font_size: '21px', font_weight: '800', fill_color: AMBER, text_alignment: 'left', time: start, duration: d2 });\n  txt({ text: String(s.whoAffected || 'Users and organizations running unpatched versions.'), x: '51%', y: '942px', width: '76%', font_size: '27px', font_weight: '600', line_height: '122%', fill_color: WHITE, text_alignment: 'left', time: start, duration: d2, animations: fade });\n\n  // Section 3: 3. HOW TO STAY SAFE\n  box({ x: '50%', y: '1175px', width: '82%', height: '265px', border_radius: '20px', fill_color: '#06281E', border_color: EMERALD, border_width: '2px', time: start, duration: d2, animations: fade });\n  box({ x: '28%', y: '1082px', width: '34%', height: '42px', border_radius: '10px', fill_color: EMERALD, time: start, duration: d2 });\n  txt({ text: '3. HOW TO STAY SAFE', x: '28%', y: '1082px', width: '32%', font_size: '20px', font_weight: '800', fill_color: '#022C22', time: start, duration: d2 });\n  txt({ text: String(s.howToStaySafe || s.action || 'Update immediately to the latest patched version.'), x: '50%', y: '1198px', width: '76%', font_size: '29px', font_weight: '700', line_height: '124%', fill_color: '#ECFDF5', text_alignment: 'left', time: start, duration: d2 });\n\n  // Live Synced Voiceover Transcript Bar (y=1475px, height=180px)\n  box({ x: '50%', y: '1475px', width: '90%', height: '180px', border_radius: '22px', fill_color: '#0B1528F2', border_color: '#38BDF866', border_width: '1.5px', time: start, duration: d2 });\n  txt({ text: 'LIVE VOICEOVER TRANSCRIPT', x: '50%', y: '1415px', width: '82%', font_size: '19px', font_weight: '800', fill_color: CYAN, text_alignment: 'left', time: start, duration: d2 });\n  txt({ text: `\"${String(s.script || '')}\"`, x: '50%', y: '1492px', width: '82%', font_size: '25px', font_weight: '600', line_height: '122%', fill_color: '#E2E8F0', text_alignment: 'left', time: start, duration: d2 });\n});\n\n// Outro Card\nconst cStart = (storyWords / grand) * total;\nconst cDur = Math.max(1.5, total - cStart);\ntxt({ text: 'DONE', x: '85.5%', y: '285px', width: '13%', font_size: '24px', font_weight: '800', fill_color: EMERALD, time: cStart, duration: cDur });\nbox({ x: '50%', y: '870px', width: '90%', height: '960px', border_radius: '28px', fill_color: '#081121FA', border_color: '#1E3A5F', border_width: '2px', time: cStart, duration: cDur, animations: fade });\nbox({ x: '50%', y: '393px', width: '90%', height: '6px', border_radius: '3px', fill_color: RED, time: cStart, duration: cDur });\ntxt({ text: 'STAY ONE STEP AHEAD', x: '50%', y: '640px', width: '82%', font_size: '54px', font_weight: '800', fill_color: WHITE, time: cStart, duration: cDur, animations: fade });\nbox({ x: '50%', y: '840px', width: '78%', height: '120px', border_radius: '22px', fill_color: RED, time: cStart, duration: cDur, animations: fade });\ntxt({ text: 'FOLLOW @bytefyi', x: '50%', y: '840px', width: '74%', font_size: '50px', font_weight: '800', fill_color: WHITE, time: cStart, duration: cDur });\ntxt({ text: 'DAILY CYBER BRIEFING \u2022 EVERY MORNING', x: '50%', y: '1010px', width: '82%', font_size: '30px', font_weight: '700', fill_color: AMBER, time: cStart, duration: cDur, animations: fade });\ntxt({ text: 'Save & share this briefing with your security team', x: '50%', y: '1100px', width: '80%', font_size: '28px', font_weight: '600', fill_color: SLATE, time: cStart, duration: cDur });\n\n// Audio layer\nels.push({ type: 'audio', name: 'VO', source: audioUrl, time: 0, duration: total });\n\n// Footer inside safe zone (y=1610px, well above Instagram bottom bar)\ntxt({ text: '@bytefyi  \u2022  Daily Cyber Threat Intelligence', x: '50%', y: '1610px', width: '80%', font_size: '24px', font_weight: '600', fill_color: SLATE, time: 0, duration: total });\n\n// Background Layers\nels.unshift({ type: 'shape', path: RECT, x: '50%', y: '50%', width: '100%', height: '100%', fill_color: '#050B16D8', time: 0, duration: total });\nels.unshift({ type: 'video', source: BGVID, x: '50%', y: '50%', width: '100%', height: '100%', fit: 'cover', loop: true, volume: '0%', time: 0, duration: total });\n\nreturn { json: { output_format: 'mp4', width: 1080, height: 1920, frame_rate: 30, fill_color: BG, duration: total, elements: els } };"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "sameAsDraft": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}

@@ -13,6 +13,9 @@ A cloud-native, declarative JSON timeline-to-MP4 video rendering engine (`/v1/re
    - **2x Supersampled Anti-Aliasing**: All rounded cards, borders, badges, and candlestick bodies are rendered at `2x` resolution and downsampled via `LANCZOS` resampling.
    - **Custom Broadcast Vector Icons**: Renders sharp anti-aliased vector graphics for `⚡` (high-voltage gold bolt), `🟢` (pulsing emerald live status dot with halo), and `🎙️` (studio broadcast microphone) so Linux containers never display missing-glyph boxes or monochrome fallback symbols.
    - **Live 30fps Audio-Synced Progress Bar**: Automatically renders a smooth cyan progress bar along the bottom of each active stock setup card.
+   - **Dual-Track Audio Mixing (Voiceover + Ducked Background Music)**: Supports mixing a primary TTS voiceover track (`100%` volume) with a looped background music track (e.g. `14%` volume) via FFmpeg `amix` with automatic duration padding (`apad`) and fade-out.
+   - **Circular Team-Logo Halo Rendering**: Supports SVG arc circle paths (`A 50 50`) and `border_radius: "50%"` for broadcast scorebugs and sports matchup cards.
+   - **Headless Chromium HTML/CSS-to-PNG Endpoint (`POST /v1/image`)**: Free drop-in replacement for HTMLCSSToImg / PDFMunk.
 4. **Scene-Interval Caching (`~16s` for a 93-Second 1080×1920 30fps Video)**:
    - Pre-composites static background layers and steady-state scene intervals so a full `93.36s` (`2,801` frames at `1080x1920`) vertical video encodes in ~16 seconds on CPU.
 
@@ -61,7 +64,12 @@ bytefyi-render-engine/
 │   ├── fixtures/
 │   │   └── execution_6550_payload.json  # Real 93.36s 354-element institutional terminal fixture
 │   └── test_api.py          # Automated FastAPI + FFmpeg integration tests
-├── Dockerfile               # Production Python 3.11 + FFmpeg container for Cloud Run
+├── workflows/               # Exported n8n Cloud workflow definitions (sanitized)
+│   ├── nfl_weekly_winner_predictions_bZBANfHQjRJGxQbp.json
+│   ├── weekly_ai_news_briefing_B5lvN0Dm0otzUSZM.json
+│   ├── weekly_cybersecurity_news_digest_cQANSNTPHVFiFTOd.json
+│   └── nfl_ai_weekly_insights_cgG5yH0QerFl9a3Z.json
+├── Dockerfile               # Production Python 3.11 + Chromium + FFmpeg container for Cloud Run
 ├── requirements.txt         # Python dependencies
 └── README.md
 ```

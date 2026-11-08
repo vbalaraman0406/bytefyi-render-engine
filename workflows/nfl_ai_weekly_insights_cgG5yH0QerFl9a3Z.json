@@ -1,0 +1,1202 @@
+{
+  "id": "cgG5yH0QerFl9a3Z",
+  "name": "NFL AI Weekly Insights",
+  "active": false,
+  "isArchived": false,
+  "versionId": "11f766f2-477a-4725-bd9e-69e8a43bf188",
+  "activeVersionId": null,
+  "triggerCount": 1,
+  "nodeCount": 33,
+  "createdAt": "2025-10-08T18:56:35.112Z",
+  "updatedAt": "2026-11-08T07:56:01.559Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Tuesday 9 AM Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get NFL Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get NFL Data": {
+      "main": [
+        [
+          {
+            "node": "Filter NFL Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "1-Generate HTML Infographic",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Video Script",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Format Newsletter": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Overlays Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter NFL Data": {
+      "main": [
+        [
+          {
+            "node": "AI Analysis (LangChain)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Audio to Drive": {
+      "main": [
+        [
+          {
+            "node": "Get Audio Share Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Audio Share Link": {
+      "main": [
+        [
+          {
+            "node": "Merge Infographic & Audio",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Infographic & Audio": {
+      "main": [
+        [
+          {
+            "node": "Add Overlays Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Infographic to Drive": {
+      "main": [
+        [
+          {
+            "node": "Get Infographic Share Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Infographic Share Link": {
+      "main": [
+        [
+          {
+            "node": "Merge Infographic & Audio",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - Creatomate Rendering": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Poll Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Poll Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Check Video Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Check to Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to Update Status": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Publish Reels": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Ready for Publish in IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Container Status": {
+      "main": [
+        [
+          {
+            "node": "Check Media Ready for Publish in IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Creation": {
+      "main": [
+        [
+          {
+            "node": "Check Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Video Status": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request -Download Video for Upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Analysis (LangChain)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Analysis (LangChain)": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download PNG": {
+      "main": [
+        [
+          {
+            "node": "Upload Infographic to Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request -Download Video for Upload": {
+      "main": [
+        [
+          {
+            "node": "Instagram Create Media Container",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Format Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1-Generate HTML Infographic": {
+      "main": [
+        [
+          {
+            "node": "HTML/CSS to Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML/CSS to Image": {
+      "main": [
+        [
+          {
+            "node": "Download PNG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video Script": {
+      "main": [
+        [
+          {
+            "node": "ElevanLabs-Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ElevanLabs-Audio": {
+      "main": [
+        [
+          {
+            "node": "Upload Audio to Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                3
+              ],
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "id": "52d0f96c-a067-4dad-bb46-807217934751",
+      "name": "Tuesday 9 AM Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -1120,
+        -288
+      ],
+      "typeVersion": 1.2,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+        "options": {}
+      },
+      "id": "510ca87d-e8c2-4c73-8f15-c726fe35b901",
+      "name": "Get NFL Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -944,
+        -288
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get AI response from LangChain node\nconst input = $input.first().json;\n\n// The LangChain chain node returns the response in 'output' field\nlet aiResponse;\n\nif (input.output) {\n  // LangChain format\n  aiResponse = input.output;\n} else if (input.text) {\n  // Alternative format\n  aiResponse = input.text;\n} else if (input.message?.content) {\n  // OpenAI direct format\n  aiResponse = input.message.content;\n} else {\n  // Fallback - try to use the entire input as string\n  aiResponse = JSON.stringify(input);\n}\n\n// Clean the response - remove markdown code blocks if present\naiResponse = aiResponse.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n\n// Parse JSON\ntry {\n  const predictions = JSON.parse(aiResponse);\n  return [{ json: predictions }];\n} catch (error) {\n  // If parsing fails, return error with the raw response for debugging\n  throw new Error(`Failed to parse JSON. Raw response: ${aiResponse.substring(0, 500)}... Error: ${error.message}`);\n}"
+      },
+      "id": "a7cee628-d4c1-4a5a-9cf8-593c04de0a96",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -256,
+        -288
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Extract key data\nconst infographicUrl = data.infographic_url || '';\nconst games = data.game_predictions || [];\nconst totalGames = games.length;\nconst topPick = data.top_pick_of_week || {};\n\n// Build game table\nconst gamesTable = games.map((game, i) => `\n  <tr style=\"${i % 2 === 0 ? 'background-color:#1c1c1c;' : 'background-color:#121212;'}\">\n    <td style=\"padding:8px 10px; border-bottom:1px solid #333; font-family:Arial,sans-serif; font-size:14px; color:#fff;\">${game.matchup}</td>\n    <td style=\"padding:8px 10px; border-bottom:1px solid #333; font-weight:bold; color:#ffcc00; font-family:Arial,sans-serif; font-size:14px;\">${game.pick}</td>\n    <td style=\"padding:8px 10px; border-bottom:1px solid #333; font-family:Arial,sans-serif; font-size:14px; color:#ccc;\">${game.spread_pick || 'N/A'}</td>\n    <td style=\"padding:8px 10px; border-bottom:1px solid #333; font-family:Arial,sans-serif; font-size:14px; color:#ccc;\">${game.confidence || '\u2014'}%</td>\n  </tr>\n`).join('');\n\n// Build full email HTML\nconst html = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\" />\n</head>\n<body style=\"margin:0; padding:0; background-color:#0b0b0b; font-family:Arial,sans-serif;\">\n  <center>\n    <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"\n           style=\"width:600px; max-width:600px; margin:0 auto; background-color:#1a1a1a; border-collapse:collapse; border-radius:10px; overflow:hidden;\">\n\n      <!-- HEADER -->\n      <tr>\n        <td style=\"padding:25px 20px; text-align:center; background:linear-gradient(90deg, #002244, #c60c30);\">\n          <h1 style=\"color:#ffffff; margin:0; font-size:26px; letter-spacing:1px;\">\ud83c\udfc8 NFL Week ${data.week} AI Predictions</h1>\n          <p style=\"color:#dddddd; margin:5px 0 0 0; font-size:14px;\">AI-Powered Game Insights</p>\n        </td>\n      </tr>\n\n      <!-- INFOGRAPHIC IMAGE -->\n      ${infographicUrl ? `\n      <tr>\n        <td style=\"padding:0; background-color:#000;\">\n          <img src=\"${infographicUrl}\" alt=\"NFL Week ${data.week} Infographic\"\n               style=\"display:block; width:100%; max-width:600px; height:auto; border:none;\" />\n        </td>\n      </tr>` : ''}\n\n      <!-- TOP PICK SECTION -->\n      <tr>\n        <td style=\"padding:25px 20px; background-color:#202020; text-align:center; border-top:3px solid #ffcc00;\">\n          <h2 style=\"color:#ffcc00; margin:0 0 10px 0;\">\ud83c\udfc6 Top Pick of the Week</h2>\n          <p style=\"font-size:16px; margin:5px 0; font-weight:bold; color:#ffffff;\">\n            ${topPick.matchup || 'N/A'}\n          </p>\n          <p style=\"font-size:15px; color:#ffcc00; margin:5px 0;\">\n            ${topPick.team || 'TBD'}\n          </p>\n          <p style=\"font-size:13px; color:#cccccc; margin:10px 0 0 0;\">\n            ${topPick.reason || `${topPick.team || ''} are showing strong performance metrics this week.`}\n          </p>\n        </td>\n      </tr>\n\n      <!-- FULL GAME PREDICTIONS -->\n      <tr>\n        <td style=\"padding:20px; background-color:#1a1a1a;\">\n          <h2 style=\"color:#ffcc00; margin:0 0 10px 0;\">\ud83d\udcc8 All Game Predictions (${totalGames} Games)</h2>\n          <table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"\n                 style=\"width:100%; border-collapse:collapse; border:1px solid #333;\">\n            <thead>\n              <tr style=\"background-color:#002244; color:#ffffff;\">\n                <th style=\"padding:10px; text-align:left; font-size:14px;\">Matchup</th>\n                <th style=\"padding:10px; text-align:left; font-size:14px;\">Pick</th>\n                <th style=\"padding:10px; text-align:left; font-size:14px;\">Spread</th>\n                <th style=\"padding:10px; text-align:left; font-size:14px;\">Confidence</th>\n              </tr>\n            </thead>\n            <tbody>\n              ${gamesTable}\n            </tbody>\n          </table>\n        </td>\n      </tr>\n\n      <!-- FOOTER -->\n      <tr>\n        <td style=\"padding:15px; text-align:center; background-color:#111; border-top:1px solid #333;\">\n          <p style=\"margin:0; font-size:12px; color:#888;\">\n            <em>AI-powered predictions for entertainment only. Not financial advice.</em>\n          </p>\n        </td>\n      </tr>\n\n    </table>\n  </center>\n</body>\n</html>\n`;\n\n// Return email data for next node (email sender)\nreturn [{\n  json: {\n    ...data,\n    html_newsletter: html,\n    email_subject: `\ud83c\udfc8 NFL Week ${data.week} AI Predictions \u2013 ${totalGames} Games Analyzed`\n  }\n}];\n"
+      },
+      "id": "aefc5344-b779-41ce-b301-7d9e2f8942ef",
+      "name": "Format Newsletter",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        400,
+        -384
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "sendTo": "coolvishnu@gmail.com",
+        "subject": "={{ $json.email_subject }}",
+        "message": "={{ $json.html_newsletter }}",
+        "options": {}
+      },
+      "id": "9fa4376c-bbf4-46d2-a773-9e1dd43cc0ba",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        656,
+        -384
+      ],
+      "typeVersion": 2.1,
+      "webhookId": "05d7e972-62b4-4e45-b198-a6928b0f1a64",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Get all games\nconst allGames = data.game_predictions || [];\nconst totalGames = data.total_games || allGames.length || 0;\n\n// --- Build the video script ---\nconst script = `[HOOK]\n\ud83c\udfc8 NFL Week ${data.week} AI Predictions - ${totalGames} Games Analyzed!\n\n[TOP PICK]\n\ud83c\udfc6 ${data.top_pick_of_week?.team || ''}\n${data.top_pick_of_week?.matchup || ''}\n\n[OTHER PICKS]\n${allGames.map((g, i) => `${i + 1}. ${g.pick} (${g.confidence}%)`).join('\\n')}\n\n[CTA]\nFull predictions in newsletter \u2192 Link in bio!`;\n\n// --- Build the narration text for TTS ---\nlet narrationParts = [];\nnarrationParts.push(`NFL Week ${data.week}. We analyzed all ${totalGames} games.`);\n\nif (data.top_pick_of_week?.team) {\n  narrationParts.push(`Our top pick of the week is ${data.top_pick_of_week.team}. ${data.top_pick_of_week.reason || ''}`);\n}\n\n// Add narration for every game\nallGames.forEach((g, i) => {\n  const matchup = g.matchup ? `In the game between ${g.matchup},` : `Game ${i + 1},`;\n  narrationParts.push(`${matchup} our AI predicts ${g.pick} with ${g.confidence} percent confidence.`);\n});\n\n// Add closing CTA\nnarrationParts.push(`Subscribe to our newsletter for the full breakdown and weekly updates.`);\n\n// Join all narration parts into a single smooth paragraph\nconst narrationText = narrationParts.join(' ');\n\nreturn [{\n  json: {\n    ...data,\n    video_script: script,\n    narration_text: narrationText,\n    video_title: `NFL Week ${data.week} - AI Predictions for ALL ${totalGames} Games`,\n    video_description: `AI predictions for every NFL game this week. Top pick: ${data.top_pick_of_week?.team || ''}. Full analysis in newsletter!`,\n    video_tags: ['NFL', 'AI Picks', 'Week ' + data.week, 'All Games', 'Predictions']\n  }\n}];\n"
+      },
+      "id": "46f9ada8-ffc8-42c4-881f-90f07658a30a",
+      "name": "Create Video Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1136,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"template_id\": \"2a59a43a-ab9b-4f39-90c3-6b4f6267ef6b\",\n  \"modifications\": {\n    \"duration\": {{ $json.audioDurationSeconds }},\n    \"Confidence.text\": \"{{ $('Parse JSON').item.json.top_pick_of_week.confidence }}%\",\n    \"Audio-TTS.source\": \"{{ $('Get Audio Share Link').item.json.audio_url }}\",\n    \"Audio-TTS.duration\": {{ $json.audioDurationSeconds }},\n    \"Image-2.source\": \"{{ $('Get Infographic Share Link').item.json.infographic_url }}\",\n    \"Image-2.duration\": {{ $json.audioDurationSeconds }}\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 240000
+        }
+      },
+      "id": "de4911d3-3a91-4fc8-bce4-65176ec46d2a",
+      "name": "Add Overlays Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract only essential data from ESPN response\nconst espnData = $input.first().json;\n\n// Get week number\nconst week = espnData.week?.number || espnData.leagues?.[0]?.season?.week || 1;\n\n// Extract ALL games (removed slice limit)\nconst games = espnData.events?.map(event => {\n  const comp = event.competitions?.[0];\n  const homeTeam = comp?.competitors?.find(c => c.homeAway === 'home');\n  const awayTeam = comp?.competitors?.find(c => c.homeAway === 'away');\n  \n  return {\n    matchup: `${awayTeam?.team?.displayName} @ ${homeTeam?.team?.displayName}`,\n    awayTeam: awayTeam?.team?.abbreviation,\n    homeTeam: homeTeam?.team?.abbreviation,\n    awayRecord: awayTeam?.records?.[0]?.summary,\n    homeRecord: homeTeam?.records?.[0]?.summary,\n    spread: comp?.odds?.[0]?.details || 'N/A',\n    overUnder: comp?.odds?.[0]?.overUnder || 'N/A',\n    status: event.status?.type?.description\n  };\n}) || [];\n\n// Create compact summary for AI\nconst summary = {\n  week: week,\n  totalGames: games.length,\n  games: games\n};\n\nreturn [{ json: summary }];"
+      },
+      "id": "63b293b9-cf3d-4326-ad12-90d9a467c4ef",
+      "name": "Filter NFL Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -768,
+        -288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst allGames = data.game_predictions || [];\n\nfunction getConfidenceClass(c) {\n  const n = parseInt(c);\n  return n >= 80 ? 'confidence-high' : n >= 50 ? 'confidence-medium' : 'confidence-low';\n}\n\nconst games = allGames.map((g, i) => `<div class=\"item\"><span class=\"rank\">${i + 1}.</span><div class=\"info\"><div class=\"team\">${g.pick || ''}</div><div class=\"match\">${g.matchup || ''}</div></div><div class=\"badge ${getConfidenceClass(g.confidence)}\">${g.confidence}%</div></div>`).join('');\n\nconst tConf = parseInt(data.top_pick_of_week?.confidence || 0);\nconst tBg = tConf >= 80 ? '#2e7d32' : tConf >= 50 ? '#ffd700' : '#d32f2f';\nconst tCol = tConf >= 50 && tConf < 80 ? '#1a237e' : 'white';\n\nreturn [{json:{...data,html_infographic:`<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=1080,height=1920\"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1920px;margin:0;padding:0;overflow:hidden}body{font-family:'Arial Black',Arial,sans-serif;background:linear-gradient(135deg,#0d47a1 0%,#1565c0 30%,#6a1b9a 70%,#c62828 100%)}.container{width:1080px;height:1920px;padding:40px 40px;display:flex;flex-direction:column;box-sizing:border-box}.header{text-align:center;margin-bottom:25px}.header h1{color:#fff;font-size:64px;letter-spacing:5px;text-shadow:4px 4px 8px rgba(0,0,0,.5)}.header h2{color:#ffd700;font-size:38px;letter-spacing:2px;text-shadow:3px 3px 6px rgba(0,0,0,.5)}.top{background:linear-gradient(135deg,#c62828 0%,#d32f2f 100%);border:4px solid #ffd700;border-radius:20px;padding:25px;margin-bottom:25px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.5)}.top h3{color:#ffd700;font-size:22px;margin-bottom:15px;text-shadow:2px 2px 4px rgba(0,0,0,.5)}.top .team{color:#fff;font-size:48px;margin-bottom:10px;text-shadow:3px 3px 6px rgba(0,0,0,.5)}.top .match{color:rgba(255,255,255,.9);font-size:20px;margin-bottom:12px}.top .conf{background:${tBg};color:${tCol};font-size:42px;padding:10px 35px;border-radius:35px;display:inline-block;font-weight:bold}.pred-head{background:rgba(0,0,0,.4);padding:12px;border-radius:10px;margin-bottom:12px}.pred-head h3{color:#fff;font-size:24px;text-align:center}.preds{flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden}.item{background:rgba(255,255,255,.1);border-left:4px solid #ffd700;padding:12px 15px;border-radius:8px;display:flex;align-items:center;backdrop-filter:blur(10px);height:80px}.info{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}.rank{color:#ffd700;font-size:20px;margin-right:10px;min-width:35px;flex-shrink:0}.team{color:#fff;font-size:24px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.match{color:rgba(255,255,255,.7);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{font-size:28px;padding:8px 20px;border-radius:20px;font-weight:bold;min-width:90px;text-align:center;color:#fff;flex-shrink:0}.confidence-low{background:#d32f2f}.confidence-medium{background:#ffd700;color:#1a237e}.confidence-high{background:#2e7d32}.footer{text-align:center;margin-top:15px;padding-top:12px;border-top:3px solid rgba(255,255,255,.3)}.footer p{color:rgba(255,255,255,.8);font-size:18px}</style></head><body><div class=\"container\"><div class=\"header\"><h1>\ud83c\udfc8 NFL WEEK ${data.week}</h1><h2>AI PREDICTIONS</h2></div><div class=\"top\"><h3>\ud83c\udfc6 TOP PICK OF THE WEEK \ud83c\udfc6</h3><div class=\"team\">${data.top_pick_of_week?.team || ''}</div><div class=\"match\">${data.top_pick_of_week?.matchup || ''}</div><div class=\"conf\">${data.top_pick_of_week?.confidence || 0}%</div></div><div class=\"pred-head\"><h3>\ud83d\udcca ALL GAME PREDICTIONS</h3></div><div class=\"preds\">${games}</div><div class=\"footer\"><p>\u26a1 ${data.total_games} GAMES | \ud83e\udd16 AI POWERED</p></div></div></body></html>`}}];"
+      },
+      "id": "52a21af9-2516-43a4-848e-55150f5ee5ad",
+      "name": "1-Generate HTML Infographic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -640
+      ],
+      "notes": "Enhanced with colorful NFL helmet icons and better visual design"
+    },
+    {
+      "parameters": {
+        "name": "={{ 'nfl-week-' + ($('Create Video Script').first().json.week || 'latest') + '-narration.mp3' }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "11O2BO_CGe4inxh19Z9Im3okfi4zu7_Ri",
+          "mode": "list",
+          "cachedResultName": "Daily-AI-Video-Source",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/11O2BO_CGe4inxh19Z9Im3okfi4zu7_Ri"
+        },
+        "options": {}
+      },
+      "id": "cd715d19-520f-4b9d-b014-2de51f3c593d",
+      "name": "Upload Audio to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        16
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "XolHnLJLnczD3AXC",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Function to calculate the estimated duration based on file size and bitrate\nfunction calculateDuration(fileSizeBytes) {\n    // Define the bitrate (in bits per second).\n    // IMPORTANT:\n    // Use 128000 for 128 kbps (ElevenLabs standard output).\n    // Use 192000 for 192 kbps (Creator/Pro tier output - more accurate if applicable).\n    const bitrateBps = 128000; \n    \n    // Check for valid input\n    if (fileSizeBytes > 0 && bitrateBps > 0) {\n        // Formula: (Bytes * 8) / Bits per second = Duration in Seconds\n        return (fileSizeBytes * 8) / bitrateBps;\n    }\n    \n    return 0; \n}\n\n// Get the first item's JSON data (assuming single file upload)\nconst item = $input.first().json;\n\n// 1. URL Generation\nconst fileId = item.id; // Assuming 'id' is available from the Google Drive output\nconst audioUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;\n\n// 2. Duration Calculation\n// The 'size' property from your Google Drive output is a string, so we convert it.\nconst fileSizeString = item.size;\nconst fileSizeBytes = Number(fileSizeString);\nconst durationSeconds = calculateDuration(fileSizeBytes);\n\n// Optional: Format the time for better readability\nconst minutes = Math.floor(durationSeconds / 60);\nconst seconds = Math.round(durationSeconds % 60);\nconst formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;\n\n// 3. Return the new item with added properties\nreturn [{\n    json: {\n        ...item, // Keep all existing Google Drive properties\n        audio_url: audioUrl, // The new public audio URL\n        audioDurationSeconds: durationSeconds, // The duration in seconds (float)\n        audioDurationFormatted: formattedTime // The duration in M:SS format\n    }\n}];"
+      },
+      "id": "309be822-81bb-4c3f-b3bc-3bbc081a340e",
+      "name": "Get Audio Share Link",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "multiplex",
+        "options": {}
+      },
+      "id": "bea68115-ca45-4758-9d3e-a23f6d506459",
+      "name": "Merge Infographic & Audio",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "=data",
+        "name": "=NFL_prediction.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "11O2BO_CGe4inxh19Z9Im3okfi4zu7_Ri",
+          "mode": "list",
+          "cachedResultName": "Daily-AI-Video-Source",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/11O2BO_CGe4inxh19Z9Im3okfi4zu7_Ri"
+        },
+        "options": {}
+      },
+      "id": "9118ecde-988a-4dd4-be07-a20d5a9c45e3",
+      "name": "Upload Infographic to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        608,
+        -640
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "XolHnLJLnczD3AXC",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const fileId = $input.first().json.id;\nconst infographicUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    infographic_url: infographicUrl\n  }\n}];"
+      },
+      "id": "9830e16c-95e7-41b4-b022-db030b171ead",
+      "name": "Get Infographic Share Link",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -640
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        0
+      ],
+      "id": "ff61b39c-f1f2-4cf5-8117-7b6f2f5e5f12",
+      "name": "Wait - Creatomate Rendering",
+      "webhookId": "e650ab33-17a0-43ce-a7b0-2680c1dbadb5"
+    },
+    {
+      "parameters": {
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id || $('Add Overlays Creatomate').first().json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        0
+      ],
+      "id": "ddd4ee80-7211-4cc2-ad53-300740f105e2",
+      "name": "HTTP Request - Poll Creatomate",
+      "retryOnFail": false,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "= NFL Week {{ $('Parse JSON').item.json.week }} #NFLAIPREDICTIONS #Games #NFL",
+        "regionCode": "US",
+        "categoryId": "23",
+        "binaryProperty": "=data",
+        "options": {
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        624
+      ],
+      "id": "ddec1643-3174-4eeb-970a-18209bcd15fc",
+      "name": "Upload to YouTube Short",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2289ccca-bc0c-46b5-85d1-64d64b34e2e1",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1b5d3718-6c3c-402f-b47a-f41b85116496",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1776,
+        624
+      ],
+      "id": "0120d1f4-b8a6-49e3-97e7-fa8ef1a73684",
+      "name": "Check to Update Status"
+    },
+    {
+      "parameters": {
+        "sendTo": "coolvishnu@gmail.com",
+        "subject": "Daily AI Video Short Uploaded",
+        "message": "=<p>Hello,</p> <p>Your Daily AI Video Short has been successfully generated and uploaded to YouTube</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        624
+      ],
+      "id": "a6cdfac8-1d63-437f-a347-6a34d6cb5db5",
+      "name": "Send a message",
+      "webhookId": "e0dd5787-4d2b-4347-a9c5-8a5c0a25f918",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_url",
+                "value": "={{ $('HTTP Request - Poll Creatomate').item.json.url }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        848,
+        288
+      ],
+      "id": "088d9d22-fd95-45ff-a926-9f77d17de9af",
+      "name": "Instagram Create Media Container",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              },
+              {
+                "name": "caption",
+                "value": "NFL AI Weekly Insights #NFL #NFLAI #NFLPredictions #Football"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        288
+      ],
+      "id": "2f70c37a-cb8d-4071-ab89-d2216807d780",
+      "name": "Instagram Publish Reels",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d70a62df-c0be-423a-be3d-0b7976616cfa",
+              "leftValue": "={{ $json.status_code }}",
+              "rightValue": "FINISHED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1952,
+        288
+      ],
+      "id": "b11f368b-1fcc-4690-b220-d1c63d1a939f",
+      "name": "Check Media Ready for Publish in IG"
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        288
+      ],
+      "id": "2bc11517-260f-4c0c-9c30-c10cb7abcd31",
+      "name": "Check Container Status",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1504,
+        288
+      ],
+      "id": "b8516ff3-e048-4a02-b3a5-4aba661392a7",
+      "name": "Wait for Media Creation",
+      "webhookId": "96839ab4-3352-4d56-86db-f828a3281e3b"
+    },
+    {
+      "parameters": {
+        "sendTo": "coolvishnu@gmail.com",
+        "subject": "NFL AI Weekly Insights Short Uploaded",
+        "message": "=<p>Hello,</p> <p>Your NFL AI Weekly Insights Video Short has been successfully generated and uploaded to Instagram</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2368,
+        288
+      ],
+      "id": "a9674d6a-24ac-4b96-a837-952696ccb521",
+      "name": "Send a message1",
+      "webhookId": "05d82e32-26af-416c-a968-ff7b13768425",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Poll Creatomate').item.json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        416
+      ],
+      "id": "55c5cd9f-7936-4746-b1db-ba34c10da167",
+      "name": "HTTP Request -Download Video for Upload",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "540812cc-117d-4d83-9ebd-eb0892fa3d55",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "succeeded",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1360,
+        -16
+      ],
+      "id": "0d19e03b-f919-434c-9a26-255a89ad4629",
+      "name": "Check Video Status"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {
+          "maxTokens": 3000,
+          "temperature": 0.7
+        }
+      },
+      "id": "8d477e3b-8257-42ba-8ebc-930c236fb892",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        -272
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.week }}\n{{ $json.totalGames }}\n{{ JSON.stringify($json.games, null, 2) }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an expert NFL analyst AI that provides game predictions in structured JSON format.\n\nYour task: Analyze NFL games and provide predictions for EVERY game.\n\nOUTPUT FORMAT - Return ONLY valid JSON in this exact structure:\n{\n  \"week\": \"5\",\n  \"total_games\": 14,\n  \"game_predictions\": [\n    {\n      \"matchup\": \"Eagles @ Rams\",\n      \"pick\": \"Eagles\",\n      \"spread_pick\": \"Eagles -3\",\n      \"confidence\": \"75\",\n      \"reason\": \"Why this team wins\"\n    }\n  ],\n  \"top_pick_of_week\": {\n    \"matchup\": \"Best matchup (e.g., Chiefs @ Bills)\",\n    \"team\": \"Chiefs\",\n    \"confidence\": \"85\",\n    \"reason\": \"Why this is the top pick\"\n  }\n}\n\nCRITICAL RULES FOR TEAM NAMES:\n- ALWAYS use FULL team names, NOT abbreviations\n- \u2705 CORRECT: \"Seahawks\", \"Chiefs\", \"49ers\", \"Eagles\", \"Cowboys\", \"Patriots\", \"Packers\", \"Bills\", \"Rams\", \"Ravens\"\n- \u274c WRONG (NEVER USE): \"SEA\", \"KC\", \"SF\", \"PHI\", \"DAL\", \"NE\", \"GB\", \"BUF\", \"LAR\", \"BAL\"\n- For \"pick\" field: use ONLY the team nickname without city (\"Seahawks\" NOT \"Seattle Seahawks\")\n- For \"matchup\" field: use format \"Away Team @ Home Team\" with FULL team nicknames only\n- For \"team\" field in top_pick_of_week: use ONLY the team nickname\n\nOTHER RULES:\n- Analyze ALL games provided in the input\n- Include confidence percentage (numeric string) for each prediction\n- Provide brief reasoning for picks\n- Return ONLY valid JSON, no other text or markdown"
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "=Analyze ALL NFL games for this week:\n\nWeek: {{ $json.week }}\nTotal Games: {{ $json.totalGames }}\n\nGames Data:\n{{ JSON.stringify($json.games, null, 2) }}\n\nProvide predictions for ALL {{ $json.totalGames }} games in the specified JSON format."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "37925a4b-8ce8-4448-b044-33260973df9b",
+      "name": "AI Analysis (LangChain)",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -608,
+        -448
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.image_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        -640
+      ],
+      "id": "cc881cf0-4d5a-4ae6-b9ff-0c901561d6c7",
+      "name": "Download PNG"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        -384
+      ],
+      "id": "7339a0fe-625e-4276-a13e-e6e54bcc64ea",
+      "name": "Merge"
+    },
+    {
+      "id": "b8db4466-ff8f-4ec3-bfde-221abe1b78e1",
+      "name": "HTML/CSS to Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        -640
+      ],
+      "parameters": {
+        "jsonBody": "={{ JSON.stringify({ html_content: $json.html_infographic, width: 1080, height: 1920 }) }}",
+        "method": "POST",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/image"
+      }
+    },
+    {
+      "id": "05547c7d-2c2e-450d-bf42-d92f5a385387",
+      "name": "ElevanLabs-Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -928,
+        16
+      ],
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "jsonBody": "={{ JSON.stringify({ text: $json.narration_text, model_id: 'eleven_multilingual_v2' }) }}",
+        "method": "POST",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/v2PtOvEDIS0jYbj8CVIE?output_format=mp3_44100_128"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "IMEJ5zrKdaA6SoK5",
+          "name": "ElevenLabs Native Auth"
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}
