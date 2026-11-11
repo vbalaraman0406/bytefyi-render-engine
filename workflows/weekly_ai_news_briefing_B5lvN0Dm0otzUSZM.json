@@ -810,7 +810,10 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ source: $json }) }}"
-      }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
     },
     {
       "id": "2ae9bce0-04c6-4fe4-aefa-21c969c1ace9",
@@ -861,7 +864,8 @@
       },
       "retryOnFail": true,
       "waitBetweenTries": 5000,
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "maxTries": 5
     },
     {
       "id": "b2814fdc-cbaa-492c-ade0-e69e2a1f5be3",

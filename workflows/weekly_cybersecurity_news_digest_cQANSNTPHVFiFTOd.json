@@ -679,7 +679,10 @@
         -272
       ],
       "id": "7faf3da5-2d59-470e-b1eb-d9ddb4ca1edb",
-      "name": "HTTP Request - Creatomate Generate Video"
+      "name": "HTTP Request - Creatomate Generate Video",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -742,7 +745,8 @@
       "name": "HTTP Request - Poll Creatomate",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "maxTries": 5
     },
     {
       "parameters": {

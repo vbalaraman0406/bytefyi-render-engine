@@ -867,8 +867,8 @@
         1568
       ],
       "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 2000,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
       "onError": "continueRegularOutput"
     },
     {
@@ -908,8 +908,8 @@
         1488
       ],
       "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 1000,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1626,8 +1626,7 @@
               "value": "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com"
             },
             {
-              "name": "x-rapidapi-key",
-              "value": "<REDACTED_API_KEY>"
+              "name": "x-rapidapi-key", "value": "<REDACTED_RAPIDAPI_KEY>"
             }
           ]
         },

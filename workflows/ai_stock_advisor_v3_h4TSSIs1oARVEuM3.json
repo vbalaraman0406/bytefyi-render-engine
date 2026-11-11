@@ -1,0 +1,1321 @@
+{
+  "id": "h4TSSIs1oARVEuM3",
+  "name": "AI Stock Advisor V3 \u2013 10 Stock Video (Neon Cyber) - Manus",
+  "active": true,
+  "isArchived": false,
+  "versionId": "0835a84d-95ed-48df-9f97-0d29db2fc7b6",
+  "activeVersionId": "0835a84d-95ed-48df-9f97-0d29db2fc7b6",
+  "triggerCount": 1,
+  "nodeCount": 39,
+  "createdAt": "2025-12-19T19:17:33.757Z",
+  "updatedAt": "2026-11-06T21:40:23.006Z",
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Market Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Check": {
+      "main": [
+        [
+          {
+            "node": "Market Open Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Open Check": {
+      "main": [
+        [
+          {
+            "node": "Check if Weekday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Weekday": {
+      "main": [
+        [
+          {
+            "node": "Set Industry Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Industry Filter": {
+      "main": [
+        [
+          {
+            "node": "Calculate Trading Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Trading Date": {
+      "main": [
+        [
+          {
+            "node": "Fetch Grouped Daily Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Grouped Daily Data": {
+      "main": [
+        [
+          {
+            "node": "Filter by Industry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter by Industry": {
+      "main": [
+        [
+          {
+            "node": "Fetch Stock Snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Stock Snapshot": {
+      "main": [
+        [
+          {
+            "node": "Parse Snapshot Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Snapshot Data": {
+      "main": [
+        [
+          {
+            "node": "Analyze Each Stock - OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Each Stock - OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Validate Stock Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Stock Analysis": {
+      "main": [
+        [
+          {
+            "node": "Parse & Sort Predictions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Sort Predictions": {
+      "main": [
+        [
+          {
+            "node": "Format Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "\ud83c\udfaf Select Video Stocks (10 Total)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Audio File": {
+      "main": [
+        [
+          {
+            "node": "Upload Audio to Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Audio to Drive": {
+      "main": [
+        [
+          {
+            "node": "Get Audio Public Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Audio Public Link": {
+      "main": [
+        [
+          {
+            "node": "Get Audio URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video - Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Wait for Video Render",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Video Render": {
+      "main": [
+        [
+          {
+            "node": "Check Render Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Render Status": {
+      "main": [
+        [
+          {
+            "node": "If Video Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Video Ready": {
+      "main": [
+        [
+          {
+            "node": "Download Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Video Render",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video": {
+      "main": [
+        [
+          {
+            "node": "Merge Video & Captions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Captions - OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Validate Captions JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Captions JSON": {
+      "main": [
+        [
+          {
+            "node": "Merge Video & Captions",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Video & Captions": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube Shorts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IG Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Shorts": {
+      "main": [
+        [
+          {
+            "node": "Send Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Create": {
+      "main": [
+        [
+          {
+            "node": "Wait IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG": {
+      "main": [
+        [
+          {
+            "node": "Check IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check IG": {
+      "main": [
+        [
+          {
+            "node": "If IG Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If IG Ready": {
+      "main": [
+        [
+          {
+            "node": "IG Publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Publish": {
+      "main": [
+        [
+          {
+            "node": "Send Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Email": {
+      "main": [
+        [
+          {
+            "node": "Send Stock Predictions Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\ud83c\udfaf Select Video Stocks (10 Total)": {
+      "main": [
+        [
+          {
+            "node": "Generate Video Script - OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Captions - OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Audio URL": {
+      "main": [
+        [
+          {
+            "node": "Build Creatomate Template (10 Stocks)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Creatomate Template (10 Stocks)": {
+      "main": [
+        [
+          {
+            "node": "Create Video - Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video Script - OpenAI": {
+      "main": [
+        [
+          {
+            "node": "ElevenLabs - Convert to Audio (HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ElevenLabs - Convert to Audio (HTTP)": {
+      "main": [
+        [
+          {
+            "node": "Rename Audio File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "triggerAtHour": 12,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -9648,
+        1080
+      ],
+      "id": "26e89cef-7574-48a2-8961-b94180d63529",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.polygon.io/v1/marketstatus/now?apiKey=<REDACTED_API_KEY>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -9424,
+        1080
+      ],
+      "id": "8183a122-1494-4b41-bbbe-e513bebe43e1",
+      "name": "Market Check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.market }}",
+              "operator": {
+                "operation": "notEquals",
+                "type": "string"
+              },
+              "rightValue": "closed"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9200,
+        1080
+      ],
+      "id": "33bfc770-0a4d-45c1-9336-dd09b0a831f3",
+      "name": "Market Open Check"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Check if today is a weekday (Monday-Friday) in US Market Time (America/New_York)\nconst today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));\nconst dayOfWeek = today.getDay();\n\nconst inputItems = $input.all();\n\nif (!inputItems || inputItems.length === 0) {\n  console.log('\u26a0\ufe0f No input items received');\n  return [];\n}\n\nif (dayOfWeek >= 1 && dayOfWeek <= 5) {\n  console.log(`\u2705 Weekday detected (day ${dayOfWeek}), continuing execution`);\n  return inputItems;\n} else {\n  console.log(`\u23f8\ufe0f Weekend detected (day ${dayOfWeek}), stopping execution`);\n  return [];\n}"
+      },
+      "id": "35761e19-97b9-4155-a242-47756180d24e",
+      "name": "Check if Weekday",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8976,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const industries = {\n  Technology: {\n    dayIndex: 0,\n    keywords: [\"tech\", \"software\", \"semiconductor\", \"cloud\", \"AI\", \"computer\", \"internet\", \"digital\", \"cyber\", \"data\", \"app\", \"saas\", \"platform\", \"chipmaker\", \"electronics\"]\n  },\n  Healthcare: {\n    dayIndex: 1,\n    keywords: [\"health\", \"pharma\", \"biotech\", \"medical\", \"hospital\", \"drug\", \"therapeutics\", \"clinical\", \"medicine\", \"healthcare\", \"diagnostic\", \"vaccine\", \"biopharma\", \"life sciences\"]\n  },\n  Finance: {\n    dayIndex: 2,\n    keywords: [\"bank\", \"financial\", \"finance\", \"investment\", \"insurance\", \"credit\", \"lending\", \"mortgage\", \"capital\", \"fund\", \"securities\", \"trust\", \"asset management\", \"fintech\"]\n  },\n  Energy: {\n    dayIndex: 3,\n    keywords: [\"energy\", \"oil\", \"gas\", \"renewable\", \"solar\", \"wind\", \"electric\", \"utility\", \"petroleum\", \"power\", \"coal\", \"natural gas\", \"clean energy\", \"nuclear\", \"battery\"]\n  },\n  ConsumerGoods: {\n    dayIndex: 4,\n    keywords: [\"consumer\", \"retail\", \"goods\", \"product\", \"brand\", \"apparel\", \"fashion\", \"food\", \"beverage\", \"restaurant\", \"grocery\", \"merchandise\", \"ecommerce\", \"shopping\"]\n  },\n  Industrials: {\n    dayIndex: 5,\n    keywords: [\"industrial\", \"manufacturing\", \"machinery\", \"equipment\", \"aerospace\", \"defense\", \"transportation\", \"logistics\", \"shipping\", \"freight\", \"automotive\", \"parts\", \"supply\"]\n  }\n};\n\nconst now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));\nconst dayOfWeek = now.getDay();\nconst adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;\n\nlet selectedIndustry = null;\nlet selectedKeywords = [];\nlet tomorrowIndustry = null;\n\nconst industryList = Object.keys(industries);\n\nfor (const [name, config] of Object.entries(industries)) {\n  if (config.dayIndex === adjustedDay) {\n    selectedIndustry = name;\n    selectedKeywords = config.keywords;\n    const tomorrowIndex = (adjustedDay + 1) % industryList.length;\n    for (const [tomorrowName, tomorrowConfig] of Object.entries(industries)) {\n      if (tomorrowConfig.dayIndex === tomorrowIndex) {\n        tomorrowIndustry = tomorrowName;\n        break;\n      }\n    }\n    break;\n  }\n}\n\nif (!selectedIndustry) {\n  selectedIndustry = \"Technology\";\n  selectedKeywords = industries.Technology.keywords;\n  tomorrowIndustry = \"Healthcare\";\n}\n\nconst dayNames = [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\", \"Sunday\"];\nconsole.log(`\ud83d\udcc5 Today is ${dayNames[adjustedDay]}`);\nconsole.log(`\u2705 Selected Industry: ${selectedIndustry}`);\nconsole.log(`\ud83d\udcc6 Tomorrow's Industry: ${tomorrowIndustry}`);\n\nreturn [{\n  json: {\n    industry: selectedIndustry,\n    industryKeywords: selectedKeywords,\n    tomorrowIndustry: tomorrowIndustry,\n    dayOfWeek: dayNames[adjustedDay],\n    allIndustries: industryList\n  }\n}];"
+      },
+      "id": "174af897-58ec-4fd2-adc5-85b291de49b3",
+      "name": "Set Industry Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8752,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));\nlet tradingDate = new Date(today);\nconst dayOfWeek = tradingDate.getDay();\n\nif (dayOfWeek === 0) {\n  tradingDate.setDate(tradingDate.getDate() - 2);\n} else if (dayOfWeek === 6) {\n  tradingDate.setDate(tradingDate.getDate() - 1);\n}\n\nconst year = tradingDate.getFullYear();\nconst month = String(tradingDate.getMonth() + 1).padStart(2, '0');\nconst day = String(tradingDate.getDate()).padStart(2, '0');\nconst dateStr = `${year}-${month}-${day}`;\n\nconsole.log(`\ud83d\udcc5 Trading date: ${dateStr}`);\n\nreturn [{ json: { tradingDate: dateStr } }];"
+      },
+      "id": "67bfd18f-0a10-4907-a5af-c2326bfdf211",
+      "name": "Calculate Trading Date",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8528,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{{$json.tradingDate}}?adjusted=true&apiKey=<REDACTED_API_KEY>",
+        "options": {}
+      },
+      "name": "Fetch Grouped Daily Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -8304,
+        1080
+      ],
+      "id": "a9dcf78a-60ff-49a3-825c-d6cc19d1eef2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\nconst allStocks = inputData.results || [];\nconst industryFilter = $('Set Industry Filter').first().json;\nconst industry = industryFilter.industry || 'Technology';\n\nconst TICKER_META = {\n  // Technology\n  'NVDA': { name: 'NVIDIA Corp.', sub: 'AI Compute & GPU Leader' },\n  'AAPL': { name: 'Apple Inc.', sub: 'Consumer Ecosystem & Silicon' },\n  'MSFT': { name: 'Microsoft Corp.', sub: 'Enterprise Cloud & AI' },\n  'AMZN': { name: 'Amazon.com, Inc.', sub: 'AWS Cloud & E-Commerce' },\n  'META': { name: 'Meta Platforms', sub: 'Social Graph & AI Ads' },\n  'GOOGL': { name: 'Alphabet Inc.', sub: 'Search, Cloud & Gemini AI' },\n  'TSLA': { name: 'Tesla, Inc.', sub: 'EVs, Energy & Autonomy' },\n  'AMD': { name: 'Advanced Micro Devices', sub: 'Data Center AI & CPUs' },\n  'AVGO': { name: 'Broadcom Inc.', sub: 'Custom AI ASICs & Networking' },\n  'PLTR': { name: 'Palantir Technologies', sub: 'Enterprise AI & Defense OS' },\n  'ORCL': { name: 'Oracle Corp.', sub: 'Cloud Database & AI Infra' },\n  'CRM': { name: 'Salesforce, Inc.', sub: 'Enterprise Cloud CRM' },\n  'MU': { name: 'Micron Technology', sub: 'HBM3e AI Memory Leader' },\n  'SMCI': { name: 'Super Micro Computer', sub: 'Liquid-Cooled AI Servers' },\n  'CRWD': { name: 'CrowdStrike Holdings', sub: 'AI Endpoint Cybersecurity' },\n  'PANW': { name: 'Palo Alto Networks', sub: 'Enterprise Zero-Trust Cyber' },\n  'NFLX': { name: 'Netflix, Inc.', sub: 'Global Streaming Leader' },\n  'NOW': { name: 'ServiceNow, Inc.', sub: 'Enterprise Workflow AI' },\n  'AMAT': { name: 'Applied Materials', sub: 'Wafer Fab Equipment' },\n  'INTC': { name: 'Intel Corp.', sub: 'x86 Foundry & Chips' },\n  // Healthcare\n  'LLY': { name: 'Eli Lilly & Co.', sub: 'GLP-1 Metabolic & Oncology' },\n  'UNH': { name: 'UnitedHealth Group', sub: 'Managed Care & Optum' },\n  'ISRG': { name: 'Intuitive Surgical', sub: 'da Vinci Robotic Surgery' },\n  'VRTX': { name: 'Vertex Pharmaceuticals', sub: 'Biotech Gene & Pain Therapy' },\n  'REGN': { name: 'Regeneron Pharma', sub: 'Biotech Immunology Leader' },\n  'ABBV': { name: 'AbbVie Inc.', sub: 'Immunology & Aesthetics' },\n  'MRK': { name: 'Merck & Co.', sub: 'Keytruda Oncology Leader' },\n  'AMGN': { name: 'Amgen Inc.', sub: 'Biotechnology & Obesity' },\n  'GILD': { name: 'Gilead Sciences', sub: 'Antiviral & Cell Therapy' },\n  'BSX': { name: 'Boston Scientific', sub: 'Cardiovascular MedTech' },\n  'JNJ': { name: 'Johnson & Johnson', sub: 'Pharma & MedTech Giant' },\n  'PFE': { name: 'Pfizer Inc.', sub: 'Global Biopharma' },\n  'TMO': { name: 'Thermo Fisher', sub: 'Life Sciences Tools' },\n  'DHR': { name: 'Danaher Corp.', sub: 'Bioprocessing & Diagnostics' },\n  'SYK': { name: 'Stryker Corp.', sub: 'Orthopedic & Surgical Tech' },\n  // Finance\n  'JPM': { name: 'JPMorgan Chase', sub: 'Global Money Center Bank' },\n  'GS': { name: 'Goldman Sachs', sub: 'Investment Banking & Trading' },\n  'MS': { name: 'Morgan Stanley', sub: 'Wealth Management & IB' },\n  'V': { name: 'Visa Inc.', sub: 'Global Payment Network' },\n  'MA': { name: 'Mastercard Inc.', sub: 'Global Payment Rails' },\n  'AXP': { name: 'American Express', sub: 'Premium Consumer Credit' },\n  'BLK': { name: 'BlackRock, Inc.', sub: 'Global Asset Management' },\n  'COIN': { name: 'Coinbase Global', sub: 'Institutional Crypto Exchange' },\n  'HOOD': { name: 'Robinhood Markets', sub: 'Retail Brokerage & Options' },\n  'SOFI': { name: 'SoFi Technologies', sub: 'Digital Consumer Banking' },\n  'BAC': { name: 'Bank of America', sub: 'Commercial & Consumer Bank' },\n  'WFC': { name: 'Wells Fargo & Co.', sub: 'US Diversified Banking' },\n  'C': { name: 'Citigroup Inc.', sub: 'Global Institutional Banking' },\n  'SCHW': { name: 'Charles Schwab', sub: 'Brokerage & Wealth Custody' },\n  'SPGI': { name: 'S&P Global Inc.', sub: 'Credit Ratings & Indices' },\n  // Energy\n  'XOM': { name: 'Exxon Mobil Corp.', sub: 'Integrated Oil & LNG Supermajor' },\n  'CVX': { name: 'Chevron Corp.', sub: 'Global Upstream & Refining' },\n  'COP': { name: 'ConocoPhillips', sub: 'Permian & Global E&P' },\n  'SLB': { name: 'SLB (Schlumberger)', sub: 'Oilfield Services & Digital' },\n  'EOG': { name: 'EOG Resources', sub: 'Shale Oil & Gas Leader' },\n  'CEG': { name: 'Constellation Energy', sub: 'Nuclear AI Power Generation' },\n  'VST': { name: 'Vistra Corp.', sub: 'Data Center Power & Utility' },\n  'OXY': { name: 'Occidental Petroleum', sub: 'Permian Basin & Carbon' },\n  'MPC': { name: 'Marathon Petroleum', sub: 'US Refining & Midstream' },\n  'VLO': { name: 'Valero Energy', sub: 'Refining & Renewable Fuels' },\n  'LNG': { name: 'Cheniere Energy', sub: 'US LNG Export Leader' },\n  'FSLR': { name: 'First Solar, Inc.', sub: 'Utility-Scale Solar Modules' },\n  'HAL': { name: 'Halliburton Co.', sub: 'North America Frac & Drilling' },\n  'DVN': { name: 'Devon Energy', sub: 'Multi-Basin Oil & Gas' },\n  'EQT': { name: 'EQT Corporation', sub: 'Appalachian Natural Gas' },\n  // ConsumerGoods (Upgraded with High-Beta Retail & Consumer Trader Favorites)\n  'AMZN': { name: 'Amazon.com, Inc.', sub: 'E-Commerce & Cloud Leader' },\n  'TSLA': { name: 'Tesla, Inc.', sub: 'Consumer EV & Autonomy' },\n  'COST': { name: 'Costco Wholesale', sub: 'Membership Warehouse Club' },\n  'WMT': { name: 'Walmart Inc.', sub: 'Omnichannel Retail Giant' },\n  'HD': { name: 'The Home Depot', sub: 'Home Improvement Retail' },\n  'NKE': { name: 'NIKE, Inc.', sub: 'Global Athletic Footwear' },\n  'SBUX': { name: 'Starbucks Corp.', sub: 'Global Coffee & Retail' },\n  'CMG': { name: 'Chipotle Mexican Grill', sub: 'Fast-Casual Dining Leader' },\n  'LULU': { name: 'Lululemon Athletica', sub: 'Premium Athletic Apparel' },\n  'TGT': { name: 'Target Corp.', sub: 'Big-Box Retail & E-Commerce' },\n  'LOW': { name: 'Lowe\\'s Companies', sub: 'Home Improvement Retail' },\n  'MCD': { name: 'McDonald\\'s Corp.', sub: 'Global Quick-Service Dining' },\n  'PEP': { name: 'PepsiCo, Inc.', sub: 'Global Beverages & Snacks' },\n  'KO': { name: 'The Coca-Cola Co.', sub: 'Global Beverage Leader' },\n  'PG': { name: 'Procter & Gamble', sub: 'Household Consumer Staples' },\n  'DASH': { name: 'DoorDash, Inc.', sub: 'On-Demand Delivery Platform' },\n  'ABNB': { name: 'Airbnb, Inc.', sub: 'Global Travel & Stays' },\n  'BKNG': { name: 'Booking Holdings', sub: 'Online Travel Marketplace' },\n  'CELH': { name: 'Celsius Holdings', sub: 'Functional Energy Drinks' },\n  'ELF': { name: 'e.l.f. Beauty, Inc.', sub: 'High-Growth Cosmetics' },\n  'DECK': { name: 'Deckers Outdoor', sub: 'HOKA & UGG Footwear' },\n  'TJX': { name: 'TJX Companies', sub: 'Off-Price Apparel Retail' },\n  'CL': { name: 'Colgate-Palmolive', sub: 'Oral & Personal Care' },\n  'GIS': { name: 'General Mills, Inc.', sub: 'Packaged Consumer Foods' },\n  // Industrials\n  'GE': { name: 'GE Aerospace', sub: 'Jet Engines & Defense' },\n  'CAT': { name: 'Caterpillar Inc.', sub: 'Heavy Construction & Mining' },\n  'ETN': { name: 'Eaton Corp.', sub: 'Grid Electrification & Data Centers' },\n  'VRT': { name: 'Vertiv Holdings', sub: 'AI Data Center Thermal & Power' },\n  'UBER': { name: 'Uber Technologies', sub: 'Global Mobility & Logistics' },\n  'RTX': { name: 'RTX Corporation', sub: 'Aerospace & Missile Defense' },\n  'LMT': { name: 'Lockheed Martin', sub: 'F-35 & Defense Systems' },\n  'BA': { name: 'The Boeing Co.', sub: 'Commercial & Defense Aviation' },\n  'DE': { name: 'Deere & Company', sub: 'Precision Ag & Robotics' },\n  'UNP': { name: 'Union Pacific', sub: 'Freight Rail Network' },\n  'HON': { name: 'Honeywell Intl.', sub: 'Aerospace & Automation' },\n  'URI': { name: 'United Rentals', sub: 'Equipment Rental Leader' },\n  'PWR': { name: 'Quanta Services', sub: 'Electric Grid Infrastructure' },\n  'UPS': { name: 'United Parcel Service', sub: 'Global Parcel Logistics' },\n  'FDX': { name: 'FedEx Corporation', sub: 'Express Air & Ground Freight' }\n};\n\nconst industryTickers = {\n  'Technology': ['NVDA', 'AAPL', 'MSFT', 'AMZN', 'META', 'GOOGL', 'TSLA', 'AMD', 'AVGO', 'PLTR', 'ORCL', 'CRM', 'MU', 'SMCI', 'CRWD', 'PANW', 'NFLX', 'NOW', 'AMAT', 'INTC'],\n  'Healthcare': ['LLY', 'UNH', 'ISRG', 'VRTX', 'REGN', 'ABBV', 'MRK', 'AMGN', 'GILD', 'BSX', 'JNJ', 'PFE', 'TMO', 'DHR', 'SYK'],\n  'Finance': ['JPM', 'GS', 'MS', 'V', 'MA', 'AXP', 'BLK', 'COIN', 'HOOD', 'SOFI', 'BAC', 'WFC', 'C', 'SCHW', 'SPGI'],\n  'Energy': ['XOM', 'CVX', 'COP', 'SLB', 'EOG', 'CEG', 'VST', 'OXY', 'MPC', 'VLO', 'LNG', 'FSLR', 'HAL', 'DVN', 'EQT'],\n  'ConsumerGoods': ['AMZN', 'TSLA', 'COST', 'WMT', 'HD', 'NKE', 'SBUX', 'CMG', 'LULU', 'TGT', 'LOW', 'MCD', 'PEP', 'KO', 'PG', 'DASH', 'ABNB', 'BKNG', 'CELH', 'ELF', 'DECK', 'TJX', 'CL', 'GIS'],\n  'Industrials': ['GE', 'CAT', 'ETN', 'VRT', 'UBER', 'RTX', 'LMT', 'BA', 'DE', 'UNP', 'HON', 'URI', 'PWR', 'UPS', 'FDX']\n};\n\nconst targetTickers = industryTickers[industry] || industryTickers['Technology'];\nlet filteredStocks = allStocks.filter(stock => targetTickers.includes((stock.T || '').toUpperCase()));\n\nconst stocksWithMomentum = filteredStocks.map(stock => {\n  const sym = stock.T.toUpperCase();\n  const meta = TICKER_META[sym] || { name: sym, sub: `${industry} Sector Leader` };\n  const priceChange = stock.o > 0 ? ((stock.c - stock.o) / stock.o) * 100 : 0;\n  const dollarVol = (stock.c || 0) * (stock.v || 0);\n  // Trader conviction score weights % move and institutional dollar volume\n  const momentum = Math.abs(priceChange) * Math.sqrt(dollarVol);\n  return {\n    ticker: sym,\n    symbol: sym,\n    name: meta.name,\n    companyName: meta.name,\n    subSector: meta.sub,\n    lastTradePrice: stock.c,\n    volume: stock.v,\n    dollarVolume: dollarVol,\n    change: priceChange,\n    open: stock.o,\n    high: stock.h,\n    low: stock.l,\n    close: stock.c,\n    vwap: stock.vw || stock.c,\n    prevClose: stock.pc || stock.o,\n    momentum: momentum,\n    industry: industry\n  };\n});\n\nconst top12Stocks = stocksWithMomentum.sort((a, b) => b.momentum - a.momentum).slice(0, 12);\nreturn top12Stocks.map(stock => ({ json: stock }));"
+      },
+      "name": "Filter by Industry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8080,
+        1080
+      ],
+      "id": "41c11483-27f5-41a4-bf03-5d14332dc001"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/{{ $json.ticker }}?apiKey=<REDACTED_API_KEY>",
+        "options": {}
+      },
+      "id": "c063c760-0b39-437f-9fb0-3cc77518b664",
+      "name": "Fetch Stock Snapshot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -7856,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse each stock snapshot from Polygon API + merge with grouped daily metadata\nconst inputItem = $input.item.json;\nconst idx = $itemIndex;\nconst baseItems = $('Filter by Industry').all();\nconst baseStock = baseItems[idx]?.json || {};\nconst industry = $('Set Industry Filter').first().json.industry || 'Technology';\n\nconst tickerObj = inputItem.ticker || {};\nconst todayBar = (tickerObj.day && tickerObj.day.c > 0) ? tickerObj.day : baseStock;\nconst prevDayBar = tickerObj.prevDay || {};\n\nconst symbol = tickerObj.ticker || baseStock.symbol || 'UNKNOWN';\nconst currentPrice = todayBar.c || baseStock.close || 0;\nconst openPrice = todayBar.o || baseStock.open || currentPrice;\nconst highPrice = todayBar.h || baseStock.high || currentPrice * 1.01;\nconst lowPrice = todayBar.l || baseStock.low || currentPrice * 0.99;\nconst vwap = todayBar.vw || baseStock.vwap || ((highPrice + lowPrice + currentPrice) / 3);\nconst previousClose = prevDayBar.c || baseStock.prevClose || openPrice;\nconst volume = todayBar.v || baseStock.volume || 0;\nconst prevVolume = prevDayBar.v || (volume * 0.72) || 1;\n\nconst change = previousClose > 0\n  ? ((currentPrice - previousClose) / previousClose) * 100\n  : (baseStock.change || 0);\n\nconst rvolRaw = prevVolume > 0 ? (volume / prevVolume) : 1.45;\nconst rvol = Math.min(5.5, Math.max(1.15, rvolRaw));\nconst vwapDeltaPct = vwap > 0 ? ((currentPrice - vwap) / vwap) * 100 : 0;\nconst dayRange = Math.max(0.01, highPrice - lowPrice);\nconst dayRangePct = Math.min(100, Math.max(0, ((currentPrice - lowPrice) / dayRange) * 100));\n\nreturn {\n  symbol: symbol,\n  name: baseStock.name || symbol,\n  companyName: baseStock.companyName || symbol,\n  subSector: baseStock.subSector || `${industry} Sector`,\n  price: currentPrice,\n  change: change,\n  volume: volume,\n  prevVolume: prevVolume,\n  rvol: Number(rvol.toFixed(2)),\n  dollarVolume: currentPrice * volume,\n  open: openPrice,\n  high: highPrice,\n  low: lowPrice,\n  vwap: vwap,\n  vwapDeltaPct: Number(vwapDeltaPct.toFixed(2)),\n  dayRangePct: Math.round(dayRangePct),\n  prevClose: previousClose,\n  industry: industry,\n  timestamp: todayBar.t || Date.now()\n};",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "79846212-56b1-4d67-af2e-c45d8fd88248",
+      "name": "Parse Snapshot Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -7632,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "builtInTools": {},
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {},
+        "responses": {
+          "values": [
+            {
+              "content": "You are an institutional Wall Street trading desk strategist. Analyze stocks using VWAP position, Relative Volume (RVOL), intraday range strength, and price change. Return ONLY valid JSON - no markdown, no extra text.",
+              "role": "system"
+            },
+            {
+              "content": "=Stock: {{ $json.symbol }} ({{ $json.companyName }} - {{ $json.subSector }})\nPrice: ${{ $json.price }} | Change: {{ $json.change }}%\nVWAP: ${{ $json.vwap }} (Delta: {{ $json.vwapDeltaPct }}%)\nIntraday Range: Low ${{ $json.low }} to High ${{ $json.high }} (Closing in top {{ 100 - $json.dayRangePct }}% of range)\nVolume: {{ ($json.volume / 1000000).toFixed(1) }}M ({{ $json.rvol }}x Relative Volume)\n\nProvide an institutional trading desk classification and 2-line desk note. Return ONLY valid JSON in this exact format:\n{\n  \"symbol\": \"{{ $json.symbol }}\",\n  \"action\": \"Buy|Hold|Sell\",\n  \"confidence\": \"High|Medium\",\n  \"setupBadge\": \"\u25b2 RVOL BREAKOUT LONG | \u25b2 VWAP RECLAIM LONG | \u25bc VWAP BREAKDOWN SHORT | \u25c6 KEY LEVEL COIL\",\n  \"rationale\": \"max 12 words explaining the institutional flow and VWAP/volume setup\",\n  \"deskNote1\": \"max 42 chars line 1 of trader thesis with VWAP or volume\",\n  \"deskNote2\": \"max 42 chars line 2 of trader thesis with key breakout/target\"\n}\n\nRules:\n- Buy: Price above VWAP OR Change > +1.0% with strong range close\n- Sell: Price below VWAP AND Change < -0.5% (or weakest relative strength)\n- Hold: Tight range consolidation near VWAP"
+            }
+          ]
+        }
+      },
+      "id": "b0dc7d9d-1b66-40d0-9a58-90d39be3b2e5",
+      "name": "Analyze Each Stock - OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -7408,
+        1080
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\nconst originalStocks = $('Parse Snapshot Data').all();\n\nfunction extractJSON(text) {\n  if (!text) return null;\n  text = String(text).replace(/```json\\n?/g, '').replace(/```\\n?/g, '');\n  const jsonMatch = text.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    try {\n      return JSON.parse(jsonMatch[0]);\n    } catch (e) {\n      return null;\n    }\n  }\n  return null;\n}\n\nconst validatedAnalyses = allItems.map((item, index) => {\n  const aiOutput = item.json.output || [];\n  const originalStock = originalStocks[index]?.json || {};\n  \n  // Support both LangChain nested content[0].text and flat output_text\n  let textContent = '';\n  if (Array.isArray(aiOutput) && aiOutput[0]?.content?.[0]?.text) {\n    textContent = aiOutput[0].content[0].text;\n  } else if (Array.isArray(aiOutput)) {\n    textContent = aiOutput.find(o => o.type === 'output_text')?.text || '';\n  } else if (item.json.text) {\n    textContent = item.json.text;\n  }\n\n  const analysis = extractJSON(textContent) || {};\n  const price = Number(originalStock.price) || 100;\n  const open = Number(originalStock.open) || price;\n  const high = Math.max(price, Number(originalStock.high) || price * 1.012);\n  const low = Math.min(price, Number(originalStock.low) || price * 0.988);\n  const vwap = Number(originalStock.vwap) || ((high + low + price) / 3);\n  const change = Number(originalStock.change) || 0;\n  const rvol = Number(originalStock.rvol) || 1.4;\n  const volM = ((originalStock.volume || 0) / 1000000).toFixed(1);\n\n  let action = analysis.action;\n  if (!['Buy', 'Hold', 'Sell'].includes(action)) {\n    if (change >= 1.0 || (price > vwap && change > 0.3)) action = 'Buy';\n    else if (change <= -0.5 || price < vwap * 0.996) action = 'Sell';\n    else action = 'Hold';\n  }\n\n  // Deterministic Institutional Trade Plan (Entry, Target, Stop-Loss, R:R)\n  const intradayRange = Math.max(high - low, price * 0.015);\n  let setupBadge, entryLow, entryHigh, stopPrice, targetPrice, rrRatio, entryNote, targetNote, stopNote;\n\n  if (action === 'Sell') {\n    setupBadge = '\u25bc VWAP BREAKDOWN SHORT';\n    entryLow = price * 0.998;\n    entryHigh = Math.max(price * 1.002, vwap);\n    stopPrice = Math.max(high * 1.002, price + intradayRange * 0.65);\n    const risk = Math.max(price * 0.008, stopPrice - price);\n    targetPrice = price - risk * 2.5;\n    rrRatio = '1 : 2.5';\n    entryNote = 'Short rejection below VWAP';\n    targetNote = 'Next institutional demand zone';\n    stopNote = 'Above intraday VWAP resistance';\n  } else if (action === 'Buy') {\n    setupBadge = originalStock.dayRangePct >= 70 ? '\u25b2 HOD BREAKOUT LONG' : '\u25b2 VWAP RECLAIM LONG';\n    entryLow = Math.min(price * 0.997, (price + vwap) / 2);\n    entryHigh = price * 1.002;\n    stopPrice = Math.min(vwap * 0.995, price - intradayRange * 0.60);\n    const risk = Math.max(price * 0.008, price - stopPrice);\n    targetPrice = price + risk * 2.7;\n    rrRatio = '1 : 2.7';\n    entryNote = 'Confirm hold above VWAP / HOD';\n    targetNote = 'Next institutional supply zone';\n    stopNote = 'Below intraday VWAP support';\n  } else {\n    setupBadge = '\u25c6 VWAP BREAKOUT WATCH';\n    entryLow = price;\n    entryHigh = high * 1.001;\n    stopPrice = Math.min(vwap * 0.994, low * 0.998);\n    const risk = Math.max(price * 0.008, price - stopPrice);\n    targetPrice = price + risk * 2.4;\n    rrRatio = '1 : 2.4';\n    entryNote = 'Trigger on high-volume HOD break';\n    targetNote = 'Measured range expansion target';\n    stopNote = 'Below intraday VWAP support';\n  }\n\n  const targetPct = ((targetPrice - price) / price) * 100;\n  const stopPct = ((stopPrice - price) / price) * 100;\n\n  // Build 10 realistic intraday candlesticks anchored to actual Open -> Low -> VWAP -> High -> Close\n  const span = Math.max(0.01, high - low);\n  const norm = v => Math.min(0.96, Math.max(0.04, (v - low) / span));\n  const oN = norm(open);\n  const cN = norm(price);\n  const vN = norm(vwap);\n  const hN = 0.95;\n  const lN = 0.06;\n\n  // Smooth 10-step intraday curve keyed off intraday Close vs Open (cN >= oN)\n  const waypoints = cN >= oN\n    ? [oN, Math.max(lN, oN - 0.10), lN + 0.04, (lN + vN) / 2, vN - 0.03, vN + 0.04, (vN + cN) / 2, Math.min(hN, cN + 0.05), Math.max(vN, cN - 0.05), hN - 0.03, cN]\n    : [oN, Math.min(hN, oN + 0.10), hN - 0.04, (hN + vN) / 2, vN + 0.03, vN - 0.04, (vN + cN) / 2, Math.max(lN, cN - 0.05), Math.min(vN, cN + 0.05), lN + 0.04, cN];\n\n  const candles = [];\n  for (let i = 0; i < 10; i++) {\n    const co = waypoints[i];\n    const cc = waypoints[i + 1];\n    const ch = Math.min(0.98, Math.max(co, cc) + 0.05 + ((i % 3) * 0.015));\n    const cl = Math.max(0.02, Math.min(co, cc) - 0.05 - (((i + 1) % 3) * 0.015));\n    const cv = Math.min(1.0, 0.35 + (Math.abs(cc - co) * 2.2) + (i >= 7 ? 0.25 : 0));\n    candles.push({ o: Number(co.toFixed(3)), h: Number(ch.toFixed(3)), l: Number(cl.toFixed(3)), c: Number(cc.toFixed(3)), v: Number(cv.toFixed(2)) });\n  }\n\n  const defaultDesk1 = `${originalStock.symbol} ${price >= vwap ? 'reclaimed' : 'testing'} $${vwap.toFixed(2)} VWAP on ${volM}M vol\u2014`;\n  const defaultDesk2 = `watching $${entryHigh.toFixed(2)} trigger toward $${targetPrice.toFixed(2)}.`;\n\n  const rationale = analysis.rationale || `${price >= vwap ? 'Institutional accumulation above' : 'Active flow near'} $${vwap.toFixed(2)} VWAP (${rvol.toFixed(1)}x RVOL)`;\n\n  return {\n    ticker: originalStock.symbol,\n    symbol: originalStock.symbol,\n    companyName: originalStock.companyName || originalStock.symbol,\n    name: originalStock.companyName || originalStock.symbol,\n    subSector: originalStock.subSector || `${originalStock.industry} Sector`,\n    description: `${originalStock.companyName} \u2022 ${originalStock.subSector || originalStock.industry}`,\n    price: price,\n    lastTradePrice: price,\n    open: open,\n    high: high,\n    low: low,\n    vwap: vwap,\n    vwapDeltaPct: originalStock.vwapDeltaPct || 0,\n    dayRangePct: originalStock.dayRangePct || 50,\n    change: change,\n    volume: originalStock.volume || 0,\n    rvol: rvol,\n    dollarVolume: originalStock.dollarVolume || (price * (originalStock.volume || 0)),\n    industry: originalStock.industry,\n    action: action,\n    setupBadge: setupBadge,\n    confidence: analysis.confidence || 'High',\n    confidenceScore: 0.9,\n    rationale: rationale,\n    reasoning: rationale,\n    deskNote1: (analysis.deskNote1 || defaultDesk1).slice(0, 48),\n    deskNote2: (analysis.deskNote2 || defaultDesk2).slice(0, 48),\n    entryLow: Number(entryLow.toFixed(2)),\n    entryHigh: Number(entryHigh.toFixed(2)),\n    entryDisplay: `$${entryLow.toFixed(2)} \u2013 $${entryHigh.toFixed(2)}`,\n    targetPrice: Number(targetPrice.toFixed(2)),\n    targetPct: Number(targetPct.toFixed(1)),\n    targetDisplay: `$${targetPrice.toFixed(2)} (${targetPct >= 0 ? '+' : ''}${targetPct.toFixed(1)}%)`,\n    stopPrice: Number(stopPrice.toFixed(2)),\n    stopPct: Number(stopPct.toFixed(1)),\n    stopDisplay: `$${stopPrice.toFixed(2)} (${stopPct >= 0 ? '+' : ''}${stopPct.toFixed(1)}%)`,\n    rrRatio: rrRatio,\n    entryNote,\n    targetNote,\n    stopNote,\n    candles\n  };\n});\n\nreturn validatedAnalyses.map(a => ({ json: a }));"
+      },
+      "id": "abb7d4e0-fdac-46a1-b882-5f11bd9ba95e",
+      "name": "Validate Stock Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -7056,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst predictions = items.map(item => item.json);\n\npredictions.forEach(stock => {\n  const absChange = Math.max(0.4, Math.abs(stock.change || 0));\n  const dollarVol = (stock.price || 10) * (stock.volume || 0);\n  // Rank by institutional flow + percentage movement\n  stock.momentum = absChange * Math.sqrt(dollarVol) * (stock.rvol || 1.2);\n});\n\npredictions.sort((a, b) => b.momentum - a.momentum);\n\nconst buys = predictions.filter(p => p.action === 'Buy');\nconst holds = predictions.filter(p => p.action === 'Hold');\nconst sells = predictions.filter(p => p.action === 'Sell');\n\nreturn [{\n  json: {\n    buys,\n    holds,\n    sells,\n    allPredictions: predictions,\n    top5Hottest: predictions.slice(0, 5),\n    summary: {\n      totalAnalyzed: predictions.length,\n      buyCount: buys.length,\n      holdCount: holds.length,\n      sellCount: sells.length\n    }\n  }\n}];"
+      },
+      "id": "520b6296-f274-46e6-ac18-1f5c6536e820",
+      "name": "Parse & Sort Predictions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6832,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Select Top 4 High-Conviction Institutional Setups for the 60s Trader Terminal Video\nconst parsedData = $input.first().json;\nconst buys = parsedData.buys || [];\nconst holds = parsedData.holds || [];\nconst sells = parsedData.sells || [];\nconst allPredictions = parsedData.allPredictions || [...buys, ...holds, ...sells];\n\n// Pick up to 3 top Breakout Longs + 1 Tactical Short/Pullback (or top 4 overall by institutional momentum)\nconst selectedSetups = [];\nconst topBuys = buys.slice(0, 3);\nselectedSetups.push(...topBuys);\n\nif (sells.length > 0 && selectedSetups.length < 4) {\n  selectedSetups.push(sells[0]);\n}\n\nfor (const s of allPredictions) {\n  if (selectedSetups.length >= 4) break;\n  if (!selectedSetups.some(x => x.symbol === s.symbol)) {\n    selectedSetups.push(s);\n  }\n}\n\nconst videoStocks = {\n  buys: selectedSetups.filter(s => s.action === 'Buy'),\n  holds: selectedSetups.filter(s => s.action === 'Hold'),\n  sells: selectedSetups.filter(s => s.action === 'Sell'),\n  setups: selectedSetups\n};\n\nreturn [{\n  json: {\n    videoSetups: selectedSetups,\n    videoStocks: videoStocks,\n    allStocks: allPredictions,\n    summary: {\n      totalAnalyzed: allPredictions.length,\n      totalSelected: selectedSetups.length,\n      buyCount: videoStocks.buys.length,\n      holdCount: videoStocks.holds.length,\n      sellCount: videoStocks.sells.length\n    }\n  }\n}];"
+      },
+      "id": "a3062a4c-95b1-4152-a3e6-9335f3f8dd03",
+      "name": "\ud83c\udfaf Select Video Stocks (10 Total)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6608,
+        984
+      ]
+    },
+    {
+      "parameters": {
+        "builtInTools": {},
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {},
+        "responses": {
+          "values": [
+            {
+              "content": "You are an authoritative institutional trading desk anchor (Bloomberg / CNBC style) recording a high-retention 52-second market flow briefing.\nWrite EXACTLY 6 paragraphs separated by blank lines (\\n\\n):\n- Paragraph 1: Urgent 14-18 word hook about today's institutional volume flow in the sector (do not list tickers yet).\n- Paragraph 2: Setup #1 breakdown (22-26 words: Company/Ticker, current price & % move, VWAP/RVOL signal, Entry trigger, and Profit Target + Stop-Loss).\n- Paragraph 3: Setup #2 breakdown (22-26 words: Company/Ticker, current price & % move, VWAP/RVOL signal, Entry trigger, and Profit Target + Stop-Loss).\n- Paragraph 4: Setup #3 breakdown (22-26 words: Company/Ticker, current price & % move, VWAP/RVOL signal, Entry trigger, and Profit Target + Stop-Loss).\n- Paragraph 5: Setup #4 breakdown (22-26 words: Company/Ticker, current price & % move, VWAP/RVOL signal, Entry trigger, and Profit Target + Stop-Loss).\n- Paragraph 6: Crisp 12-15 word outro telling traders to bookmark these levels and follow Byte FYI for daily institutional setups.\n\nCRITICAL RULES:\n1. Cover ONLY the 4 setups provided, in the EXACT order #1, #2, #3, #4.\n2. NEVER invent or hallucinate any extra stocks or prices.\n3. Output ONLY the 6 spoken paragraphs separated by double newlines (\\n\\n). No labels like \"Paragraph 1:\" or stage directions.\n4. Keep total script strictly between 120 and 140 words so narration finishes in ~52 seconds.",
+              "role": "system"
+            },
+            {
+              "content": "=Today's Sector Focus: {{ $('Set Industry Filter').first().json.industry }}\nTomorrow's Sector Focus: {{ $('Set Industry Filter').first().json.tomorrowIndustry }}\n\nCOVER THESE EXACT 4 INSTITUTIONAL TRADE SETUPS IN ORDER:\n{{ $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoSetups.map((s, idx) => `SETUP #${idx + 1}: ${s.companyName} (${s.symbol}) | Signal: ${s.setupBadge} | Price: $${s.price.toFixed(2)} (${s.change >= 0 ? '+' : ''}${s.change.toFixed(2)}%) | VWAP: $${s.vwap.toFixed(2)} | Volume: ${(s.volume / 1000000).toFixed(1)}M (${s.rvol}x RVOL) | Entry: $${s.entryHigh.toFixed(2)} | Profit Target: $${s.targetPrice.toFixed(2)} | Stop-Loss: $${s.stopPrice.toFixed(2)} | Risk/Reward: ${s.rrRatio}`).join('\\n') }}"
+            }
+          ]
+        }
+      },
+      "id": "9f9e2249-bd13-4f1b-8e3a-c82f68c4f0f6",
+      "name": "Generate Video Script - OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -6384,
+        888
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "IZXMkokQbZW2tD1sqOTx",
+          "mode": "list",
+          "cachedResultName": "Vishnu_podcast"
+        },
+        "text": "={{ $json.output[0].content[0].text }}",
+        "additionalOptions": {},
+        "requestOptions": {}
+      },
+      "id": "3bfc4cc1-fa20-4b72-aec0-f165870441a9",
+      "name": "ElevenLabs - Convert to Audio",
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        -6032,
+        888
+      ],
+      "disabled": true,
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "9KZkH6t2u5cUT4bg",
+          "name": "ElevenLabs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst industry = $('Set Industry Filter').first().json.industry || 'Technology';\nconst today = new Date();\nconst dateStr = today.toISOString().split('T')[0];\nconst newFilename = `audio_AIStockAdvisor_${industry}_${dateStr}.mp3`;\n\nconsole.log(`\ud83c\udfb5 Renaming audio file to: ${newFilename}`);\n\nconst binaryData = item.binary;\nconst newItem = {\n  json: item.json,\n  binary: {}\n};\n\nfor (const key in binaryData) {\n  newItem.binary[key] = {\n    ...binaryData[key],\n    fileName: newFilename\n  };\n}\n\nreturn [newItem];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5808,
+        888
+      ],
+      "id": "6fb406f2-5805-4a3a-b9a9-8f1f0eb3b954",
+      "name": "Rename Audio File"
+    },
+    {
+      "parameters": {
+        "name": "={{ $binary.data.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "1mkByJC6y1NOS5YfboMA0NTJlLFuazlRU"
+        },
+        "options": {}
+      },
+      "id": "e2555099-7611-4cf2-8478-990f1ac1fd30",
+      "name": "Upload Audio to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -5584,
+        888
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "XolHnLJLnczD3AXC",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id }}"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone"
+          }
+        },
+        "options": {}
+      },
+      "id": "701d4580-9a4b-4263-b5b3-2893f9a97cf1",
+      "name": "Get Audio Public Link",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -5360,
+        888
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "XolHnLJLnczD3AXC",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const uploadData = $('Upload Audio to Drive').first().json;\nconst renameNode = $('Rename Audio File').first();\nconst fileId = uploadData.id;\nconst fileName = uploadData.name;\nconst publicUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;\n\n// ElevenLabs mp3_44100_128 is strictly 128 kbps CBR = 16,000 bytes per second\nconst byteSize = parseInt(uploadData.size, 10) || renameNode?.binary?.data?.bytes || 860000;\nconst exactAudioDuration = Number((byteSize / 16000).toFixed(2));\n\nreturn [{\n  json: {\n    fileId: fileId,\n    fileName: fileName,\n    publicUrl: publicUrl,\n    downloadUrl: publicUrl,\n    byteSize: byteSize,\n    audioDuration: exactAudioDuration\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5136,
+        888
+      ],
+      "id": "8cd85061-6d6c-4c8c-8a3a-28d76a347866",
+      "name": "Get Audio URL"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Institutional Dark Terminal (TradingView / Bloomberg Style) + Exact Phonetic Audio Sync\nconst audioData = $('Get Audio URL').first().json;\nconst stocksNodeData = $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json;\nconst industryData = $('Set Industry Filter').first().json;\nconst scriptNode = $('Generate Video Script - OpenAI').first().json;\n\nconst audioUrl = audioData.publicUrl || '';\nconst exactAudioDur = Number(audioData.audioDuration) || 52.0;\nconst industry = industryData.industry || 'Technology';\nconst setups = (stocksNodeData.videoSetups || []).slice(0, 4);\n\nif (setups.length === 0) {\n  throw new Error('No setups available for video generation.');\n}\n\n// Extract spoken script text to calculate exact per-paragraph timing\nlet rawScript = '';\nif (Array.isArray(scriptNode.output) && scriptNode.output[0]?.content?.[0]?.text) {\n  rawScript = scriptNode.output[0].content[0].text;\n} else if (Array.isArray(scriptNode.output)) {\n  rawScript = scriptNode.output.find(o => o.type === 'output_text')?.text || '';\n}\n\nconst paragraphs = rawScript\n  .split(/\\n\\s*\\n/)\n  .map(p => p.trim())\n  .filter(Boolean);\n\n// Phonetic length estimator: accounts for spoken expansion of numbers, $, %, and decimals\nfunction phoneticWeight(str) {\n  if (!str) return 40;\n  let expanded = str\n    .replace(/\\$/g, ' dollars ')\n    .replace(/%/g, ' percent ')\n    .replace(/\\./g, ' point ')\n    .replace(/[0-9]/g, ' digit ');\n  return expanded.length + 18; // +18 for natural inter-paragraph breath pause (~0.42s)\n}\n\nconst segCount = setups.length + 2; // Intro + N setups + Outro\nconst weights = [];\nif (paragraphs.length >= segCount) {\n  weights.push(phoneticWeight(paragraphs[0]));\n  for (let i = 0; i < setups.length; i++) {\n    weights.push(phoneticWeight(paragraphs[i + 1]));\n  }\n  weights.push(phoneticWeight(paragraphs.slice(setups.length + 1).join(' ')));\n} else {\n  // Fallback proportional weights if LLM merged paragraphs\n  weights.push(85);\n  for (let i = 0; i < setups.length; i++) weights.push(190);\n  weights.push(75);\n}\n\nconst totalWeight = weights.reduce((a, b) => a + b, 0);\nconst totalDuration = Number((exactAudioDur + 0.6).toFixed(2));\n\nconst segTimes = [];\nlet cumTime = 0;\nfor (let i = 0; i < weights.length; i++) {\n  const dur = Number(((weights[i] / totalWeight) * exactAudioDur).toFixed(2));\n  segTimes.push({ start: Number(cumTime.toFixed(2)), duration: dur });\n  cumTime += dur;\n}\n// Extend final outro segment to cover the 0.6s tail buffer\nsegTimes[segTimes.length - 1].duration = Number((totalDuration - segTimes[segTimes.length - 1].start).toFixed(2));\n\nconst RECT = 'M 0 0 L 100 0 L 100 100 L 0 100 L 0 0 Z';\nconst F = 'Inter';\nconst C = {\n  bg: '#090D16',\n  card: '#111827',\n  chartBg: '#0D131F',\n  border: '#334155',\n  grid: 'rgba(148, 163, 184, 0.08)',\n  white: '#FFFFFF',\n  slate: '#94A3B8',\n  lightSlate: '#E2E8F0',\n  emerald: '#10B981',\n  emeraldBright: '#34D399',\n  emeraldBg: 'rgba(6, 78, 59, 0.85)',\n  cyan: '#38BDF8',\n  cyanBg: 'rgba(12, 74, 110, 0.85)',\n  amber: '#FACC15',\n  amberBg: 'rgba(66, 32, 6, 0.90)',\n  rose: '#FB7185',\n  roseBright: '#F43F5E',\n  roseBg: 'rgba(76, 18, 36, 0.85)'\n};\n\nconst todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();\nconst els = [];\n\n// 1. Base Institutional Dark Canvas\nels.push({\n  type: 'shape', path: RECT, x: '50%', y: '50%', width: '100%', height: '100%',\n  fill_color: C.bg, time: 0, duration: totalDuration\n});\n\n// Subtle Terminal Grid\nfor (let i = 1; i < 24; i++) {\n  els.push({\n    type: 'shape', path: RECT, x: '50%', y: (i * 80) + 'px', width: '1080px', height: '1px',\n    fill_color: C.grid, time: 0, duration: totalDuration\n  });\n}\nfor (let i = 1; i < 12; i++) {\n  els.push({\n    type: 'shape', path: RECT, x: (i * 90) + 'px', y: '50%', width: '1px', height: '1920px',\n    fill_color: C.grid, time: 0, duration: totalDuration\n  });\n}\n\n// ==================== INTRO SCREEN ====================\nconst introT = segTimes[0];\nconst hookSummary = paragraphs[0] || `Institutional flow scanner detected ${setups.length} high-conviction VWAP & unusual volume setups today.`;\n\nels.push({\n  type: 'shape', path: RECT, x: '540px', y: '920px', width: '960px', height: '980px',\n  fill_color: C.card, stroke_color: C.border, stroke_width: '2px', border_radius: '32px',\n  time: introT.start, duration: introT.duration, animations: [{ type: 'fade', duration: 0.25 }]\n});\n\nels.push({\n  type: 'shape', path: RECT, x: '540px', y: '540px', width: '460px', height: '64px',\n  fill_color: C.emeraldBg, stroke_color: C.emerald, stroke_width: '2px', border_radius: '16px',\n  time: introT.start, duration: introT.duration\n});\nels.push({\n  type: 'text', text: `\u26a1 INSTITUTIONAL FLOW \u2022 ${todayStr}`, font_family: F, font_weight: '800', font_size: '26px',\n  fill_color: C.emeraldBright, x: '540px', y: '540px', width: '440px', height: '64px',\n  x_alignment: '50%', y_alignment: '50%', time: introT.start, duration: introT.duration\n});\n\nels.push({\n  type: 'text', text: `TOP ${setups.length} TRADER\\nSETUPS TODAY`, font_family: F, font_weight: '900', font_size: '84px',\n  line_height: '108%', fill_color: C.white, x: '540px', y: '730px', width: '880px', height: '220px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: introT.start, duration: introT.duration\n});\n\nels.push({\n  type: 'text', text: 'UNUSUAL VOLUME  \u2022  VWAP LEVELS  \u2022  EXACT R:R TARGETS', font_family: F, font_weight: '700', font_size: '27px',\n  fill_color: C.cyan, x: '540px', y: '890px', width: '880px', height: '50px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: introT.start, duration: introT.duration\n});\n\n// Preview ticker pills on Intro card\nsetups.forEach((s, idx) => {\n  const px = idx % 2 === 0 ? 320 : 760;\n  const py = idx < 2 ? 1030 : 1140;\n  const isBear = s.action === 'Sell';\n  const isNeg = s.change < 0;\n  els.push({\n    type: 'shape', path: RECT, x: px + 'px', y: py + 'px', width: '400px', height: '84px',\n    fill_color: isBear ? C.roseBg : (isNeg ? C.cyanBg : C.emeraldBg),\n    stroke_color: isBear ? C.rose : (isNeg ? C.cyan : C.emerald),\n    stroke_width: '2px', border_radius: '18px',\n    time: introT.start + 0.15, duration: Math.max(0.5, introT.duration - 0.15)\n  });\n  els.push({\n    type: 'text', text: `$${s.symbol}  ${s.change >= 0 ? '+' : ''}${s.change.toFixed(1)}% \u2022 ${s.rvol}x VOL`,\n    font_family: F, font_weight: '800', font_size: '26px', fill_color: C.white,\n    x: px + 'px', y: py + 'px', width: '384px', height: '84px', x_alignment: '50%', y_alignment: '50%',\n    time: introT.start + 0.15, duration: Math.max(0.5, introT.duration - 0.15)\n  });\n});\n\nels.push({\n  type: 'text', text: `\"${hookSummary}\"`, font_family: F, font_weight: '600', font_size: '30px',\n  fill_color: C.lightSlate, x: '540px', y: '1300px', width: '840px', height: '130px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: introT.start, duration: introT.duration\n});\n\n// ==================== 4 INSTITUTIONAL SETUP CARDS ====================\nfor (let idx = 0; idx < setups.length; idx++) {\n  const s = setups[idx];\n  const st = segTimes[idx + 1];\n  const t = st.start;\n  const dur = st.duration;\n  const isBear = s.action === 'Sell';\n  const mainCol = isBear ? C.roseBright : C.emerald;\n  const mainBright = isBear ? C.rose : C.emeraldBright;\n  const mainBg = isBear ? C.roseBg : C.emeraldBg;\n  const chgPos = s.change >= 0;\n  const chSign = chgPos ? '+' : '';\n  const chArrow = chgPos ? '\u25b2' : '\u25bc';\n\n  // Top Header Bar\n  els.push({\n    type: 'shape', path: RECT, x: '540px', y: '114px', width: '968px', height: '76px',\n    fill_color: C.card, stroke_color: C.border, stroke_width: '2px', border_radius: '18px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `\ud83d\udfe2  INSTITUTIONAL FLOW SCANNER  \u2022  ${todayStr}`, font_family: F, font_weight: '800', font_size: '25px',\n    fill_color: C.lightSlate, x: '380px', y: '114px', width: '600px', height: '76px',\n    x_alignment: '0%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n  els.push({\n    type: 'shape', path: RECT, x: '910px', y: '114px', width: '190px', height: '50px',\n    fill_color: mainBg, stroke_color: mainCol, stroke_width: '2px', border_radius: '12px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `SETUP #${idx + 1} / ${setups.length}`, font_family: F, font_weight: '800', font_size: '22px',\n    fill_color: mainBright, x: '910px', y: '114px', width: '180px', height: '50px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n\n  // Hero Stock Card\n  els.push({\n    type: 'shape', path: RECT, x: '540px', y: '345px', width: '968px', height: '334px',\n    fill_color: C.card, stroke_color: C.border, stroke_width: '2px', border_radius: '28px',\n    time: t, duration: dur\n  });\n\n  // Signal Badge & RVOL Badge\n  els.push({\n    type: 'shape', path: RECT, x: '290px', y: '238px', width: '400px', height: '56px',\n    fill_color: mainBg, stroke_color: mainCol, stroke_width: '2px', border_radius: '14px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: s.setupBadge || '\u25b2 RVOL BREAKOUT LONG', font_family: F, font_weight: '800', font_size: '24px',\n    fill_color: mainBright, x: '290px', y: '238px', width: '384px', height: '56px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n\n  els.push({\n    type: 'shape', path: RECT, x: '665px', y: '238px', width: '310px', height: '56px',\n    fill_color: C.cyanBg, stroke_color: C.cyan, stroke_width: '2px', border_radius: '14px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `\u26a1 ${s.rvol}x REL VOLUME`, font_family: F, font_weight: '800', font_size: '24px',\n    fill_color: C.cyan, x: '665px', y: '238px', width: '290px', height: '56px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n\n  // Giant Ticker & Company Subheader\n  els.push({\n    type: 'text', text: `$${s.symbol}`, font_family: F, font_weight: '900', font_size: '108px',\n    fill_color: C.white, x: '360px', y: '348px', width: '540px', height: '130px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `${s.companyName}  \u2022  ${s.subSector}  \u2022  Vol: ${(s.volume / 1000000).toFixed(1)}M`,\n    font_family: F, font_weight: '600', font_size: '28px', fill_color: C.slate,\n    x: '540px', y: '454px', width: '900px', height: '48px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n\n  // Right Side Price & % Change Pill (colored by daily change sign)\n  els.push({\n    type: 'text', text: `$${s.price.toFixed(2)}`, font_family: F, font_weight: '900', font_size: '60px',\n    fill_color: C.white, x: '815px', y: '320px', width: '350px', height: '76px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'right', time: t, duration: dur\n  });\n  els.push({\n    type: 'shape', path: RECT, x: '845px', y: '398px', width: '290px', height: '58px',\n    fill_color: chgPos ? C.emerald : C.roseBright, border_radius: '14px', time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `${chSign}${s.change.toFixed(2)}% TODAY ${chArrow}`, font_family: F, font_weight: '900', font_size: '26px',\n    fill_color: chgPos ? '#06140E' : C.white, x: '845px', y: '398px', width: '276px', height: '58px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n\n  // ==================== INTRADAY PRICE ACTION & VWAP CHART ====================\n  els.push({\n    type: 'shape', path: RECT, x: '540px', y: '795px', width: '968px', height: '510px',\n    fill_color: C.chartBg, stroke_color: C.border, stroke_width: '2px', border_radius: '28px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `INTRADAY PRICE ACTION vs. INSTITUTIONAL VWAP ($${s.vwap.toFixed(2)})`,\n    font_family: F, font_weight: '800', font_size: '25px', fill_color: C.slate,\n    x: '540px', y: '580px', width: '900px', height: '40px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n\n  const cLeft = 100, cRight = 860, cTop = 632, cBot = 1002;\n  const cSpanY = cBot - cTop;\n  const priceLabels = [\n    `$${s.high.toFixed(2)}`,\n    `$${((s.high * 2 + s.low) / 3).toFixed(2)}`,\n    `$${((s.high + s.low * 2) / 3).toFixed(2)}`,\n    `$${s.low.toFixed(2)}`\n  ];\n  for (let g = 0; g < 4; g++) {\n    const gy = Math.round(cTop + (g * cSpanY) / 3);\n    els.push({\n      type: 'shape', path: RECT, x: '480px', y: gy + 'px', width: '760px', height: '2px',\n      fill_color: 'rgba(51, 65, 85, 0.55)', time: t, duration: dur\n    });\n    els.push({\n      type: 'text', text: priceLabels[g], font_family: F, font_weight: '700', font_size: '22px',\n      fill_color: C.slate, x: '935px', y: gy + 'px', width: '130px', height: '32px',\n      x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n    });\n  }\n\n  // Render 10 Real Intraday Trajectory Candlesticks + Volume Bars FIRST\n  const candles = s.candles || [];\n  const stepX = (cRight - cLeft - 40) / Math.max(1, candles.length);\n  for (let c = 0; c < candles.length; c++) {\n    const cd = candles[c];\n    const cx = Math.round(cLeft + 45 + c * stepX);\n    const yO = Math.round(cBot - cd.o * cSpanY);\n    const yC = Math.round(cBot - cd.c * cSpanY);\n    const yH = Math.round(cBot - cd.h * cSpanY);\n    const yL = Math.round(cBot - cd.l * cSpanY);\n    const bull = cd.c >= cd.o;\n    const cCol = bull ? C.emerald : C.roseBright;\n    const vCol = bull ? 'rgba(16, 185, 129, 0.32)' : 'rgba(244, 63, 94, 0.32)';\n\n    // Volume bar at bottom of chart\n    const vHeight = Math.max(12, Math.round((cd.v || 0.5) * 60));\n    els.push({\n      type: 'shape', path: RECT, x: cx + 'px', y: (cBot - vHeight / 2) + 'px',\n      width: '26px', height: vHeight + 'px', fill_color: vCol, time: t, duration: dur\n    });\n\n    // High-Low Wick\n    const wickH = Math.max(8, Math.abs(yL - yH));\n    const wickCenterY = Math.round((yH + yL) / 2);\n    els.push({\n      type: 'shape', path: RECT, x: cx + 'px', y: wickCenterY + 'px',\n      width: '4px', height: wickH + 'px', fill_color: cCol, time: t, duration: dur\n    });\n\n    // Open-Close Body\n    const bodyH = Math.max(10, Math.abs(yC - yO));\n    const bodyCenterY = Math.round((yO + yC) / 2);\n    els.push({\n      type: 'shape', path: RECT, x: cx + 'px', y: bodyCenterY + 'px',\n      width: '32px', height: bodyH + 'px', fill_color: cCol, border_radius: '4px', time: t, duration: dur\n    });\n  }\n\n  // Institutional VWAP Line & Callout Pill rendered ON TOP of candlesticks\n  const pSpan = Math.max(0.01, s.high - s.low);\n  const vwapNorm = Math.min(0.88, Math.max(0.12, (s.vwap - s.low) / pSpan));\n  const vwapY = Math.round(cBot - vwapNorm * cSpanY);\n\n  els.push({\n    type: 'shape', path: RECT, x: '480px', y: vwapY + 'px', width: '760px', height: '3px',\n    fill_color: C.amber, time: t, duration: dur\n  });\n  els.push({\n    type: 'shape', path: RECT, x: '215px', y: (vwapY - 24) + 'px', width: '210px', height: '36px',\n    fill_color: '#1E1505', stroke_color: C.amber, stroke_width: '2px', border_radius: '8px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `VWAP $${s.vwap.toFixed(2)}`, font_family: F, font_weight: '800', font_size: '20px',\n    fill_color: C.amber, x: '215px', y: (vwapY - 24) + 'px', width: '196px', height: '36px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n\n  // ==================== INSTITUTIONAL TRADE PLAN LADDER ====================\n  els.push({\n    type: 'shape', path: RECT, x: '540px', y: '1283px', width: '968px', height: '410px',\n    fill_color: C.card, stroke_color: C.border, stroke_width: '2px', border_radius: '28px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `INSTITUTIONAL TRADE PLAN  \u2022  RISK / REWARD ${s.rrRatio || '1 : 2.7'}`,\n    font_family: F, font_weight: '800', font_size: '26px', fill_color: C.cyan,\n    x: '540px', y: '1116px', width: '900px', height: '40px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n\n  const rows = [\n    { title: 'ENTRY ZONE (VWAP / TRIGGER)', sub: s.entryNote, val: s.entryDisplay, bg: C.cyanBg, col: C.cyan },\n    { title: 'PROFIT TARGET (T1 / T2)', sub: s.targetNote, val: s.targetDisplay, bg: C.emeraldBg, col: C.emeraldBright },\n    { title: 'INVALIDATION / STOP LOSS', sub: s.stopNote, val: s.stopDisplay, bg: C.roseBg, col: C.rose }\n  ];\n\n  for (let r = 0; r < rows.length; r++) {\n    const rw = rows[r];\n    const ry = 1205 + r * 104;\n    els.push({\n      type: 'shape', path: RECT, x: '540px', y: ry + 'px', width: '904px', height: '90px',\n      fill_color: rw.bg, stroke_color: rw.col, stroke_width: '2px', border_radius: '18px',\n      time: t, duration: dur\n    });\n    els.push({\n      type: 'text', text: rw.title, font_family: F, font_weight: '800', font_size: '23px',\n      fill_color: C.white, x: '350px', y: (ry - 15) + 'px', width: '470px', height: '34px',\n      x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n    });\n    els.push({\n      type: 'text', text: rw.sub, font_family: F, font_weight: '600', font_size: '21px',\n      fill_color: C.slate, x: '350px', y: (ry + 18) + 'px', width: '470px', height: '30px',\n      x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n    });\n    els.push({\n      type: 'text', text: rw.val, font_family: F, font_weight: '900', font_size: '38px',\n      fill_color: rw.col, x: '775px', y: ry + 'px', width: '380px', height: '70px',\n      x_alignment: '50%', y_alignment: '50%', text_alignment: 'right', time: t, duration: dur\n    });\n  }\n\n  // ==================== LIVE SYNCED AI DESK NOTE ====================\n  const spokenPara = paragraphs[idx + 1] || `${s.deskNote1} ${s.deskNote2}`;\n  const cleanSpoken = spokenPara.length > 220 ? spokenPara.slice(0, 217) + '...' : spokenPara;\n\n  els.push({\n    type: 'shape', path: RECT, x: '540px', y: '1626px', width: '968px', height: '220px',\n    fill_color: '#0F172A', stroke_color: C.cyan, stroke_width: '2px', border_radius: '24px',\n    time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: '\ud83c\udf99\ufe0f LIVE AI DESK NOTE (SYNCED AUDIO BRIEFING)', font_family: F, font_weight: '800', font_size: '22px',\n    fill_color: C.cyan, x: '540px', y: '1550px', width: '900px', height: '34px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n  els.push({\n    type: 'text', text: `\"${cleanSpoken}\"`, font_family: F, font_weight: '700', font_size: '24px',\n    line_height: '128%', fill_color: C.white, x: '540px', y: '1646px', width: '900px', height: '146px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'left', time: t, duration: dur\n  });\n\n  // Footer\n  els.push({\n    type: 'text', text: '@bytefyi  \u2022  Polygon.io Institutional Feed  \u2022  Not Financial Advice',\n    font_family: F, font_weight: '700', font_size: '22px', fill_color: '#64748B',\n    x: '540px', y: '1795px', width: '900px', height: '36px',\n    x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: t, duration: dur\n  });\n}\n\n// ==================== OUTRO SCREEN ====================\nconst outT = segTimes[segTimes.length - 1];\nels.push({\n  type: 'shape', path: RECT, x: '540px', y: '920px', width: '960px', height: '760px',\n  fill_color: C.card, stroke_color: C.emerald, stroke_width: '2px', border_radius: '32px',\n  time: outT.start, duration: outT.duration, animations: [{ type: 'fade', duration: 0.25 }]\n});\nels.push({\n  type: 'text', text: 'BOOKMARK THESE LEVELS', font_family: F, font_weight: '900', font_size: '58px',\n  fill_color: C.white, x: '540px', y: '720px', width: '880px', height: '90px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: outT.start, duration: outT.duration\n});\nels.push({\n  type: 'text', text: '@bytefyi', font_family: F, font_weight: '900', font_size: '96px',\n  fill_color: C.emeraldBright, x: '540px', y: '860px', width: '880px', height: '120px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: outT.start, duration: outT.duration\n});\nels.push({\n  type: 'text', text: `NEXT SCAN: ${(industryData.tomorrowIndustry || 'TECHNOLOGY').toUpperCase()} SECTOR\\nDAILY INSTITUTIONAL FLOW AT 12:30 PM PST`,\n  font_family: F, font_weight: '700', font_size: '32px', line_height: '135%', fill_color: C.cyan,\n  x: '540px', y: '1040px', width: '860px', height: '120px',\n  x_alignment: '50%', y_alignment: '50%', text_alignment: 'center', time: outT.start, duration: outT.duration\n});\n\n// Master Audio Track\nif (audioUrl) {\n  els.push({\n    track: 1000,\n    type: 'audio',\n    source: audioUrl,\n    audio_fade_out: 0.6,\n    time: 0,\n    duration: totalDuration\n  });\n}\n\nreturn [{\n  json: {\n    output_format: 'mp4',\n    width: 1080,\n    height: 1920,\n    frame_rate: 30,\n    duration: totalDuration,\n    elements: els\n  }\n}];"
+      },
+      "id": "39eb8c4a-e446-4f1a-becf-64cd3462e694",
+      "name": "Build Creatomate Template (10 Stocks)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4912,
+        888
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source: $json }) }}",
+        "options": {}
+      },
+      "id": "e59df1d8-9674-4f21-8513-7d55b28182f1",
+      "name": "Create Video - Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4688,
+        888
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "id": "4059da91-be24-4835-8861-265fa3ebcd73",
+      "name": "Wait for Video Render",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -4464,
+        888
+      ],
+      "webhookId": "894765c3-2eba-41dd-99eb-7e4fa8ba8d6d"
+    },
+    {
+      "parameters": {
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0cdf2b8b-8664-4879-a72c-6ffb5e4ffe83",
+      "name": "Check Render Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4240,
+        816
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "value2": "succeeded"
+            }
+          ]
+        }
+      },
+      "id": "6f6b56de-7fca-47eb-b593-4386f93b38e6",
+      "name": "If Video Ready",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -3952,
+        888
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "id": "ca6be7ee-64bd-4de8-b045-70e77b287bb4",
+      "name": "Download Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3664,
+        888
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a social media expert. Generate captivating captions and hashtags. Return ONLY valid JSON."
+            },
+            {
+              "content": "=Based on these predictions:\nBuys: {{ $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoStocks.buys.map(s => s.symbol).join(', ') }}\nSells: {{ $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoStocks.sells.map(s => s.symbol).join(', ') }}\n\nGenerate:\n1. Caption (under 150 chars) mentioning \"today's\" picks\n2. 10-12 viral hashtags\n3. Thumbnail text: \"\ud83d\udd25 TODAY'S TOP 8\"\n\nReturn ONLY this JSON:\n{\n  \"caption\": \"...\",\n  \"hashtags\": \"#AIStocks...\",\n  \"thumbnailText\": \"...\"\n}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "4bc1d0ac-96da-4414-95d0-36f0472f8232",
+      "name": "Generate Captions - OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -4016,
+        1104
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item.json;\nlet responseText = '';\nif (Array.isArray(item.output) && item.output[0]?.content?.[0]?.text) {\n  responseText = item.output[0].content[0].text;\n} else if (item.response?.text) {\n  responseText = item.response.text;\n}\n\nconst setups = $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoSetups || [];\nconst topTickers = setups.map(s => `$${s.symbol}`).join(', ');\n\nlet parsed;\ntry {\n  const clean = responseText.replace(/```json\\n?/g, '').replace(/```\\n?/g, '');\n  const m = clean.match(/\\{[\\s\\S]*\\}/);\n  parsed = JSON.parse(m ? m[0] : clean);\n  if (!parsed.caption || !parsed.hashtags) throw new Error('Missing fields');\n} catch (error) {\n  parsed = {\n    caption: `\ud83d\udea8 Institutional VWAP & Volume Setups: ${topTickers} (Exact Entry, Target & Stop Levels) \ud83d\udcca`,\n    hashtags: '#StockMarket #DayTrading #SwingTrading #TradingView #StocksToWatch #OptionsTrading #TechnicalAnalysis #AIStocks',\n    thumbnailText: '\ud83d\udd25 TOP 4 TRADE SETUPS'\n  };\n}\n\nreturn [{ json: parsed }];"
+      },
+      "id": "97b66bbe-3bd4-42b3-862b-2dcc7e40bfd2",
+      "name": "Validate Captions JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3664,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -3440,
+        984
+      ],
+      "id": "52681dc0-e30a-4d31-a33d-7d405e8ee6b1",
+      "name": "Merge Video & Captions"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "=AI Stock Predictions {{ $now.format('MMM d yyyy') }}",
+        "regionCode": "US",
+        "categoryId": "22",
+        "options": {
+          "description": "={{ $json.caption }}{{ $json.hashtags }}",
+          "privacyStatus": "public"
+        }
+      },
+      "id": "6d6ef2eb-21cd-4411-81a9-310916cd952e",
+      "name": "Upload to YouTube Shorts",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        -2320,
+        840
+      ],
+      "disabled": false,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hostUrl": "graph-video.facebook.com",
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media",
+        "options": {
+          "queryParametersJson": "={\n  \"media_type\": \"REELS\",\n  \"video_url\": \"{{ $json.url }}\",\n  \"caption\": \"{{ $json.caption }}\\n\\n{{ $json.hashtags }}\",\n  \"share_to_feed\": \"true\"\n}"
+        }
+      },
+      "id": "644ad78f-45d4-4315-8c98-1c8ad3e9ff36",
+      "name": "IG Create",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -3216,
+        1080
+      ],
+      "disabled": false,
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "3451187f-f054-4036-82bc-4750a0fd003d",
+      "name": "Wait IG",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2992,
+        1080
+      ],
+      "webhookId": "495e3f32-19be-4270-b494-36e1b54578cb"
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ef74124b-cc2c-49ca-bca5-c66382757618",
+      "name": "Check IG",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2768,
+        1008
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.status_code }}",
+              "rightValue": "FINISHED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7f8ce3fc-7b87-4aaf-acdd-f56dbce0c326",
+      "name": "If IG Ready",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2544,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5d3051a5-af4f-4d61-b0b9-e38a21545b07",
+      "name": "IG Publish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -2320,
+        1080
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get data from Parse & Sort Predictions node\nconst predictionsData = $input.first().json;\nconst buys = predictionsData.buys || [];\nconst holds = predictionsData.holds || [];\nconst sells = predictionsData.sells || [];\nconst industry = $('Set Industry Filter').first().json.industry || 'Technology';\n\nconst today = new Date();\nconst dateStr = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });\n\nconst formatStockRow = (stock, action) => {\n  const actionColor = action === 'Buy' ? '#10b981' : action === 'Hold' ? '#3b82f6' : '#ef4444';\n  const changeColor = stock.change >= 0 ? '#10b981' : '#ef4444';\n  const changeSymbol = stock.change >= 0 ? '+' : '';\n  return `\n    <tr style=\"border-bottom: 1px solid #e5e7eb;\">\n      <td style=\"padding: 16px 12px;\"><div style=\"font-weight: 700; font-size: 16px;\">${stock.symbol}</div></td>\n      <td style=\"padding: 16px 12px; text-align: right;\">$${stock.price.toFixed(2)}</td>\n      <td style=\"padding: 16px 12px; text-align: right; color: ${changeColor};\">${changeSymbol}${stock.change.toFixed(2)}%</td>\n      <td style=\"padding: 16px 12px; text-align: right;\">${(stock.volume / 1000000).toFixed(2)}M</td>\n      <td style=\"padding: 16px 12px; text-align: center;\"><span style=\"padding: 6px 12px; border-radius: 4px; background: ${actionColor}; color: white; font-size: 11px;\">${action}</span></td>\n    </tr>\n    <tr><td colspan=\"5\" style=\"padding: 12px; background: #f9fafb; font-size: 13px;\"><strong>Analysis:</strong> ${stock.rationale}</td></tr>\n  `;\n};\n\nconst html = `<!DOCTYPE html>\n<html>\n<body style=\"font-family: Arial; background: #f3f4f6; padding: 40px 20px; margin: 0;\">\n  <table width=\"700\" style=\"background: white; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\">\n    <tr>\n      <td style=\"background: #111827; padding: 32px 40px; border-bottom: 4px solid #10b981; border-radius: 8px 8px 0 0;\">\n        <div style=\"font-size: 28px; font-weight: 800; color: white; letter-spacing: 1px;\">AI STOCK ADVISOR</div>\n        <div style=\"font-size: 12px; color: #9ca3af; margin-top: 8px;\">Institutional Research \u2022 ${dateStr}</div>\n      </td>\n    </tr>\n    <tr>\n      <td style=\"background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px 40px;\">\n        <div style=\"font-size: 24px; color: white; font-weight: 700;\">${industry} Sector Analysis</div>\n        <div style=\"font-size: 14px; color: rgba(255,255,255,0.9); margin-top: 4px;\">${buys.length} BUY \u2022 ${holds.length} HOLD \u2022 ${sells.length} SELL</div>\n      </td>\n    </tr>\n    ${buys.length > 0 ? `\n    <tr>\n      <td style=\"padding: 32px 40px;\">\n        <div style=\"font-size: 14px; font-weight: 700; color: #065f46; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;\">\ud83d\udcc8 BUY RECOMMENDATIONS</div>\n        <table width=\"100%\" style=\"border: 1px solid #e5e7eb; border-radius: 4px; border-collapse: collapse;\">\n          <thead>\n            <tr style=\"background: #f9fafb;\">\n              <th style=\"padding: 12px; text-align: left; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Symbol</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Price</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Change</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Volume</th>\n              <th style=\"padding: 12px; text-align: center; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            ${buys.map(s => formatStockRow(s, 'Buy')).join('')}\n          </tbody>\n        </table>\n      </td>\n    </tr>\n    ` : ''}\n    ${holds.length > 0 ? `\n    <tr>\n      <td style=\"padding: 32px 40px; padding-top: ${buys.length > 0 ? '0' : '32px'};\">\n        <div style=\"font-size: 14px; font-weight: 700; color: #1e40af; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;\">\u23f8\ufe0f HOLD RECOMMENDATIONS</div>\n        <table width=\"100%\" style=\"border: 1px solid #e5e7eb; border-radius: 4px; border-collapse: collapse;\">\n          <thead>\n            <tr style=\"background: #f9fafb;\">\n              <th style=\"padding: 12px; text-align: left; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Symbol</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Price</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Change</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Volume</th>\n              <th style=\"padding: 12px; text-align: center; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            ${holds.map(s => formatStockRow(s, 'Hold')).join('')}\n          </tbody>\n        </table>\n      </td>\n    </tr>\n    ` : ''}\n    ${sells.length > 0 ? `\n    <tr>\n      <td style=\"padding: 32px 40px; padding-top: ${buys.length > 0 || holds.length > 0 ? '0' : '32px'};\">\n        <div style=\"font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;\">\ud83d\udcc9 SELL ALERTS</div>\n        <table width=\"100%\" style=\"border: 1px solid #e5e7eb; border-radius: 4px; border-collapse: collapse;\">\n          <thead>\n            <tr style=\"background: #f9fafb;\">\n              <th style=\"padding: 12px; text-align: left; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Symbol</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Price</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Change</th>\n              <th style=\"padding: 12px; text-align: right; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Volume</th>\n              <th style=\"padding: 12px; text-align: center; font-size: 11px; color: #6b7280; text-transform: uppercase;\">Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            ${sells.map(s => formatStockRow(s, 'Sell')).join('')}\n          </tbody>\n        </table>\n      </td>\n    </tr>\n    ` : ''}\n    <tr>\n      <td style=\"padding: 32px 40px; background: #f9fafb; border-top: 1px solid #e5e7eb;\">\n        <div style=\"text-align: center;\">\n          <div style=\"font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 12px;\">\ud83d\udcf9 Watch Today's Market Analysis</div>\n          <div style=\"font-size: 14px; color: #6b7280; margin-bottom: 16px;\">Get the full breakdown in our 60-second video report</div>\n          <a href=\"https://youtube.com/@bytefyi\" style=\"display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;\">Watch on YouTube \u2192</a>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td style=\"padding: 32px 40px; background: #f9fafb; border-radius: 0 0 8px 8px;\">\n        <div style=\"font-size: 11px; color: #6b7280; line-height: 1.6;\">\n          <div style=\"font-weight: 600; margin-bottom: 8px; color: #374151;\">\u26a0\ufe0f IMPORTANT DISCLAIMER</div>\n          <p style=\"margin: 0 0 8px 0;\">This analysis is powered by AI and provided for informational purposes only. It is NOT financial advice, investment recommendation, or solicitation to buy or sell securities.</p>\n          <p style=\"margin: 0 0 8px 0;\">Stock prices are volatile and can result in significant losses. Past performance does not guarantee future results. Always conduct your own research and consult with a qualified financial advisor before making investment decisions.</p>\n          <p style=\"margin: 0;\"><strong>Data Source:</strong> Market data provided by Polygon.io \u2022 Analysis generated on ${dateStr}</p>\n        </div>\n        <div style=\"border-top: 1px solid #e5e7eb; margin-top: 16px; padding-top: 16px; text-align: center;\">\n          <div style=\"font-size: 10px; color: #9ca3af;\">\u00a9 2025 AI Stock Advisor \u2022 ByteFYI \u2022 All rights reserved</div>\n          <div style=\"font-size: 10px; color: #9ca3af; margin-top: 4px;\">Follow us: <a href=\"https://youtube.com/@bytefyi\" style=\"color: #667eea; text-decoration: none;\">YouTube</a> \u2022 <a href=\"https://instagram.com/bytefyi\" style=\"color: #667eea; text-decoration: none;\">Instagram</a></div>\n        </div>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>`;\n\nreturn [{ json: { html, subject: `AI Stock Advisor: ${industry} - ${buys.length} BUY | ${holds.length} HOLD | ${sells.length} SELL`, industry } }];"
+      },
+      "id": "e64ccfd1-9e26-45f0-aa8b-bed6a09d217a",
+      "name": "Format Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6608,
+        1272
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "coolvishnu@gmail.com",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "a67c4c2d-7bbf-4910-9efd-b4d49b2b6473",
+      "name": "Send Stock Predictions Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -6320,
+        1272
+      ],
+      "webhookId": "51ab68c9-6673-45ea-884f-0f3dea158f58",
+      "disabled": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "coolvishnu@gmail.com",
+        "subject": "=\u2705 AI Stock Video Posted - {{ $now.format('MMMM d, yyyy') }}",
+        "message": "=<html><body style=\"font-family: Arial; padding: 20px;\"><div style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; color: white;\"><h1>\u2705 Video Posted!</h1><p>{{ $now.format('MMMM d, yyyy') }}</p></div><div style=\"padding: 20px; background: #f5f5f5; margin-top: 20px;\"><h2>\ud83d\udcc8 Buy Picks</h2><p style=\"color: #27ae60; font-weight: bold;\">{{ $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoStocks.buys.map(s => s.symbol).join(', ') }}</p><h2>\ud83d\udcc9 Sell Alerts</h2><p style=\"color: #e74c3c; font-weight: bold;\">{{ $('\ud83c\udfaf Select Video Stocks (10 Total)').first().json.videoStocks.sells.map(s => s.symbol).join(', ') }}</p></div><div style=\"padding: 20px;\"><h3>\ud83d\udd17 Published Links</h3><ul><li>\ud83c\udfa5 <strong>YouTube:</strong> {{ $('Upload to YouTube Shorts').first().json.url || 'Processing...' }}</li><li>\ud83d\udcf8 <strong>Instagram:</strong> Published</li></ul></div></body></html>",
+        "options": {}
+      },
+      "id": "bf42d5fa-4995-4a92-8795-4c4034eec7ba",
+      "name": "Send Success Notification",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -2096,
+        984
+      ],
+      "webhookId": "232c5755-87b6-4cea-8659-de08ec1c8e51",
+      "disabled": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "id": "ccbe3de8-0d63-4428-9e3a-abc79222f186",
+      "name": "ElevenLabs - Convert to Audio (HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -6032,
+        1088
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/IZXMkokQbZW2tD1sqOTx?output_format=mp3_44100_128",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.output[0].content[0].text, model_id: 'eleven_multilingual_v2' }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "IMEJ5zrKdaA6SoK5",
+          "name": "ElevenLabs Native Auth"
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "sameAsDraft": true
+  },
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}
