@@ -757,8 +757,20 @@ def render_timeline_payload_to_mp4(
 ) -> Dict[str, Any]:
     """
     Render a declarative JSON timeline payload dictionary into an H.264 + AAC MP4 file.
-    Supports both `{ "source": { "elements": [...] } }` and `{ "template_id": "...", "modifications": {...} }`.
+    Supports:
+      - `{ "mode": "keeps_commercial", ... }` (or `source.mode == "keeps_commercial"`)
+      - `{ "source": { "elements": [...] } }`
+      - `{ "template_id": "...", "modifications": {...} }`
     """
+    source_obj = payload.get("source", payload)
+    if payload.get("mode") == "keeps_commercial" or (
+        isinstance(source_obj, dict) and source_obj.get("mode") == "keeps_commercial"
+    ):
+        return _render_keeps_commercial_to_mp4(
+            source_obj if isinstance(source_obj, dict) and source_obj.get("mode") == "keeps_commercial" else payload,
+            output_mp4_path,
+        )
+
     if "modifications" in payload and "source" not in payload:
         return _render_template_modifications_to_mp4(payload, output_mp4_path)
 
@@ -1130,4 +1142,705 @@ def render_html_to_png(
         "file_size": file_size,
         "render_time_seconds": elapsed,
     }
+
+
+_KEEPS_BGM_CACHE_PATH = "/tmp/keeps_bg_light_commercial.mp3"
+
+
+def _ensure_keeps_light_commercial_bgm() -> str:
+    """Synthesize and cache the airy Apple/Fintech marimba & warm Rhodes commercial bed."""
+    if os.path.exists(_KEEPS_BGM_CACHE_PATH) and os.path.getsize(_KEEPS_BGM_CACHE_PATH) > 10000:
+        return _KEEPS_BGM_CACHE_PATH
+
+    import struct
+    import wave
+
+    sr = 44100
+    duration = 45.0
+    n_samples = int(sr * duration)
+    bpm = 108.0
+    beat_sec = 60.0 / bpm
+    bar_sec = beat_sec * 4.0
+
+    chords = [
+        [261.63, 329.63, 392.00, 493.88],  # Cmaj7
+        [220.00, 261.63, 329.63, 392.00],  # Am7
+        [174.61, 220.00, 261.63, 329.63],  # Fmaj7
+        [196.00, 246.94, 293.66, 392.00],  # G6
+    ]
+    pluck_pattern = [0, 2, 1, 3, 2, 3, 1, 2]
+
+    tmp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav").name
+    try:
+        with wave.open(tmp_wav, "w") as wf:
+            wf.setnchannels(2)
+            wf.setsampwidth(2)
+            wf.setframerate(sr)
+            frames = bytearray()
+            for i in range(n_samples):
+                t = i / sr
+                bar_idx = int(t / bar_sec) % len(chords)
+                chord = chords[bar_idx]
+                bar_t = t % bar_sec
+
+                pad_env = min(1.0, bar_t / 0.18) * math.exp(-bar_t * 0.45)
+                pad_l = 0.0
+                pad_r = 0.0
+                for idx, freq in enumerate(chord):
+                    s = math.sin(2.0 * math.pi * freq * t) + 0.15 * math.sin(2.0 * math.pi * (freq * 2.0) * t)
+                    pan = 0.35 + 0.3 * (idx / 3.0)
+                    pad_l += s * (1.0 - pan)
+                    pad_r += s * pan
+                pad_l *= pad_env * 0.14
+                pad_r *= pad_env * 0.14
+
+                eighth_sec = beat_sec / 2.0
+                step_idx = int(t / eighth_sec) % len(pluck_pattern)
+                step_t = t % eighth_sec
+                note_freq = chord[pluck_pattern[step_idx]] * 2.0
+                pluck_env = math.exp(-step_t * 14.0) * min(1.0, step_t / 0.006)
+                pluck_sig = (
+                    math.sin(2.0 * math.pi * note_freq * t)
+                    + 0.25 * math.sin(2.0 * math.pi * note_freq * 2.0 * t) * math.exp(-step_t * 28.0)
+                ) * pluck_env * 0.16
+
+                half_t = t % (beat_sec * 2.0)
+                bass_freq = chord[0] * 0.5
+                bass_env = math.exp(-half_t * 2.8) * min(1.0, half_t / 0.015)
+                bass_sig = math.sin(2.0 * math.pi * bass_freq * t) * bass_env * 0.22
+
+                l_val = max(-0.95, min(0.95, pad_l + pluck_sig * 0.9 + bass_sig))
+                r_val = max(-0.95, min(0.95, pad_r + pluck_sig * 1.1 + bass_sig))
+                frames.extend(struct.pack("<hh", int(l_val * 32767), int(r_val * 32767)))
+            wf.writeframes(frames)
+
+        subprocess.run(
+            ["ffmpeg", "-y", "-i", tmp_wav, "-c:a", "libmp3lame", "-b:a", "192k", _KEEPS_BGM_CACHE_PATH],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    finally:
+        if os.path.exists(tmp_wav):
+            try:
+                os.unlink(tmp_wav)
+            except OSError:
+                pass
+    return _KEEPS_BGM_CACHE_PATH
+
+
+def _render_chrome_card_png(html_body: str, output_png: str, transparent: bool = False) -> None:
+    """Render an HTML5/CSS3 1080x1920 commercial card or transparent RGBA overlay via Chromium."""
+    chrome_bin = _find_chromium_binary()
+    if not chrome_bin:
+        raise RuntimeError("Chromium binary not found for commercial card rendering")
+
+    bg_css = "background: transparent;" if transparent else "background: #0B051D;"
+    full_html = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+html, body {{
+  width: 1080px;
+  height: 1920px;
+  {bg_css}
+  font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', 'Inter', 'DejaVu Sans', sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}}
+</style>
+</head>
+<body>
+{html_body}
+</body>
+</html>"""
+    tmp_html = tempfile.NamedTemporaryFile(delete=False, suffix=".html", mode="w", encoding="utf-8")
+    tmp_html.write(full_html)
+    tmp_html.close()
+    try:
+        cmd = [
+            chrome_bin,
+            "--headless",
+            "--disable-gpu",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-software-rasterizer",
+            "--hide-scrollbars",
+            "--force-device-scale-factor=1",
+            "--window-size=1080,1920",
+        ]
+        if transparent:
+            cmd.append("--default-background-color=00000000")
+        cmd.extend([f"--screenshot={output_png}", f"file://{tmp_html.name}"])
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=45)
+    finally:
+        if os.path.exists(tmp_html.name):
+            try:
+                os.unlink(tmp_html.name)
+            except OSError:
+                pass
+
+
+def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: str) -> Dict[str, Any]:
+    """
+    Render a 6-scene Keeps Commercial Reel (1080x1920, 30fps):
+      - Scenes 1 & 2: Live vertical shopper/receipt video clips with floating iOS RGBA overlays
+      - Scenes 3–6: Chromium-rendered commercial cards (including populated iPhone 16 Pro Keeps dashboard
+        and step-by-step Google Play & Apple App Store search guide)
+      - Audio: Broadcast +12 dB vocal presence boost + sidechain-ducked light marimba/Rhodes commercial bed
+    """
+    import base64
+
+    t0 = time.time()
+    W, H, fps = 1080, 1920, 30
+
+    icon_path = os.path.join(os.path.dirname(__file__), "keeps_icon.png")
+    if os.path.exists(icon_path):
+        with open(icon_path, "rb") as f:
+            app_icon_b64 = "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+    else:
+        app_icon_b64 = ""
+
+    cs = payload.get("caseStudy") or {}
+    store_name = str(cs.get("store") or "BEST BUY").strip()
+    item_name = str(cs.get("item") or "Sony WH-1000XM5 Headphones").strip()
+    paid_price = str(cs.get("paidPrice") or "$349.99").strip()
+    new_price = str(cs.get("newPrice") or "$279.99").strip()
+    refund_amount = str(cs.get("refundAmount") or "$70.00").strip()
+    return_days = str(cs.get("returnDays") or "15 Days").strip()
+    warranty_period = str(cs.get("warrantyPeriod") or "1 Year").strip()
+    alert_headline = str(cs.get("alertHeadline") or f"12 Days Left to Claim at {store_name.title()}").strip()
+
+    raw_durs = payload.get("videoDurations") or [6.0, 6.0, 6.0, 6.5, 6.0, 6.5]
+    seg_durations = [max(4.0, float(d)) for d in raw_durs[:6]]
+    while len(seg_durations) < 6:
+        seg_durations.append(6.0)
+    total_dur = float(payload.get("totalAudioDuration") or sum(seg_durations))
+
+    pexels_1_url = str(
+        payload.get("pexels_1_url")
+        or "https://videos.pexels.com/video-files/9474093/9474093-hd_720_1280_24fps.mp4"
+    )
+    pexels_2_url = str(
+        payload.get("pexels_2_url")
+        or "https://videos.pexels.com/video-files/7308301/7308301-hd_720_1280_24fps.mp4"
+    )
+    audio_url = str(payload.get("audio_url") or "")
+
+    scene1_overlay_html = f"""
+<div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(10,5,28,0.82) 0%, rgba(10,5,28,0.12) 42%, rgba(10,5,28,0.15) 68%, rgba(10,5,28,0.88) 100%);display:flex;flex-direction:column;align-items:center;padding-top:115px;">
+  <div style="width:940px;background:rgba(255,255,255,0.96);border-radius:36px;padding:28px 34px;box-shadow:0 24px 60px rgba(0,0,0,0.50);display:flex;align-items:center;gap:26px;">
+    <img src="{app_icon_b64}" style="width:96px;height:96px;border-radius:22px;box-shadow:0 8px 20px rgba(110,98,245,0.4);" />
+    <div style="flex:1;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:23px;font-weight:800;color:#4F46E5;letter-spacing:0.5px;">KEEPS PRICE WATCH • NOW</span>
+        <span style="background:#DCFCE7;color:#059669;font-size:21px;font-weight:900;padding:6px 16px;border-radius:20px;">+{refund_amount} REFUND</span>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#0F172A;line-height:1.2;">{store_name.title()} dropped {item_name[:26]} to {new_price}!</div>
+      <div style="font-size:22px;font-weight:600;color:#475569;margin-top:4px;">Tap to claim your {refund_amount} cash price-match refund now.</div>
+    </div>
+  </div>
+  <div style="margin-top:54px;text-align:center;padding:0 55px;">
+    <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(16,185,129,0.28);border:2px solid #10B981;border-radius:40px;padding:10px 28px;margin-bottom:22px;">
+      <span style="font-size:25px;font-weight:800;color:#6EE7B7;letter-spacing:1.2px;">💡 SMART SHOPPER SECRET</span>
+    </div>
+    <h1 style="font-size:68px;font-weight:900;color:#FFFFFF;line-height:1.10;text-shadow:0 10px 30px rgba(0,0,0,0.85);">
+      Bought Something That Went <span style="color:#34D399;">On Sale</span> Days Later?
+    </h1>
+  </div>
+</div>"""
+
+    scene2_overlay_html = f"""
+<div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(10,5,28,0.84) 0%, rgba(10,5,28,0.18) 38%, rgba(10,5,28,0.28) 65%, rgba(10,5,28,0.90) 100%);display:flex;flex-direction:column;align-items:center;padding-top:125px;">
+  <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(124,92,255,0.34);border:2px solid #A78BFA;border-radius:40px;padding:10px 30px;margin-bottom:20px;">
+    <span style="font-size:25px;font-weight:800;color:#E9D5FF;letter-spacing:1.2px;">⚡ 1-TAP AI RECEIPT SCANNER</span>
+  </div>
+  <h1 style="font-size:66px;font-weight:900;color:#FFFFFF;line-height:1.10;text-align:center;padding:0 60px;text-shadow:0 10px 30px rgba(0,0,0,0.85);">
+    Snap Any Receipt.<br/><span style="color:#34D399;">AI Tracks Every Drop.</span>
+  </h1>
+  <div style="margin-top:540px;width:920px;background:rgba(19,14,49,0.94);border:2px solid rgba(167,139,250,0.65);border-radius:36px;padding:32px 38px;box-shadow:0 28px 70px rgba(0,0,0,0.65);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <img src="{app_icon_b64}" style="width:64px;height:64px;border-radius:16px;" />
+        <div>
+          <div style="font-size:28px;font-weight:800;color:#FFFFFF;">AI Receipt Extracted in 2.1s</div>
+          <div style="font-size:22px;font-weight:600;color:#A78BFA;">{store_name} • {item_name[:26]} ({paid_price})</div>
+        </div>
+      </div>
+      <span style="background:#10B981;color:#022C22;font-size:21px;font-weight:900;padding:10px 22px;border-radius:24px;">✓ TRACKING</span>
+    </div>
+    <div style="display:flex;gap:18px;">
+      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:22px;padding:16px 18px;text-align:center;">
+        <div style="font-size:19px;font-weight:700;color:#94A3B8;">RETURN WINDOW</div>
+        <div style="font-size:30px;font-weight:900;color:#FBBF24;margin-top:6px;">⏰ {return_days}</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:22px;padding:16px 18px;text-align:center;">
+        <div style="font-size:19px;font-weight:700;color:#94A3B8;">WARRANTY VAULT</div>
+        <div style="font-size:30px;font-weight:900;color:#38BDF8;margin-top:6px;">🛡️ {warranty_period}</div>
+      </div>
+      <div style="flex:1;background:rgba(16,185,129,0.20);border:1.5px solid #10B981;border-radius:22px;padding:16px 18px;text-align:center;">
+        <div style="font-size:19px;font-weight:700;color:#A7F3D0;">PRICE WATCH</div>
+        <div style="font-size:30px;font-weight:900;color:#34D399;margin-top:6px;">⚡ 24/7 ON</div>
+      </div>
+    </div>
+  </div>
+</div>"""
+
+    scene3_html = """
+<div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 42%, #2E1760 0%, #160A36 52%, #0B051D 100%);display:flex;flex-direction:column;align-items:center;padding-top:230px;position:relative;">
+  <div style="position:absolute;top:400px;width:720px;height:720px;background:radial-gradient(circle, rgba(16,185,129,0.22) 0%, transparent 70%);z-index:0;"></div>
+  <div style="position:relative;z-index:2;background:rgba(16,185,129,0.16);border:2px solid #10B981;border-radius:50px;padding:14px 38px;margin-bottom:34px;">
+    <span style="font-size:27px;font-weight:800;color:#6EE7B7;letter-spacing:1.5px;">💡 SECRET SHOPPING HACK</span>
+  </div>
+  <h1 style="position:relative;z-index:2;font-size:78px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.12;padding:0 70px;">
+    Stores Everywhere<br/>Owe You<br/><span style="color:#2DD4BF;">Price-Drop Refunds!</span>
+  </h1>
+  <p style="position:relative;z-index:2;font-size:34px;font-weight:500;color:#CBD5E1;text-align:center;line-height:1.42;padding:0 95px;margin-top:30px;">
+    Did you know retailers will refund you the cash difference if an item goes on sale after you buy it?
+  </p>
+  <div style="position:relative;z-index:2;margin-top:48px;width:900px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.16);border-radius:36px;padding:40px 42px;display:flex;flex-direction:column;align-items:center;">
+    <div style="font-size:34px;font-weight:800;color:#FFFFFF;margin-bottom:28px;">🏢 Works For ANY Store You Shop At</div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;">
+      <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:40px;padding:16px 32px;font-size:28px;font-weight:700;color:#F8FAFC;">💻 Best Buy &amp; Tech</div>
+      <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:40px;padding:16px 32px;font-size:28px;font-weight:700;color:#F8FAFC;">🛒 Costco &amp; Target</div>
+      <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:40px;padding:16px 32px;font-size:28px;font-weight:700;color:#F8FAFC;">🛋️ Home Depot &amp; Lowe's</div>
+      <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:40px;padding:16px 32px;font-size:28px;font-weight:700;color:#F8FAFC;">🛍️ Amazon &amp; Walmart</div>
+      <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:40px;padding:16px 32px;font-size:28px;font-weight:700;color:#F8FAFC;">📦 Any Paper or Digital Receipt</div>
+    </div>
+    <div style="margin-top:32px;width:100%;background:rgba(244,63,94,0.18);border:1.5px solid rgba(244,63,94,0.45);border-radius:22px;padding:18px 28px;text-align:center;font-size:26px;font-weight:700;color:#FDA4AF;">
+      ⚠️ The Catch: You must claim before your store return window closes!
+    </div>
+  </div>
+</div>"""
+
+    scene4_html = f"""
+<div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 48%, #341B70 0%, #170B3B 55%, #0B051D 100%);display:flex;flex-direction:column;align-items:center;padding-top:95px;position:relative;">
+  <div style="background:rgba(124,92,255,0.22);border:2px solid #8B5CF6;border-radius:50px;padding:12px 36px;margin-bottom:20px;">
+    <span style="font-size:26px;font-weight:800;color:#DDD6FE;letter-spacing:1.4px;">⚡ AUTO PRICE WATCH &amp; ALERTS</span>
+  </div>
+  <h1 style="font-size:72px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.10;">
+    Snap Any Receipt.<br/><span style="color:#A78BFA;">Keeps Does The Rest.</span>
+  </h1>
+  <div style="margin-top:30px;width:620px;height:1100px;background:#F8FAFC;border-radius:64px;border:14px solid #1E1B2E;box-shadow:0 35px 90px rgba(0,0,0,0.65), 0 0 0 3px rgba(167,139,250,0.35);overflow:hidden;display:flex;flex-direction:column;position:relative;">
+    <div style="background:linear-gradient(135deg, #7C6FF9 0%, #6355E8 100%);padding:22px 28px 24px 28px;color:#FFFFFF;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <span style="font-size:22px;font-weight:700;">11:21</span>
+        <div style="width:150px;height:36px;background:#09090B;border-radius:20px;"></div>
+        <span style="font-size:20px;font-weight:700;">5G 100%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:36px;font-weight:900;letter-spacing:-0.5px;">☑️ Keeps</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+            <span style="font-size:20px;opacity:0.9;">Dashboard</span>
+            <span style="background:rgba(255,255,255,0.22);font-size:15px;font-weight:800;padding:4px 12px;border-radius:12px;">🟢 CLOUD SYNC ACTIVE</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <div style="width:46px;height:46px;border-radius:23px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;">🔔</div>
+          <div style="width:46px;height:46px;border-radius:23px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;">⚙️</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:18px 24px 0 24px;display:flex;flex-direction:column;gap:12px;">
+      <div style="background:#FFFFFF;border-radius:22px;padding:15px 20px;box-shadow:0 8px 24px rgba(15,23,42,0.09);border:1.5px solid #D1FAE5;display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-size:30px;">💰</span>
+          <div>
+            <div style="font-size:20px;font-weight:800;color:#0F172A;">{store_name.title()} • {item_name[:22]}</div>
+            <div style="font-size:16px;font-weight:600;color:#059669;">Price dropped {paid_price} → {new_price} (Claim Refund)</div>
+          </div>
+        </div>
+        <span style="background:#10B981;color:#FFFFFF;font-size:17px;font-weight:800;padding:6px 14px;border-radius:12px;">+{refund_amount}</span>
+      </div>
+      <div style="background:#FFFFFF;border-radius:22px;padding:15px 20px;box-shadow:0 8px 24px rgba(15,23,42,0.09);border:1.5px solid #FEE2E2;display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-size:30px;">🔔</span>
+          <div>
+            <div style="font-size:20px;font-weight:800;color:#0F172A;">Target • Dyson V15 Vacuum</div>
+            <div style="font-size:16px;font-weight:600;color:#EF4444;">Return window closing soon</div>
+          </div>
+        </div>
+        <span style="background:#FEF2F2;color:#DC2626;font-size:16px;font-weight:800;padding:6px 12px;border-radius:12px;">3 DAYS LEFT</span>
+      </div>
+    </div>
+    <div style="padding:18px 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;">
+      <div style="background:linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);border-radius:28px;padding:22px;color:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="width:46px;height:46px;border-radius:23px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:24px;">🧾</div>
+        <div>
+          <div style="font-size:52px;font-weight:900;line-height:1;">47</div>
+          <div style="font-size:20px;font-weight:600;opacity:0.92;margin-top:6px;">Total Receipts</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg, #10B981 0%, #059669 100%);border-radius:28px;padding:22px;color:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="width:46px;height:46px;border-radius:23px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:24px;">💵</div>
+        <div>
+          <div style="font-size:50px;font-weight:900;line-height:1;">$412</div>
+          <div style="font-size:20px;font-weight:600;opacity:0.92;margin-top:6px;">Returnable Value</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);border-radius:28px;padding:22px;color:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="width:46px;height:46px;border-radius:23px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:24px;">⏰</div>
+        <div>
+          <div style="font-size:52px;font-weight:900;line-height:1;">3</div>
+          <div style="font-size:20px;font-weight:600;opacity:0.92;margin-top:6px;">Expiring Soon</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);border-radius:28px;padding:22px;color:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:22px;">📊</span>
+          <span style="font-size:21px;font-weight:800;">Top Stores</span>
+        </div>
+        <div style="font-size:18px;font-weight:700;line-height:1.45;">
+          • Best Buy ($349)<br/>
+          • Costco ($284)<br/>
+          • Target ($165)
+        </div>
+      </div>
+    </div>
+    <div style="margin:0 24px 18px 24px;background:linear-gradient(90deg, #10B981 0%, #059669 100%);border-radius:24px;padding:16px 22px;color:#FFFFFF;display:flex;align-items:center;gap:16px;box-shadow:0 10px 25px rgba(16,185,129,0.35);">
+      <span style="font-size:30px;">🔍</span>
+      <div>
+        <div style="font-size:21px;font-weight:900;">Active 24/7 Price Monitor</div>
+        <div style="font-size:16px;font-weight:600;opacity:0.95;">Scans prices across retailers every 4 hours</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:18px;margin-top:24px;">
+    <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:12px 26px;font-size:23px;font-weight:700;color:#FFFFFF;">🏢 Any Store Receipt</div>
+    <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:12px 26px;font-size:23px;font-weight:700;color:#FFFFFF;">⏰ Return Countdowns</div>
+    <div style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:12px 26px;font-size:23px;font-weight:700;color:#FFFFFF;">💵 Auto Refunds</div>
+  </div>
+</div>"""
+
+    scene5_html = f"""
+<div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 48%, #1E3A4C 0%, #190D3A 52%, #0B051D 100%);display:flex;flex-direction:column;align-items:center;padding-top:300px;position:relative;">
+  <div style="position:absolute;top:520px;width:850px;height:600px;background:radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%);z-index:0;"></div>
+  <div style="position:relative;z-index:2;background:rgba(244,63,94,0.2);border:2px solid #F43F5E;border-radius:50px;padding:14px 38px;margin-bottom:32px;">
+    <span style="font-size:28px;font-weight:800;color:#FDA4AF;letter-spacing:1.5px;">🚨 PRICE DROP DETECTED</span>
+  </div>
+  <h1 style="position:relative;z-index:2;font-size:84px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.10;margin-bottom:50px;">
+    Claim Your <span style="color:#2DD4BF;">Cash<br/>Refund!</span>
+  </h1>
+  <div style="position:relative;z-index:2;width:920px;background:#FFFFFF;border-radius:42px;padding:48px 52px;box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 80px rgba(16,185,129,0.25);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;">
+      <span style="font-size:28px;font-weight:800;color:#334155;">{store_name} • Price Match Alert</span>
+      <span style="background:#DCFCE7;color:#059669;font-size:22px;font-weight:900;padding:10px 24px;border-radius:24px;letter-spacing:0.8px;">PRICE DROPPED</span>
+    </div>
+    <div style="font-size:42px;font-weight:900;color:#0F172A;margin-bottom:24px;">
+      {item_name}
+    </div>
+    <div style="display:flex;align-items:baseline;gap:28px;margin-bottom:38px;">
+      <span style="font-size:38px;font-weight:600;color:#94A3B8;text-decoration:line-through;">You Paid: {paid_price}</span>
+      <span style="font-size:56px;font-weight:900;color:#059669;">Now: {new_price}</span>
+    </div>
+    <div style="width:100%;background:linear-gradient(90deg, #10B981 0%, #059669 100%);border-radius:28px;padding:28px;text-align:center;font-size:36px;font-weight:900;color:#FFFFFF;box-shadow:0 12px 30px rgba(16,185,129,0.35);">
+      💰 You Can Claim a {refund_amount} Refund!
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;margin-top:40px;font-size:32px;font-weight:700;color:#F8FAFC;display:flex;align-items:center;gap:14px;">
+    <span>⏰ {alert_headline}</span>
+  </div>
+</div>"""
+
+    scene6_html = f"""
+<div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 42%, #3B1F82 0%, #1C0D42 55%, #0D0622 100%);display:flex;flex-direction:column;align-items:center;padding-top:115px;position:relative;">
+  <div style="position:absolute;top:300px;width:760px;height:760px;background:radial-gradient(circle, rgba(139,92,246,0.38) 0%, transparent 70%);z-index:0;"></div>
+  <div style="position:relative;z-index:2;background:rgba(16,185,129,0.20);border:2px solid #10B981;border-radius:50px;padding:12px 38px;margin-bottom:22px;">
+    <span style="font-size:26px;font-weight:800;color:#6EE7B7;letter-spacing:1.4px;">📲 HOW TO DOWNLOAD IN 5 SECONDS</span>
+  </div>
+  <h1 style="position:relative;z-index:2;font-size:68px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.10;margin-bottom:36px;">
+    Search on <span style="color:#38BDF8;">Google Play</span><br/>or <span style="color:#A78BFA;">Apple App Store</span>
+  </h1>
+  <div style="position:relative;z-index:2;width:920px;background:rgba(255,255,255,0.08);border:2px solid rgba(167,139,250,0.45);border-radius:36px;padding:28px 36px;margin-bottom:28px;box-shadow:0 20px 50px rgba(0,0,0,0.35);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <span style="background:#7C6FF9;color:#FFFFFF;font-size:21px;font-weight:900;padding:7px 20px;border-radius:20px;letter-spacing:0.8px;">STEP 1 • TYPE IN SEARCH BAR</span>
+      <span style="font-size:22px;font-weight:700;color:#CBD5E1;">iOS App Store &amp; Google Play</span>
+    </div>
+    <div style="width:100%;background:#FFFFFF;border-radius:26px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 12px 30px rgba(0,0,0,0.35);border:3px solid #38BDF8;">
+      <div style="display:flex;align-items:center;gap:18px;">
+        <span style="font-size:36px;">🔍</span>
+        <span style="font-size:38px;font-weight:900;color:#0F172A;letter-spacing:-0.3px;">Keeps Receipt Scanner</span>
+        <span style="display:inline-block;width:4px;height:42px;background:#2563EB;border-radius:2px;"></span>
+      </div>
+      <div style="background:#2563EB;color:#FFFFFF;font-size:24px;font-weight:800;padding:12px 28px;border-radius:18px;">Search</div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;width:920px;background:rgba(255,255,255,0.08);border:2px solid rgba(16,185,129,0.55);border-radius:36px;padding:28px 36px;margin-bottom:34px;box-shadow:0 24px 60px rgba(0,0,0,0.45);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <span style="background:#10B981;color:#022C22;font-size:21px;font-weight:900;padding:7px 20px;border-radius:20px;letter-spacing:0.8px;">STEP 2 • LOOK FOR THIS ICON &amp; TAP INSTALL</span>
+      <span style="font-size:22px;font-weight:800;color:#6EE7B7;">✓ Official App</span>
+    </div>
+    <div style="width:100%;background:#FFFFFF;border-radius:28px;padding:26px 30px;display:flex;align-items:center;gap:26px;box-shadow:0 16px 40px rgba(0,0,0,0.35);">
+      <img src="{app_icon_b64}" style="width:142px;height:142px;border-radius:32px;box-shadow:0 12px 28px rgba(124,111,249,0.45);flex-shrink:0;" />
+      <div style="flex:1;">
+        <div style="font-size:32px;font-weight:900;color:#0F172A;line-height:1.15;">Keeps: Receipt Scanner Tracker</div>
+        <div style="font-size:22px;font-weight:700;color:#6366F1;margin-top:6px;">Auto Price Watch • Return &amp; Warranty Alerts</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:10px;">
+          <span style="font-size:24px;color:#F59E0B;font-weight:900;">★★★★★ 4.9</span>
+          <span style="font-size:20px;font-weight:700;color:#64748B;">• Free Download</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <div style="background:#007AFF;color:#FFFFFF;font-size:26px;font-weight:900;padding:12px 34px;border-radius:26px;width:155px;text-align:center;box-shadow:0 6px 16px rgba(0,122,255,0.35);">GET</div>
+        <div style="background:#059669;color:#FFFFFF;font-size:24px;font-weight:900;padding:12px 26px;border-radius:26px;width:155px;text-align:center;box-shadow:0 6px 16px rgba(5,150,105,0.35);">Install</div>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;display:flex;gap:26px;width:920px;margin-bottom:32px;">
+    <div style="flex:1;background:#FFFFFF;border-radius:28px;padding:20px 28px;display:flex;align-items:center;gap:20px;box-shadow:0 16px 40px rgba(0,0,0,0.4);">
+      <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#38BDF8,#2563EB);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </div>
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#64748B;letter-spacing:1px;">GET IT ON</div>
+        <div style="font-size:35px;font-weight:900;color:#0F172A;line-height:1.08;">Google Play</div>
+      </div>
+    </div>
+    <div style="flex:1;background:#FFFFFF;border-radius:28px;padding:20px 28px;display:flex;align-items:center;gap:20px;box-shadow:0 16px 40px rgba(0,0,0,0.4);">
+      <div style="width:60px;height:60px;border-radius:16px;background:#7C6FF9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.79-.96 2.84 1.04.08 2.08-.52 2.72-1.3z"/></svg>
+      </div>
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#64748B;letter-spacing:1px;">DOWNLOAD ON THE</div>
+        <div style="font-size:35px;font-weight:900;color:#0F172A;line-height:1.08;">App Store</div>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;background:rgba(16,185,129,0.24);border:2px solid #10B981;border-radius:40px;padding:18px 46px;font-size:26px;font-weight:800;color:#ECFDF5;">
+    🔗 Or Tap the Direct Link in Bio / Description to Download!
+  </div>
+</div>"""
+
+    work_dir = tempfile.mkdtemp(prefix="keeps_comm_")
+    try:
+        s1_ov = os.path.join(work_dir, "s1_ov.png")
+        s2_ov = os.path.join(work_dir, "s2_ov.png")
+        s3_png = os.path.join(work_dir, "s3.png")
+        s4_png = os.path.join(work_dir, "s4.png")
+        s5_png = os.path.join(work_dir, "s5.png")
+        s6_png = os.path.join(work_dir, "s6.png")
+
+        _render_chrome_card_png(scene1_overlay_html, s1_ov, transparent=True)
+        _render_chrome_card_png(scene2_overlay_html, s2_ov, transparent=True)
+        _render_chrome_card_png(scene3_html, s3_png, transparent=False)
+        _render_chrome_card_png(scene4_html, s4_png, transparent=False)
+        _render_chrome_card_png(scene5_html, s5_png, transparent=False)
+        _render_chrome_card_png(scene6_html, s6_png, transparent=False)
+
+        seg_files: List[str] = []
+        for idx, (vid_url, ov_png, dur) in enumerate(
+            [(pexels_1_url, s1_ov, seg_durations[0]), (pexels_2_url, s2_ov, seg_durations[1])],
+            start=1,
+        ):
+            out_seg = os.path.join(work_dir, f"seg_{idx}.mp4")
+            dl_vid = download_url_to_temp(vid_url, suffix=f"_p{idx}.mp4")
+            if dl_vid and os.path.exists(dl_vid):
+                try:
+                    subprocess.run(
+                        [
+                            "ffmpeg",
+                            "-y",
+                            "-stream_loop",
+                            "-1",
+                            "-i",
+                            dl_vid,
+                            "-i",
+                            ov_png,
+                            "-t",
+                            f"{dur:.2f}",
+                            "-filter_complex",
+                            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30[v0];"
+                            "[v0][1:v]overlay=0:0:format=auto,format=yuv420p[vout]",
+                            "-map",
+                            "[vout]",
+                            "-an",
+                            "-c:v",
+                            "libx264",
+                            "-preset",
+                            "veryfast",
+                            "-crf",
+                            "22",
+                            out_seg,
+                        ],
+                        check=True,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                finally:
+                    try:
+                        os.unlink(dl_vid)
+                    except OSError:
+                        pass
+            else:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-y",
+                        "-loop",
+                        "1",
+                        "-i",
+                        ov_png,
+                        "-t",
+                        f"{dur:.2f}",
+                        "-vf",
+                        "fps=30,format=yuv420p",
+                        "-an",
+                        "-c:v",
+                        "libx264",
+                        "-preset",
+                        "veryfast",
+                        "-crf",
+                        "22",
+                        out_seg,
+                    ],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            seg_files.append(out_seg)
+
+        for idx, (card_png, dur) in enumerate(
+            [
+                (s3_png, seg_durations[2]),
+                (s4_png, seg_durations[3]),
+                (s5_png, seg_durations[4]),
+                (s6_png, seg_durations[5]),
+            ],
+            start=3,
+        ):
+            out_seg = os.path.join(work_dir, f"seg_{idx}.mp4")
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-loop",
+                    "1",
+                    "-i",
+                    card_png,
+                    "-t",
+                    f"{dur:.2f}",
+                    "-vf",
+                    "fps=30,fade=t=in:st=0:d=0.35,format=yuv420p",
+                    "-an",
+                    "-c:v",
+                    "libx264",
+                    "-preset",
+                    "veryfast",
+                    "-crf",
+                    "22",
+                    out_seg,
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            seg_files.append(out_seg)
+
+        concat_txt = os.path.join(work_dir, "concat.txt")
+        with open(concat_txt, "w") as f:
+            for sf in seg_files:
+                f.write(f"file '{sf}'\n")
+
+        os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
+        bgm_path = _ensure_keeps_light_commercial_bgm()
+        vo_path = download_url_to_temp(audio_url, suffix="_vo.mp3") if audio_url else None
+
+        try:
+            if vo_path and os.path.exists(vo_path):
+                fade_start = max(0.0, total_dur - 1.5)
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-i",
+                    vo_path,
+                    "-stream_loop",
+                    "-1",
+                    "-i",
+                    bgm_path,
+                    "-filter_complex",
+                    f"[1:a]highpass=f=85,equalizer=f=2800:t=q:w=1.2:g=3.5,"
+                    f"acompressor=threshold=-24dB:ratio=3.5:attack=4:release=60:makeup=7dB,"
+                    f"volume=2.4,alimiter=limit=0.96,apad=whole_dur={total_dur:.2f},asplit=2[vo_main][vo_sc];"
+                    f"[2:a]highpass=f=110,lowpass=f=2200,equalizer=f=1400:t=q:w=1.0:g=-8,"
+                    f"volume=0.055,afade=t=in:st=0:d=0.8,afade=t=out:st={fade_start:.2f}:d=1.50[bgm_pre];"
+                    f"[bgm_pre][vo_sc]sidechaincompress=threshold=0.015:ratio=6:attack=10:release=250[bgm_ducked];"
+                    f"[vo_main][bgm_ducked]amix=inputs=2:duration=first:dropout_transition=2:normalize=0,"
+                    f"alimiter=limit=0.97[aout]",
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "[aout]",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "192k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            else:
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-stream_loop",
+                    "-1",
+                    "-i",
+                    bgm_path,
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "1:a",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "192k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            subprocess.run(cmd_final, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        finally:
+            if vo_path and os.path.exists(vo_path):
+                try:
+                    os.unlink(vo_path)
+                except OSError:
+                    pass
+    finally:
+        import shutil
+
+        shutil.rmtree(work_dir, ignore_errors=True)
+
+    return {
+        "width": W,
+        "height": H,
+        "frame_rate": fps,
+        "duration": total_dur,
+        "file_size": os.path.getsize(output_mp4_path),
+        "render_time_seconds": round(time.time() - t0, 2),
+    }
+
 
