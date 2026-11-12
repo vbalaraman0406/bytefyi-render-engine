@@ -1,0 +1,1380 @@
+{
+  "id": "163XwBGDvri4iDIE",
+  "name": "Keeps App \u2013 Auto Instagram Reels & YouTube Shorts Promo",
+  "active": true,
+  "isArchived": false,
+  "versionId": "918a7299-62be-4508-8d69-c961ea52d28d",
+  "activeVersionId": "918a7299-62be-4508-8d69-c961ea52d28d",
+  "triggerCount": 1,
+  "nodeCount": 32,
+  "createdAt": "2026-11-02T23:47:56.177Z",
+  "updatedAt": "2026-11-12T02:53:42.569Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "binaryMode": "separate"
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "description": "Automated alternate-day (every 2 days) commercial Reel & Short generator and publisher for Keeps: Receipt Scanner Tracker using 5 rotating commercial styles and bytefyi-render-engine.",
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Set Pillar: Monday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Tuesday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Wednesday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Thursday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Friday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Topic & Config": {
+      "main": [
+        [
+          {
+            "node": "Generate Script - OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script - OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Extract Script Array",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Video URLs": {
+      "main": [
+        [
+          {
+            "node": "Stitch Clips-Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stitch Clips-Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - Creatomate Rendering": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Poll Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Poll Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Check - Creatomate Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check - Creatomate Status": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Check to Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to Update Status": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request -Download Video for Uplaod": {
+      "main": [
+        [
+          {
+            "node": "Instagram Create Media Container",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clean & Return Safe Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Ready for Publish in IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Container Status": {
+      "main": [
+        [
+          {
+            "node": "Check Media Ready for Publish in IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Creation": {
+      "main": [
+        [
+          {
+            "node": "Check Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move & Rename Binary Data": {
+      "main": [
+        [
+          {
+            "node": "GCS - Upload Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCS - Upload Audio": {
+      "main": [
+        [
+          {
+            "node": "Collect Video URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Publish Reels": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Audio Length": {
+      "main": [
+        [
+          {
+            "node": "Move & Rename Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Set Pillar: Monday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Tuesday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Wednesday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Thursday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Friday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Monday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean & Return Safe Title": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request -Download Video for Uplaod",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Now (manual)": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Google TTS": {
+      "main": [
+        [
+          {
+            "node": "Check Audio Length",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger (Every 2 Days)": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Script Array": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Google TTS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2986215e-e8de-4066-afe5-4a8064ca83bf",
+      "name": "Run Now (manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -720
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const store = $getWorkflowStaticData('global');\nconst styleKeys = [\n  'COSTCO_REAL_REFUND_STORY',\n  'PRICE_DROP_PROOF',\n  'RETURN_RESCUE',\n  'WARRANTY_VAULT',\n  'LIVE_APP_DEMO',\n  'RETAILER_SECRET_PSA'\n];\n\nconst incomingStyle = $json.styleKey;\nlet nextIdx = ((typeof store.keepsRunIndex === 'number' ? store.keepsRunIndex : -1) + 1) % styleKeys.length;\nif (!store.costcoStoryInitialized) {\n  nextIdx = 0;\n  store.costcoStoryInitialized = true;\n}\nstore.keepsRunIndex = nextIdx;\nconst styleKey = styleKeys[nextIdx] || incomingStyle || 'COSTCO_REAL_REFUND_STORY';\n\nconst styles = {\n  COSTCO_REAL_REFUND_STORY: {\n    pillar: 'Real User Story: Costco $55+ Email & Push Alert Refund Proof',\n    styleName: 'Real Costco $55+ Refund Receipt Proof Story',\n    styleBadge: '\ud83e\uddfe REAL COSTCO REFUND PROOF',\n    accentColor: '#10B981',\n    ttsVoice: 'onyx',\n    heroBadge: '\ud83e\uddfe REAL COSTCO REFUND PROOF',\n    step1Badge: '\u26a1 STEP 1: SCANNED MY COSTCO RECEIPT',\n    step2Badge: '\ud83d\udce7 STEP 2: KEEPS EMAIL + PUSH ALERT',\n    step3Badge: '\ud83d\udcb3 STEP 3: $55+ REFUNDED TO MY VISA',\n    topics: [\n      'My Real Story: I Bought Items at Costco, Keeps Emailed Me Price Drop Alerts, and I Walked Out With a $55+ Visa Refund ($43.56 + $16.34 Receipts)',\n      'How Keeps Email and Push Alerts Got Me $55+ Back at the Costco Returns Counter on Two Receipts ($43.56 and $16.34)',\n      'Real Receipt Proof: Why Every Costco Shopper Needs Keeps Auto Price Watch for Instant Cash Adjustments'\n    ],\n    defaultCase: {\n      store: 'COSTCO',\n      item: 'Warehouse Price Match',\n      paidPrice: '$189.90',\n      newPrice: '$130.00',\n      refundAmount: '$55.00+',\n      returnDays: '30 DAYS',\n      warrantyPeriod: '2 YEARS',\n      alertHeadline: 'Keeps Email + Push Alert: Claimed $55+ Back at Costco'\n    }\n  },\n  PRICE_DROP_PROOF: {\n    pillar: 'Auto Price Watch & Price Match',\n    styleName: 'Live Price-Drop Proof Commercial',\n    styleBadge: '\u26a1 PRICE DROP PROOF COMMERCIAL',\n    accentColor: '#10B981',\n    ttsVoice: 'nova',\n    heroBadge: '\u26a1 SECRET SHOPPING REFUND HACK',\n    step1Badge: '\u26a1 STEP 1: SNAP ANY STORE RECEIPT',\n    step2Badge: '\ud83d\udfe2 STEP 2: 24/7 AUTO PRICE WATCH',\n    step3Badge: '\u26a1 STEP 3: INSTANT CASH REFUND ALERT',\n    topics: [\n      'How Keeps Caught a $70 Price Drop at Best Buy Before My Return Window Closed',\n      'Stores Owe You Cash Refunds When Prices Drop After You Buy',\n      'How to Automatically Catch Price Drops at Costco Best Buy and Target',\n      'Stop Overpaying: Let Keeps AI Watch Your Receipt Prices Every 4 Hours',\n      'The Hidden 30-Day Price Match Refund Most Shoppers Never Claim'\n    ],\n    defaultCase: {\n      store: 'BEST BUY',\n      item: 'Sony WH-1000XM5 Headphones',\n      paidPrice: '$349.99',\n      newPrice: '$279.99',\n      refundAmount: '$70.00',\n      returnDays: '15 DAYS',\n      warrantyPeriod: '1 YEAR',\n      alertHeadline: '12 Days Left to Claim $70.00 Refund at Best Buy'\n    }\n  },\n  RETURN_RESCUE: {\n    pillar: 'Return Window Countdown Alerts',\n    styleName: 'The $800/Year Mistake (Before vs. After)',\n    styleBadge: '\u26a1 RETURN COUNTDOWN COMMERCIAL',\n    accentColor: '#F59E0B',\n    ttsVoice: 'onyx',\n    heroBadge: '\u26a1 STOP MISSING STORE RETURN DEADLINES',\n    step1Badge: '\u26a1 STEP 1: 1-TAP AI DEADLINE SCAN',\n    step2Badge: '\ud83d\udfe2 STEP 2: LIVE RETURN COUNTDOWN',\n    step3Badge: '\u26a1 STEP 3: TIMELY PUSH REMINDERS',\n    topics: [\n      'Why Shoppers Lose $800 a Year Missing 14-Day Store Return Deadlines',\n      'Never Miss a 14-Day or 30-Day Store Return Window Again',\n      'How to Track Every Store Return Deadline in 2 Seconds With Keeps AI',\n      'Stop Donating Money to Retail Stores From Forgotten Returns',\n      'One Tap Receipt Scan That Saves You From Expired Return Windows'\n    ],\n    defaultCase: {\n      store: 'TARGET',\n      item: 'Dyson V15 Detect Cordless Vacuum',\n      paidPrice: '$699.99',\n      newPrice: '$549.99',\n      refundAmount: '$150.00',\n      returnDays: '30 DAYS',\n      warrantyPeriod: '2 YEARS',\n      alertHeadline: '3 Days Left Before Your Target Return Window Closes'\n    }\n  },\n  WARRANTY_VAULT: {\n    pillar: 'Warranty Tracker & Faded Receipts',\n    styleName: 'Faded Thermal Ink & Digital Warranty Vault',\n    styleBadge: '\u26a1 DIGITAL WARRANTY VAULT AD',\n    accentColor: '#38BDF8',\n    ttsVoice: 'shimmer',\n    heroBadge: '\u26a1 THERMAL RECEIPTS FADE IN 6 MONTHS',\n    step1Badge: '\u26a1 STEP 1: DIGITIZE RECEIPT IN 2S',\n    step2Badge: '\ud83d\udfe2 STEP 2: PERMANENT CLOUD VAULT',\n    step3Badge: '\u26a1 STEP 3: WARRANTY EXPIRY ALERTS',\n    topics: [\n      'Why Thermal Paper Receipts Fade Right Before Your Warranty Breaks',\n      'Never Lose a Product Warranty Again: Digitize Receipts in 2 Seconds',\n      'How to Protect Expensive Electronics and Appliances With AI Warranty Tracking',\n      'What Happens When Your Appliance Breaks and the Paper Receipt Faded',\n      'Your Digital Warranty Vault: Get Alerted Before Your 1-Year Coverage Ends'\n    ],\n    defaultCase: {\n      store: 'COSTCO',\n      item: 'Warehouse Price Match',\n      paidPrice: '$189.90',\n      newPrice: '$130.00',\n      refundAmount: '$55.00+',\n      returnDays: '30 DAYS',\n      warrantyPeriod: '2 YEARS',\n      alertHeadline: 'Keeps Email + Push Alert: Claimed $55+ Back at Costco'\n    }\n  },\n  LIVE_APP_DEMO: {\n    pillar: 'AI Receipt Scanner & Expense Tracker',\n    styleName: '3-Step Live AI Scanner Walkthrough',\n    styleBadge: '\u26a1 3-STEP AI APP WALKTHROUGH',\n    accentColor: '#6E62F5',\n    ttsVoice: 'nova',\n    heroBadge: '\u26a1 TURN PAPER RECEIPTS INTO CASH BACK',\n    step1Badge: '\u26a1 STEP 1: 1-TAP AI RECEIPT SCANNER',\n    step2Badge: '\ud83d\udfe2 STEP 2: SMART EXPENSE DASHBOARD',\n    step3Badge: '\u26a1 STEP 3: 1-TAP CSV & PDF EXPORT',\n    topics: [\n      'Ditch the Shoebox of Crumpled Receipts With 1-Tap AI Receipt Scanning',\n      'Snap Any Paper Receipt and Watch AI Extract Every Item Price and Deadline',\n      'How Families and Freelancers Track Every Purchase and Refund in Seconds',\n      'Export Clean Expense Reports to CSV and PDF in One Tap With Keeps',\n      'Smart Receipt Organizer That Actually Pays You Back Every Month'\n    ],\n    defaultCase: {\n      store: 'HOME DEPOT',\n      item: 'DeWalt 20V MAX Brushless Combo Kit',\n      paidPrice: '$299.00',\n      newPrice: '$219.00',\n      refundAmount: '$80.00',\n      returnDays: '90 DAYS',\n      warrantyPeriod: '3 YEARS',\n      alertHeadline: 'AI Extracted 4 Items + Caught $80 Home Depot Price Drop'\n    }\n  },\n  RETAILER_SECRET_PSA: {\n    pillar: 'Smart Shopping & Household Sync',\n    styleName: 'Retailer Policy Secret / Consumer PSA',\n    styleBadge: '\u26a1 CONSUMER REFUND PSA',\n    accentColor: '#10B981',\n    ttsVoice: 'onyx',\n    heroBadge: '\u26a1 RETAILERS OWE YOU PRICE REFUNDS',\n    step1Badge: '\u26a1 STEP 1: SCAN ANY STORE RECEIPT',\n    step2Badge: '\ud83d\udfe2 STEP 2: HOUSEHOLD CLOUD SYNC',\n    step3Badge: '\u26a1 STEP 3: AUTOMATIC PRICE MATCHING',\n    topics: [\n      '3 Ways Keeps Receipt Scanner Pays for Itself on Your First Shopping Trip',\n      'The Ultimate Shopping Companion App for Costco Target Amazon and Best Buy',\n      'How to Share Receipts Return Deadlines and Price Alerts With Your Household',\n      'Privacy-First Receipt Tracking: Local On-Device or Encrypted Cloud Sync',\n      'How Smart Shoppers Claim Hundreds in Post-Purchase Price Adjustments'\n    ],\n    defaultCase: {\n      store: 'AMAZON & TARGET',\n      item: 'Nespresso Vertuo Plus Deluxe Bundle',\n      paidPrice: '$249.99',\n      newPrice: '$179.99',\n      refundAmount: '$70.00',\n      returnDays: '30 DAYS',\n      warrantyPeriod: '1 YEAR',\n      alertHeadline: 'Price Dropped $70 Across Target & Amazon \u2014 Claim Now'\n    }\n  }\n};\n\nconst cfg = styles[styleKey] || styles.COSTCO_REAL_REFUND_STORY;\nconst topicIdx = ((typeof store.keepsTopicIndex === 'number' ? store.keepsTopicIndex : -1) + 1) % cfg.topics.length;\nstore.keepsTopicIndex = topicIdx;\nconst topic = cfg.topics[topicIdx];\n\nreturn [{\n  json: {\n    styleKey,\n    styleName: cfg.styleName,\n    styleBadge: cfg.styleBadge,\n    accentColor: cfg.accentColor,\n    ttsVoice: cfg.ttsVoice,\n    heroBadge: cfg.heroBadge,\n    step1Badge: cfg.step1Badge,\n    step2Badge: cfg.step2Badge,\n    step3Badge: cfg.step3Badge,\n    pillar: cfg.pillar,\n    topic,\n    defaultCase: cfg.defaultCase,\n    useRealCostcoReceipts: styleKey === 'COSTCO_REAL_REFUND_STORY' || cfg.defaultCase.store === 'COSTCO',\n    targetDuration: 42,\n    numClips: 6,\n    platform: 'Instagram Reels & YouTube Shorts',\n    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.anantaventures.keeps',\n    appStoreUrl: 'https://apps.apple.com/app/id6758263177'\n  }\n}];"
+      },
+      "id": "42fc6351-08c6-47cb-b806-7b9319f19104",
+      "name": "Select Topic & Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "options": {},
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Auto Price Watch & Price Match"
+            },
+            {
+              "name": "styleKey",
+              "value": "PRICE_DROP_PROOF"
+            }
+          ]
+        }
+      },
+      "id": "8efb7445-611e-4bb5-852b-1bdc50fde55f",
+      "name": "Set Pillar: Monday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -1200
+      ]
+    },
+    {
+      "parameters": {
+        "options": {},
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Return Window Countdown Alerts"
+            },
+            {
+              "name": "styleKey",
+              "value": "RETURN_RESCUE"
+            }
+          ]
+        }
+      },
+      "id": "fe7c0edf-496d-4a63-b1c7-256eca5d752a",
+      "name": "Set Pillar: Tuesday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -1024
+      ]
+    },
+    {
+      "parameters": {
+        "options": {},
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Warranty Tracker & Faded Receipts"
+            },
+            {
+              "name": "styleKey",
+              "value": "WARRANTY_VAULT"
+            }
+          ]
+        }
+      },
+      "id": "68c9d75b-ea54-4661-8cb8-202c89fd217b",
+      "name": "Set Pillar: Wednesday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -864
+      ]
+    },
+    {
+      "parameters": {
+        "options": {},
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "AI Receipt Scanner & Expense Tracker"
+            },
+            {
+              "name": "styleKey",
+              "value": "LIVE_APP_DEMO"
+            }
+          ]
+        }
+      },
+      "id": "9778a067-1ebc-4c3a-a79d-f82e73cd8d03",
+      "name": "Set Pillar: Thursday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -720
+      ]
+    },
+    {
+      "parameters": {
+        "options": {},
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Smart Shopping & Household Sync"
+            },
+            {
+              "name": "styleKey",
+              "value": "RETAILER_SECRET_PSA"
+            }
+          ]
+        }
+      },
+      "id": "fb6f23f5-e5e4-48a1-bfba-553902ce6c36",
+      "name": "Set Pillar: Friday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -576
+      ]
+    },
+    {
+      "parameters": {
+        "messages": {
+          "values": [
+            {
+              "content": "=You are the Chief Performance Marketing & Commercial Creative Director for Keeps: Receipt Scanner Tracker (also known as Keeps Receipt Manager) \u2014 a top-rated AI-powered mobile app on iOS and Android that turns paper and digital receipts into automatic cash refunds.\n\nKey Product Facts to weave naturally into every commercial script:\n1. 1-Tap AI Receipt & Warranty Scanner: Snap any receipt or warranty card; Keeps AI extracts store name, items, prices, purchase date, return deadline, and warranty expiration in under 2 seconds.\n2. 24/7 Auto Price Watch & Price Match Alerts: Tap any item on an active receipt to enable Auto Price Watch. Keeps checks prices every 4 hours across Costco, Best Buy, Target, Walmart, Amazon, Home Depot, and more \u2014 sending an instant Push + Email alert when the price drops so you can claim a cash refund before your return window closes.\n3. Return Window Countdown & Digital Warranty Vault: Automatic return deadline reminders + permanent digital receipt preservation so thermal ink never fades before a warranty claim.\n4. Available on both the Apple App Store and Google Play Store.\n\nYour output must ALWAYS be strictly valid JSON with no markdown fences or extra text.",
+              "role": "system"
+            },
+            {
+              "content": "=Create a high-converting short-form vertical commercial script (Instagram Reels & YouTube Shorts) for **Keeps: Receipt Scanner Tracker** using the commercial style **{{ $json.styleName }}** ({{ $json.styleKey }}) about the topic: **\"{{ $json.topic }}\"** under the pillar **\"{{ $json.pillar }}\"**.\n\nReturn ONLY a single valid JSON object (no markdown fences) with these exact keys:\n{\n  \"title\": \"string (compelling commercial hook title, max 7 words, e.g. Stores Owe You Price Drop Refunds)\",\n  \"heroHeadline\": \"string (2-line punchy ALL-CAPS commercial headline for Scene 1, max 6 words, separated by \\\\n, e.g. STORES OWE YOU\\\\nPRICE-DROP CASH)\",\n  \"heroSubhead\": \"string (1 concise sentence under 14 words explaining the problem or hook)\",\n  \"hook\": \"string (scroll-stopping opening sentence spoken in first 3 seconds, under 14 words)\",\n  \"mainContent\": \"string (high-converting commercial voiceover body, 65-75 words, energetic and direct, weaving in a specific store/item price-drop or return example and how Keeps 1-Tap AI Receipt Scanner, 4-hour Auto Price Watch, Return Countdown, and Warranty Vault work)\",\n  \"cta\": \"string (closing spoken call-to-action, max 16 words, e.g. Search Keeps Receipt Scanner on the App Store and Google Play, or tap the link in bio!)\",\n  \"caseStudy\": {\n    \"store\": \"string (major store name in ALL CAPS, e.g. BEST BUY, COSTCO, TARGET, HOME DEPOT)\",\n    \"item\": \"string (popular consumer product name, max 28 chars, e.g. Sony WH-1000XM5 Headphones)\",\n    \"paidPrice\": \"string (e.g. $349.99)\",\n    \"newPrice\": \"string (e.g. $279.99)\",\n    \"refundAmount\": \"string (exact difference, e.g. $70.00)\",\n    \"returnDays\": \"string (e.g. 15 DAYS or 30 DAYS)\",\n    \"warrantyPeriod\": \"string (e.g. 1 YEAR or 2 YEARS)\",\n    \"alertHeadline\": \"string (max 46 chars, e.g. 12 Days Left to Claim $70 Refund at Best Buy)\"\n  },\n  \"painPoints\": [\n    \"string (short pain point without Keeps, max 44 chars, plain text no emojis)\",\n    \"string (short pain point without Keeps, max 44 chars, plain text no emojis)\",\n    \"string (short pain point without Keeps, max 44 chars, plain text no emojis)\"\n  ],\n  \"valueProps\": [\n    \"string (short Keeps AI feature benefit, max 44 chars, plain text no emojis)\",\n    \"string (short Keeps AI feature benefit, max 44 chars, plain text no emojis)\",\n    \"string (short Keeps AI feature benefit, max 44 chars, plain text no emojis)\",\n    \"string (short Keeps AI feature benefit, max 44 chars, plain text no emojis)\"\n  ],\n  \"hashtags\": {\n    \"pillar\": [\"#receiptscanner\", \"#pricematch\", \"#warrantytracker\"],\n    \"platform\": [\"#moneytips\", \"#shoppinghacks\", \"#savingmoney\"],\n    \"engagement\": [\"#costcofinds\", \"#bestbuydeals\", \"#keepsapp\"]\n  },\n  \"instagramCaption\": \"string (engaging Instagram Reels & YouTube Shorts commercial caption with hook line, 3 bullet benefits of Keeps, search instruction 'Search Keeps Receipt Scanner on the App Store & Google Play', both clickable store links: Google Play https://play.google.com/store/apps/details?id=com.anantaventures.keeps and App Store https://apps.apple.com/app/id6758263177, and 10 hashtags)\"\n}"
+            }
+          ]
+        },
+        "modelId": {
+          "__rl": true,
+          "cachedResultName": "GPT-4o",
+          "mode": "list",
+          "value": "gpt-4o"
+        },
+        "options": {}
+      },
+      "id": "bf186d32-7c0d-4841-a50d-a1e6b9076332",
+      "name": "Generate Script - OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        -960
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const cfg = $('Select Topic & Config').first().json;\nconst rawContent = ($input.first().json.message?.content || '{}')\n  .replace(/^```json\\s*/i, '')\n  .replace(/^```\\s*/i, '')\n  .replace(/```\\s*$/, '')\n  .trim();\n\nlet parsed = {};\ntry {\n  parsed = JSON.parse(rawContent);\n} catch (e) {\n  parsed = {};\n}\n\nfunction cleanAscii(str, fallback = '') {\n  const s = String(str || fallback)\n    .replace(/[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}\\u{FE00}-\\u{FE0F}]/gu, '')\n    .replace(/[\\u2715\\u2714\\u2713]/g, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n  return s || fallback;\n}\n\nconst isCostcoRealStory = cfg.styleKey === 'COSTCO_REAL_REFUND_STORY' || Boolean(cfg.useRealCostcoReceipts);\n\nconst title = cleanAscii(\n  parsed.title,\n  isCostcoRealStory ? 'How I Got $55 Back at Costco With Keeps' : 'Stores Owe You Price Drop Refunds'\n);\nconst heroHeadline = String(\n  parsed.heroHeadline || (isCostcoRealStory ? 'I GOT $55+ BACK\\nAT COSTCO!' : 'STORES OWE YOU\\nPRICE-DROP CASH')\n)\n  .replace(/[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}\\u{FE00}-\\u{FE0F}]/gu, '')\n  .trim()\n  .toUpperCase()\n  .replace(/\\\\[nN]/g, '\\n');\nconst heroSubhead = cleanAscii(\n  parsed.heroSubhead,\n  'Most shoppers lose $800+/yr because they never track price drops or return windows.'\n);\nconst hook = cleanAscii(\n  isCostcoRealStory\n    ? 'I just walked into Costco and got over 55 dollars refunded back to my Visa card thanks to Keeps!'\n    : parsed.hook,\n  'Did you know stores legally owe you cash back when prices drop after you buy?'\n);\nconst mainContent = cleanAscii(\n  isCostcoRealStory\n    ? 'Here is my actual receipt proof. I bought items at Costco, snapped my receipt into the Keeps app in two seconds, and forgot about it. A few days later, Keeps sent me an email and a push alert because those items dropped in price! I walked right up to the Costco counter and got two instant Visa refunds: 43 dollars and 56 cents on the first slip, and 16 dollars and 34 cents on the second. That is nearly 60 dollars back in my pocket without returning a single item!'\n    : parsed.mainContent,\n  'Most shoppers lose hundreds of dollars to crumpled receipts, faded thermal ink, and expired return deadlines. With Keeps Receipt Scanner, just snap any receipt once. Our AI extracts the store, items, return deadline, and warranty in two seconds. Enable Auto Price Watch and Keeps checks prices every four hours across Best Buy, Costco, Target, Walmart, and Amazon, sending an instant push alert when prices drop so you claim your cash refund.'\n);\nconst cta = cleanAscii(\n  parsed.cta,\n  'Search Keeps Receipt Scanner on the App Store and Google Play, or tap the link in bio to download free!'\n);\n\nlet flatHashtags = ['#receiptscanner', '#pricematch', '#costco', '#costcofinds', '#moneytips', '#shoppinghacks', '#savingmoney', '#personalfinance', '#keepsapp'];\nif (parsed.hashtags) {\n  const combined = [\n    ...(parsed.hashtags.pillar || []),\n    ...(parsed.hashtags.platform || []),\n    ...(parsed.hashtags.engagement || [])\n  ].filter(Boolean);\n  if (combined.length >= 4) flatHashtags = combined;\n}\n\nconst numClips = 6;\nconst words = mainContent.split(/\\s+/).filter(w => w.length > 0);\nconst chunkSize = Math.max(1, Math.ceil(words.length / numClips));\nconst segments = [];\nfor (let i = 0; i < numClips; i++) {\n  let seg = words.slice(i * chunkSize, (i + 1) * chunkSize).join(' ').trim();\n  if (seg && !/[.?!]$/.test(seg)) {\n    seg = seg.replace(/[,;:]\\s*$/, '') + '.';\n  }\n  segments.push(seg || 'Keeps AI watches your receipts 24/7.');\n}\n\nconst sceneLines = [\n  `${hook} ${segments[0]}`.trim(),\n  segments[1],\n  segments[2],\n  segments[3],\n  segments[4],\n  `${segments[5]} ${cta}`.trim()\n];\n\nconst dc = cfg.defaultCase || {};\nconst cs = parsed.caseStudy || {};\nconst caseStudy = isCostcoRealStory\n  ? {\n      store: 'COSTCO',\n      item: 'Warehouse Price Match',\n      paidPrice: '$189.90',\n      newPrice: '$130.00',\n      refundAmount: '$55.00+',\n      returnDays: '30 DAYS',\n      warrantyPeriod: '2 YEARS',\n      alertHeadline: 'Keeps Email + Push Alert: Claimed $55+ Back at Costco'\n    }\n  : {\n      store: cleanAscii(cs.store, dc.store || 'BEST BUY').toUpperCase().slice(0, 22),\n      item: cleanAscii(cs.item, dc.item || 'Sony WH-1000XM5 Headphones').slice(0, 32),\n      paidPrice: cleanAscii(cs.paidPrice, dc.paidPrice || '$349.99'),\n      newPrice: cleanAscii(cs.newPrice, dc.newPrice || '$279.99'),\n      refundAmount: cleanAscii(cs.refundAmount, dc.refundAmount || '$70.00'),\n      returnDays: cleanAscii(cs.returnDays, dc.returnDays || '15 DAYS').toUpperCase(),\n      warrantyPeriod: cleanAscii(cs.warrantyPeriod, dc.warrantyPeriod || '1 YEAR').toUpperCase(),\n      alertHeadline: cleanAscii(cs.alertHeadline, dc.alertHeadline || '12 Days Left to Claim Refund Before Return Window Closes').slice(0, 52)\n    };\n\nconst defaultPains = [\n  'Missed 14-day & 30-day store return deadlines',\n  'Unclaimed post-purchase price drops ($40-$150+)',\n  'Thermal paper ink fades before warranty claims'\n];\nconst rawPains = Array.isArray(parsed.painPoints) ? parsed.painPoints : [];\nconst painPoints = [0, 1, 2].map(i => cleanAscii(rawPains[i], defaultPains[i]).slice(0, 48));\n\nconst defaultProps = [\n  '1-Tap AI Receipt & Warranty Extraction in 2s',\n  '24/7 Price Watch Checks Stores Every 4 Hours',\n  'Automatic Return Countdown Push Reminders',\n  '1-Tap CSV & PDF Tax / Expense Reports'\n];\nconst rawProps = Array.isArray(parsed.valueProps) ? parsed.valueProps : [];\nconst valueProps = [0, 1, 2, 3].map(i => cleanAscii(rawProps[i], defaultProps[i]).slice(0, 48));\n\nconst instagramCaption = isCostcoRealStory\n  ? `I bought items at Costco, scanned my receipt into Keeps, and got Email + Push Alerts when the prices dropped! Walked into Costco and got $55+ refunded straight back to my Visa ($43.56 + $16.34 receipts shown in video)!\\n\\nWhy Smart Shoppers Use Keeps:\\n\u2022 1-Tap AI Receipt & Warranty Scanner\\n\u2022 24/7 Auto Price Watch (Email + Push Alerts)\\n\u2022 Return Window Countdown Reminders\\n\\nSearch \"Keeps Receipt Scanner\" on the App Store & Google Play or download here:\\nApp Store: https://apps.apple.com/app/id6758263177\\nGoogle Play: https://play.google.com/store/apps/details?id=com.anantaventures.keeps\\n\\n${flatHashtags.join(' ')}`\n  : (parsed.instagramCaption || `${hook}\\n\\nWhy Smart Shoppers Use Keeps:\\n\u2022 1-Tap AI Receipt & Warranty Scanner\\n\u2022 24/7 Auto Price Watch (Checks Every 4 Hours)\\n\u2022 Return Window Countdown Push Alerts\\n\\nSearch \"Keeps Receipt Scanner\" on the App Store & Google Play or download here:\\nApp Store: https://apps.apple.com/app/id6758263177\\nGoogle Play: https://play.google.com/store/apps/details?id=com.anantaventures.keeps\\n\\n${flatHashtags.join(' ')}`);\n\nreturn [{\n  json: {\n    ...cfg,\n    title,\n    heroHeadline,\n    heroSubhead,\n    hook,\n    mainContent,\n    cta,\n    segments,\n    sceneLines,\n    caseStudy,\n    useRealCostcoReceipts: isCostcoRealStory,\n    painPoints,\n    valueProps,\n    hashtags: flatHashtags,\n    instagramCaption\n  }\n}];"
+      },
+      "id": "b80f9a08-1521-4c2a-a205-4531f6752e70",
+      "name": "Extract Script Array",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $('Extract Script Array').first().json;\nconst durInfo = $('Check Audio Length').first().json;\nconst audioUrl = $('GCS - Upload Audio').first().json.mediaLink;\n\nconst pexelsPool1 = [\n  'https://videos.pexels.com/video-files/9474093/9474093-hd_720_1280_24fps.mp4',\n  'https://videos.pexels.com/video-files/5632371/5632371-hd_720_1280_25fps.mp4',\n  'https://videos.pexels.com/video-files/7679830/7679830-hd_720_1280_25fps.mp4'\n];\nconst pexelsPool2 = [\n  'https://videos.pexels.com/video-files/7308301/7308301-hd_720_1280_24fps.mp4',\n  'https://videos.pexels.com/video-files/6115066/6115066-hd_720_1366_25fps.mp4',\n  'https://videos.pexels.com/video-files/8060394/8060394-hd_720_1366_25fps.mp4'\n];\nconst idx = Math.floor(Math.random() * pexelsPool1.length);\n\nreturn [{\n  json: {\n    mode: 'keeps_commercial',\n    styleKey: d.styleKey,\n    styleBadge: d.styleBadge,\n    heroHeadline: d.heroHeadline,\n    caseStudy: d.caseStudy,\n    useRealCostcoReceipts: Boolean(d.useRealCostcoReceipts || d.styleKey === 'COSTCO_REAL_REFUND_STORY' || (d.caseStudy && d.caseStudy.store === 'COSTCO')),\n    videoDurations: durInfo.videoDurations || [6.0, 6.0, 6.0, 6.5, 6.0, 6.5],\n    totalAudioDuration: durInfo.totalAudioDuration || 37.0,\n    audio_url: audioUrl,\n    pexels_1_url: pexelsPool1[idx],\n    pexels_2_url: pexelsPool2[idx]\n  }\n}];"
+      },
+      "id": "c3219af1-2b15-4834-8c12-48edeab9953e",
+      "name": "Collect Video URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        -1456
+      ]
+    },
+    {
+      "parameters": {
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "jsonBody": "={{ JSON.stringify({ source: $json }) }}",
+        "method": "POST",
+        "options": {
+          "timeout": 300000
+        },
+        "sendBody": true,
+        "sendHeaders": true,
+        "specifyBody": "json",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders"
+      },
+      "id": "56b38f3c-5e69-4282-9e50-43cc2236b298",
+      "name": "Stitch Clips-Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1776,
+        -1456
+      ],
+      "onError": "stopWorkflow",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "4e9e6aac-4be6-48ea-bd56-7b727c78921f",
+      "name": "Wait - Creatomate Rendering",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2048,
+        -1456
+      ],
+      "webhookId": "4b8e1e46-e705-42d9-a6c7-947d94d3bc85"
+    },
+    {
+      "parameters": {
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id || $('Stitch Clips-Creatomate').first().json.id }}"
+      },
+      "id": "c97643f6-fe3c-4ce0-a4a5-fe847487184e",
+      "name": "HTTP Request - Poll Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        -1456
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "or",
+          "conditions": [
+            {
+              "id": "82613f0a-96d0-4436-8537-d82e11f8c989",
+              "leftValue": "={{ $json.status }}",
+              "operator": {
+                "name": "filter.operator.equals",
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "succeeded"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "id": "ae416ecd-0b7f-4c12-9628-60179929fdd3",
+      "name": "Check - Creatomate Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2528,
+        -1456
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json.title }}\\n",
+        "regionCode": "US",
+        "categoryId": "23",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $json.description }}",
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false
+        }
+      },
+      "id": "36e8fca8-78aa-422c-80e3-5b2a14f6ad04",
+      "name": "Upload to YouTube Short",
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -176
+      ],
+      "disabled": false,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "or",
+          "conditions": [
+            {
+              "id": "2289ccca-bc0c-46b5-85d1-64d64b34e2e1",
+              "leftValue": "={{ $json.uploadId }}",
+              "operator": {
+                "operation": "notEmpty",
+                "singleValue": true,
+                "type": "string"
+              },
+              "rightValue": ""
+            },
+            {
+              "id": "1b5d3718-6c3c-402f-b47a-f41b85116496",
+              "leftValue": "={{ $json.uploadId }}",
+              "operator": {
+                "name": "filter.operator.equals",
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "failed"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "id": "53384f97-cedc-4e7b-a5d3-e19740e8d982",
+      "name": "Check to Update Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Poll Creatomate').item.json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "dec9c72d-f43d-46c1-830e-1653f93c44ba",
+      "name": "HTTP Request -Download Video for Uplaod",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Keeps App YouTube Short Uploaded!",
+        "message": "=<p>Hello,</p><p>Your Keeps App YouTube Short (<strong>{{ $('Clean & Return Safe Title').first().json.title }}</strong>) has been generated and published to YouTube Shorts.</p>",
+        "options": {}
+      },
+      "id": "028d2e70-4767-4282-88ae-cc56293f0cd7",
+      "name": "Send a message",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1648,
+        -176
+      ],
+      "webhookId": "ef6304c0-eb0f-470d-9388-30922a03c20c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_url",
+                "value": "={{ $('HTTP Request - Poll Creatomate').last().json.url }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              },
+              {
+                "name": "share_to_feed",
+                "value": "true"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Extract Script Array').first().json.instagramCaption }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "2fea82b0-e99c-477c-9f4e-2c53dcd765f5",
+      "name": "Instagram Create Media Container",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -496
+      ],
+      "disabled": false,
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "36b87fbf-c39d-48e5-9345-3024cb04920a",
+      "name": "Instagram Publish Reels",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        -512
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "d70a62df-c0be-423a-be3d-0b7976616cfa",
+              "leftValue": "={{ $json.status_code }}",
+              "operator": {
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "FINISHED"
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          }
+        },
+        "options": {}
+      },
+      "id": "11e2a275-a897-4193-98b2-b92f78e474aa",
+      "name": "Check Media Ready for Publish in IG",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1808,
+        -512
+      ]
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b173a2e3-2f5c-4f97-83ee-1d2d3ddd7ec0",
+      "name": "Check Container Status",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -512
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "d1c933e0-e764-4649-a9df-af579280fffa",
+      "name": "Wait for Media Creation",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        -512
+      ],
+      "webhookId": "2c7f3ac0-0678-4c69-a4d6-3d61bdbaf059"
+    },
+    {
+      "parameters": {
+        "resource": "object",
+        "operation": "create",
+        "bucketName": "bytesized-truths-audio-shorts",
+        "objectName": "={{ $json.fileName }}",
+        "createBinaryPropertyName": "=data",
+        "createData": {},
+        "createQuery": {},
+        "encryptionHeaders": {},
+        "requestOptions": {}
+      },
+      "id": "1146c793-9bda-4cd8-afec-ec5df3b8ab34",
+      "name": "GCS - Upload Audio",
+      "type": "n8n-nodes-base.googleCloudStorage",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -1456
+      ],
+      "credentials": {
+        "googleCloudStorageOAuth2Api": {
+          "id": "c3fdpvl2qV0PHHhz",
+          "name": "Google Cloud Storage account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "id": "ef1d665c-0829-4053-a423-c8be4d741732",
+      "name": "Move & Rename Binary Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -1456
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Keeps App Instagram Reel Uploaded!",
+        "message": "=<p>Hello,</p><p>Your Keeps App Instagram Reel (<strong>{{ $('Extract Script Array').first().json.title }}</strong>) has been generated and published to Instagram Reels.</p>",
+        "options": {}
+      },
+      "id": "5e8b044a-4025-4b87-989b-c43deecdb2bf",
+      "name": "Send a message1",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2320,
+        -512
+      ],
+      "webhookId": "ea94c41b-3b20-414b-8b61-7906e3c782f1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst binaryBuffer = await this.helpers.getBinaryDataBuffer(0, 'data');\n// OpenAI tts-1-hd MP3 is 128kbps = 16,000 bytes/sec\nconst rawAudioSeconds = binaryBuffer.length / 16000;\nconst totalAudioDuration = Number(Math.max(30, rawAudioSeconds + 2.2).toFixed(2));\n\nconst scriptData = $('Extract Script Array').first().json;\nconst sceneLines = Array.isArray(scriptData.sceneLines) && scriptData.sceneLines.length === 6\n  ? scriptData.sceneLines\n  : ['Scene 1', 'Scene 2', 'Scene 3', 'Scene 4', 'Scene 5', 'Scene 6'];\n\nconst weights = sceneLines.map(line => {\n  const words = String(line || '').trim().split(/\\s+/).filter(Boolean).length;\n  return Math.max(8, words);\n});\nconst totalWeight = weights.reduce((a, b) => a + b, 0) || 60;\n\nconst videoDurations = weights.map(w => {\n  const d = (w / totalWeight) * totalAudioDuration;\n  return Number(Math.max(4.5, d).toFixed(2));\n});\nconst sumFirst5 = videoDurations.slice(0, 5).reduce((a, b) => a + b, 0);\nvideoDurations[5] = Number(Math.max(5.0, totalAudioDuration - sumFirst5).toFixed(2));\nconst finalDuration = Number(videoDurations.reduce((a, b) => a + b, 0).toFixed(2));\n\nreturn [{\n  json: {\n    ...item.json,\n    fileName: `keeps_commercial_${Date.now()}.mp3`,\n    audioSize: binaryBuffer.length,\n    totalAudioDuration: finalDuration,\n    videoDurations,\n    totalVideos: 6,\n    durationStatus: 'good',\n    targetDuration: finalDuration\n  },\n  binary: item.binary\n}];"
+      },
+      "id": "d3846e63-baaf-459d-a0ad-7a98e6578879",
+      "name": "Check Audio Length",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        -1456
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "fallbackOutput": "extra"
+        },
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "6a5a227c-d606-4d6d-ad27-050d2e83541f",
+                    "leftValue": "={{ Math.floor(Date.now() / (2 * 86400000)) % 5 }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 0
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "a410a4f9-a132-427c-ad78-a76ca8daadf1",
+                    "leftValue": "={{ Math.floor(Date.now() / (2 * 86400000)) % 5 }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 1
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "fe476a66-4459-4392-af63-14f31075b3b9",
+                    "leftValue": "={{ Math.floor(Date.now() / (2 * 86400000)) % 5 }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 2
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "88afeb79-b860-443b-9ece-b1e1c640754d",
+                    "leftValue": "={{ Math.floor(Date.now() / (2 * 86400000)) % 5 }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 3
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "f417f5b3-eb9e-4335-88a5-8b4e007ad86b",
+                    "leftValue": "={{ Math.floor(Date.now() / (2 * 86400000)) % 5 }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 4
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            }
+          ]
+        }
+      },
+      "id": "4857efe4-ed03-4ea3-8016-985559155776",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -688,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst scriptData = $('Extract Script Array').first().json;\nconst rawTitle = scriptData.title || item.json.title || 'Stores Owe You Price Drop Refunds';\n\nconst safe = rawTitle\n  .replace(/[:]/g, ' ')\n  .replace(/\\r?\\n|\\r/g, ' ')\n  .replace(/[^\\p{L}\\p{N}\\p{P}\\p{Sc}\\p{Z}]/gu, '')\n  .replace(/\\s+/g, ' ')\n  .trim()\n  .substring(0, 52);\n\nconst finalTitle = `${safe} #KeepsApp #PriceMatch #MoneyTips #Shorts`;\nconst description = scriptData.instagramCaption || `${scriptData.hook || 'Stop leaving money behind on receipts!'}\\n\\nSearch \"Keeps Receipt Scanner\" on the App Store & Google Play or download free:\\nApp Store: https://apps.apple.com/app/id6758263177\\nGoogle Play: https://play.google.com/store/apps/details?id=com.anantaventures.keeps\\n\\n#receiptscanner #pricematch #savingmoney #shoppinghacks #shorts`;\n\nreturn [{\n  json: { title: finalTitle, description },\n  binary: item.binary\n}];"
+      },
+      "id": "a04e1199-501e-4d57-86d3-6fbe8e31bc64",
+      "name": "Clean & Return Safe Title",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "ac4391e1-c633-450c-b4af-e2e3a5dc26e4",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        -176
+      ],
+      "webhookId": "da76139c-37cd-4f2a-be61-a95506975a98"
+    },
+    {
+      "parameters": {
+        "input": "={{ $json.hook + ' ' + $json.mainContent + ' ' + $json.cta }}",
+        "model": "tts-1-hd",
+        "options": {
+          "binaryPropertyOutput": "data",
+          "response_format": "mp3",
+          "speed": 1
+        },
+        "resource": "audio",
+        "voice": "={{ $json.ttsVoice || 'nova' }}"
+      },
+      "id": "3f911b33-0501-480b-9231-3600b629aefe",
+      "name": "HTTP Request - Google TTS",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        480,
+        -1456
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "id": "873ad401-e2d4-4ed9-8794-5c771ad6d5a0",
+      "name": "Schedule Trigger (Every 2 Days)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -928,
+        -912
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 2,
+              "field": "days",
+              "triggerAtHour": 17,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "nodeGroups": [
+    {
+      "id": "20ce1626-7da8-4c89-a72d-c449136fe652",
+      "name": "Commercial Style & Script Generation",
+      "nodeNames": [
+        "Switch",
+        "Set Pillar: Monday",
+        "Set Pillar: Tuesday",
+        "Set Pillar: Wednesday",
+        "Set Pillar: Thursday",
+        "Set Pillar: Friday",
+        "Select Topic & Config",
+        "Generate Script - OpenAI",
+        "Extract Script Array"
+      ],
+      "description": "Rotates 5 commercial ad archetypes on alternate days and generates script + retail case study via GPT-4o."
+    },
+    {
+      "id": "d8ad6d30-d9f7-4a04-8d16-d3e2b5ec7c56",
+      "name": "Voiceover & Commercial Video Render",
+      "nodeNames": [
+        "HTTP Request - Google TTS",
+        "Check Audio Length",
+        "Move & Rename Binary Data",
+        "GCS - Upload Audio",
+        "Collect Video URLs",
+        "Stitch Clips-Creatomate",
+        "Wait - Creatomate Rendering",
+        "HTTP Request - Poll Creatomate",
+        "Check - Creatomate Status",
+        "Wait1",
+        "HTTP Request -Download Video for Uplaod"
+      ],
+      "description": "Synthesizes OpenAI HD voiceover, builds 6-scene dynamic UI commercial timeline, and renders 1080x1920 MP4 on Cloud Run."
+    },
+    {
+      "id": "10168d84-fbaa-46bf-a413-2e376820edfc",
+      "name": "Instagram Reels Publishing",
+      "nodeNames": [
+        "Instagram Create Media Container",
+        "Wait for Media Creation",
+        "Check Container Status",
+        "Check Media Ready for Publish in IG",
+        "Instagram Publish Reels",
+        "Send a message1"
+      ],
+      "description": "Publishes the rendered commercial Reel to Instagram via Facebook Graph API and sends confirmation email."
+    },
+    {
+      "id": "12a3daf3-f8b6-4b8f-872d-d94193742ab9",
+      "name": "YouTube Shorts Publishing",
+      "nodeNames": [
+        "Clean & Return Safe Title",
+        "Upload to YouTube Short",
+        "Check to Update Status",
+        "Send a message"
+      ],
+      "description": "Publishes the rendered commercial Short to YouTube Shorts with store links and sends confirmation email."
+    }
+  ],
+  "activeVersion": {
+    "sameAsDraft": true
+  },
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}
