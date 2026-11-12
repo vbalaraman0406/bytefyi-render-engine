@@ -1304,6 +1304,17 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
     else:
         app_icon_b64 = ""
 
+    r4356_path = os.path.join(os.path.dirname(__file__), "costco_refund_4356.jpg")
+    r1634_path = os.path.join(os.path.dirname(__file__), "costco_refund_1634.jpg")
+    r4356_b64 = ""
+    r1634_b64 = ""
+    if os.path.exists(r4356_path):
+        with open(r4356_path, "rb") as f:
+            r4356_b64 = "data:image/jpeg;base64," + base64.b64encode(f.read()).decode("ascii")
+    if os.path.exists(r1634_path):
+        with open(r1634_path, "rb") as f:
+            r1634_b64 = "data:image/jpeg;base64," + base64.b64encode(f.read()).decode("ascii")
+
     cs = payload.get("caseStudy") or {}
     store_name = str(cs.get("store") or "BEST BUY").strip()
     item_name = str(cs.get("item") or "Sony WH-1000XM5 Headphones").strip()
@@ -1313,6 +1324,17 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
     return_days = str(cs.get("returnDays") or "15 Days").strip()
     warranty_period = str(cs.get("warrantyPeriod") or "1 Year").strip()
     alert_headline = str(cs.get("alertHeadline") or f"12 Days Left to Claim at {store_name.title()}").strip()
+
+    style_key = str(payload.get("styleKey") or "").strip().upper()
+    use_real_costco_receipts = bool(
+        r4356_b64
+        and r1634_b64
+        and (
+            payload.get("useRealCostcoReceipts")
+            or style_key == "COSTCO_REAL_REFUND_STORY"
+            or "COSTCO" in store_name.upper()
+        )
+    )
 
     raw_durs = payload.get("videoDurations") or [6.0, 6.0, 6.0, 6.5, 6.0, 6.5]
     seg_durations = [max(4.0, float(d)) for d in raw_durs[:6]]
@@ -1330,7 +1352,141 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
     )
     audio_url = str(payload.get("audio_url") or "")
 
-    scene1_overlay_html = f"""
+    if use_real_costco_receipts:
+        scene1_overlay_html = f"""
+<div style="width:1080px;height:1920px;position:relative;background:radial-gradient(circle at 50% 35%, #1E293B 0%, #0F172A 55%, #070B14 100%);display:flex;flex-direction:column;align-items:center;padding-top:96px;">
+  <div style="width:940px;background:rgba(255,255,255,0.97);border-radius:34px;padding:24px 32px;box-shadow:0 24px 60px rgba(0,0,0,0.55);display:flex;align-items:center;gap:24px;border:2px solid #10B981;">
+    <img src="{app_icon_b64}" style="width:92px;height:92px;border-radius:22px;box-shadow:0 8px 20px rgba(110,98,245,0.4);" />
+    <div style="flex:1;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:21px;font-weight:800;color:#4F46E5;letter-spacing:0.5px;">📧 KEEPS EMAIL &amp; PUSH ALERT • COSTCO</span>
+        <span style="background:#DCFCE7;color:#059669;font-size:21px;font-weight:900;padding:6px 16px;border-radius:20px;">+$55+ REFUND</span>
+      </div>
+      <div style="font-size:27px;font-weight:900;color:#0F172A;line-height:1.18;">Costco dropped prices on your scanned receipt!</div>
+      <div style="font-size:21px;font-weight:600;color:#475569;margin-top:4px;">Walked into Costco counter &amp; got $43.56 + $16.34 back on Visa.</div>
+    </div>
+  </div>
+  <div style="margin-top:32px;text-align:center;padding:0 50px;">
+    <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(16,185,129,0.22);border:2px solid #10B981;border-radius:40px;padding:8px 26px;margin-bottom:16px;">
+      <span style="font-size:23px;font-weight:800;color:#6EE7B7;letter-spacing:1.2px;">🧾 REAL COSTCO REFUND PROOF • RECEIPT #1</span>
+    </div>
+    <h1 style="font-size:62px;font-weight:900;color:#FFFFFF;line-height:1.08;text-shadow:0 10px 30px rgba(0,0,0,0.85);">
+      I Walked Into Costco &amp; Got <span style="color:#34D399;">$55+ Back</span> With Keeps!
+    </h1>
+  </div>
+  <div style="margin-top:32px;width:940px;height:960px;background:rgba(15,23,42,0.92);border:3px solid #10B981;border-radius:40px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 50px rgba(16,185,129,0.22);display:flex;gap:26px;align-items:stretch;">
+    <div style="width:490px;height:100%;border-radius:28px;overflow:hidden;position:relative;border:2px solid rgba(255,255,255,0.22);background:#000;">
+      <img src="{r4356_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 48%;" />
+      <div style="position:absolute;top:18px;left:18px;background:rgba(16,185,129,0.95);color:#022C22;font-size:20px;font-weight:900;padding:8px 18px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,0.45);">
+        ✓ ACTUAL COSTCO SLIP #1
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:12px 6px;">
+      <div>
+        <div style="background:rgba(16,185,129,0.18);border:1.5px solid #10B981;color:#6EE7B7;font-size:20px;font-weight:800;padding:8px 18px;border-radius:14px;display:inline-block;margin-bottom:18px;">
+          11/10/2026 • VISA *3998
+        </div>
+        <div style="font-size:32px;font-weight:900;color:#FFFFFF;line-height:1.15;">Costco Price Drop Refund #1</div>
+        <div style="font-size:22px;font-weight:600;color:#94A3B8;margin-top:8px;">Keeps emailed me when my Costco items went on sale.</div>
+      </div>
+      <div style="background:rgba(6,78,59,0.65);border:2px solid #10B981;border-radius:28px;padding:24px 22px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#A7F3D0;letter-spacing:1px;">APPROVED - REFUND</div>
+        <div style="font-size:68px;font-weight:900;color:#34D399;line-height:1.05;margin-top:6px;">+$43.56</div>
+        <div style="font-size:20px;font-weight:700;color:#ECFDF5;margin-top:6px;">Instant Visa Credit</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);border-radius:24px;padding:20px;">
+        <div style="font-size:20px;font-weight:800;color:#38BDF8;margin-bottom:6px;">➕ PLUS 2ND ALERT NEXT DAY</div>
+        <div style="font-size:24px;font-weight:800;color:#FFFFFF;">Slip #2: +$16.34 Refund</div>
+        <div style="font-size:21px;font-weight:700;color:#34D399;margin-top:6px;">Total: $55+ ($59.90 w/ tax)</div>
+      </div>
+    </div>
+  </div>
+</div>"""
+
+        scene2_overlay_html = f"""
+<div style="width:1080px;height:1920px;position:relative;background:radial-gradient(circle at 50% 35%, #26174A 0%, #110B29 55%, #070510 100%);display:flex;flex-direction:column;align-items:center;padding-top:100px;">
+  <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(124,92,255,0.34);border:2px solid #A78BFA;border-radius:40px;padding:10px 30px;margin-bottom:18px;">
+    <span style="font-size:24px;font-weight:800;color:#E9D5FF;letter-spacing:1.2px;">🧾 REAL COSTCO REFUND PROOF • RECEIPT #2</span>
+  </div>
+  <h1 style="font-size:62px;font-weight:900;color:#FFFFFF;line-height:1.08;text-align:center;padding:0 50px;text-shadow:0 10px 30px rgba(0,0,0,0.85);">
+    Keeps Sent a 2nd Alert.<br/><span style="color:#34D399;">Another $16.34 Back!</span>
+  </h1>
+  <div style="margin-top:34px;width:940px;height:980px;background:rgba(19,14,49,0.94);border:3px solid #A78BFA;border-radius:40px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 50px rgba(167,139,250,0.25);display:flex;gap:26px;align-items:stretch;">
+    <div style="width:490px;height:100%;border-radius:28px;overflow:hidden;position:relative;border:2px solid rgba(255,255,255,0.22);background:#000;">
+      <img src="{r1634_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;" />
+      <div style="position:absolute;top:18px;left:18px;background:rgba(16,185,129,0.95);color:#022C22;font-size:20px;font-weight:900;padding:8px 18px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,0.45);">
+        ✓ ACTUAL COSTCO SLIP #2
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:12px 6px;">
+      <div>
+        <div style="background:rgba(167,139,250,0.20);border:1.5px solid #A78BFA;color:#DDD6FE;font-size:20px;font-weight:800;padding:8px 18px;border-radius:14px;display:inline-block;margin-bottom:18px;">
+          11/11/2026 • VISA *3998
+        </div>
+        <div style="font-size:32px;font-weight:900;color:#FFFFFF;line-height:1.15;">Costco Price Drop Refund #2</div>
+        <div style="font-size:22px;font-weight:600;color:#CBD5E1;margin-top:8px;">No returning items — Costco refunded the difference on the spot!</div>
+      </div>
+      <div style="background:rgba(6,78,59,0.65);border:2px solid #10B981;border-radius:28px;padding:24px 22px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#A7F3D0;letter-spacing:1px;">APPROVED - REFUND</div>
+        <div style="font-size:68px;font-weight:900;color:#34D399;line-height:1.05;margin-top:6px;">+$16.34</div>
+        <div style="font-size:20px;font-weight:700;color:#ECFDF5;margin-top:6px;">Instant Visa Credit</div>
+      </div>
+      <div style="background:linear-gradient(135deg, rgba(16,185,129,0.28) 0%, rgba(5,150,105,0.28) 100%);border:2px solid #34D399;border-radius:24px;padding:20px;text-align:center;">
+        <div style="font-size:19px;font-weight:800;color:#A7F3D0;">2-DAY COSTCO REFUND TOTAL</div>
+        <div style="font-size:44px;font-weight:900;color:#FFFFFF;margin-top:4px;">$55+ REFUNDED</div>
+        <div style="font-size:19px;font-weight:700;color:#6EE7B7;margin-top:2px;">($43.56 + $16.34 = $59.90)</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:28px;width:940px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.18);border-radius:28px;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:24px;font-weight:800;color:#FFFFFF;">⚡ 1-Tap Receipt Scan</span>
+    <span style="font-size:24px;font-weight:800;color:#34D399;">📧 Email + Push Alerts</span>
+    <span style="font-size:24px;font-weight:800;color:#38BDF8;">💳 $55+ Visa Refund</span>
+  </div>
+</div>"""
+
+        scene3_html = f"""
+<div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 42%, #2E1760 0%, #160A36 52%, #0B051D 100%);display:flex;flex-direction:column;align-items:center;padding-top:110px;position:relative;">
+  <div style="position:relative;z-index:2;background:rgba(16,185,129,0.18);border:2px solid #10B981;border-radius:50px;padding:12px 36px;margin-bottom:20px;">
+    <span style="font-size:25px;font-weight:800;color:#6EE7B7;letter-spacing:1.5px;">💡 MY REAL COSTCO REFUND STORY</span>
+  </div>
+  <h1 style="position:relative;z-index:2;font-size:66px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.10;padding:0 60px;">
+    2 Real Costco Slips.<br/><span style="color:#2DD4BF;">$55+ Back in Minutes!</span>
+  </h1>
+  <div style="position:relative;z-index:2;margin-top:28px;width:920px;display:flex;gap:24px;">
+    <div style="flex:1;background:rgba(15,23,42,0.9);border:2.5px solid #10B981;border-radius:30px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+      <div style="height:560px;border-radius:20px;overflow:hidden;margin-bottom:14px;">
+        <img src="{r4356_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 48%;" />
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;">
+        <div>
+          <div style="font-size:19px;font-weight:800;color:#94A3B8;">COSTCO SLIP #1 (11/10)</div>
+          <div style="font-size:21px;font-weight:900;color:#FFFFFF;white-space:nowrap;">APPROVED - Refund</div>
+        </div>
+        <span style="background:#10B981;color:#022C22;font-size:26px;font-weight:900;padding:8px 16px;border-radius:16px;">+$43.56</span>
+      </div>
+    </div>
+    <div style="flex:1;background:rgba(15,23,42,0.9);border:2.5px solid #10B981;border-radius:30px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+      <div style="height:560px;border-radius:20px;overflow:hidden;margin-bottom:14px;">
+        <img src="{r1634_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;" />
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;">
+        <div>
+          <div style="font-size:19px;font-weight:800;color:#94A3B8;">COSTCO SLIP #2 (11/11)</div>
+          <div style="font-size:21px;font-weight:900;color:#FFFFFF;white-space:nowrap;">APPROVED - Refund</div>
+        </div>
+        <span style="background:#10B981;color:#022C22;font-size:26px;font-weight:900;padding:8px 16px;border-radius:16px;">+$16.34</span>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;margin-top:28px;width:920px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.18);border-radius:32px;padding:28px 36px;display:flex;flex-direction:column;gap:16px;">
+    <div style="font-size:27px;font-weight:800;color:#FFFFFF;">1️⃣ Bought items at Costco &amp; scanned my receipt in Keeps</div>
+    <div style="font-size:27px;font-weight:800;color:#34D399;">2️⃣ Keeps sent me an Email + Push Alert when prices dropped</div>
+    <div style="font-size:27px;font-weight:800;color:#38BDF8;">3️⃣ Walked into Costco &amp; got $55+ refunded back to Visa!</div>
+  </div>
+</div>"""
+    else:
+        scene1_overlay_html = f"""
 <div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(10,5,28,0.82) 0%, rgba(10,5,28,0.12) 42%, rgba(10,5,28,0.15) 68%, rgba(10,5,28,0.88) 100%);display:flex;flex-direction:column;align-items:center;padding-top:115px;">
   <div style="width:940px;background:rgba(255,255,255,0.96);border-radius:36px;padding:28px 34px;box-shadow:0 24px 60px rgba(0,0,0,0.50);display:flex;align-items:center;gap:26px;">
     <img src="{app_icon_b64}" style="width:96px;height:96px;border-radius:22px;box-shadow:0 8px 20px rgba(110,98,245,0.4);" />
@@ -1353,7 +1509,7 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
   </div>
 </div>"""
 
-    scene2_overlay_html = f"""
+        scene2_overlay_html = f"""
 <div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(10,5,28,0.84) 0%, rgba(10,5,28,0.18) 38%, rgba(10,5,28,0.28) 65%, rgba(10,5,28,0.90) 100%);display:flex;flex-direction:column;align-items:center;padding-top:125px;">
   <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(124,92,255,0.34);border:2px solid #A78BFA;border-radius:40px;padding:10px 30px;margin-bottom:20px;">
     <span style="font-size:25px;font-weight:800;color:#E9D5FF;letter-spacing:1.2px;">⚡ 1-TAP AI RECEIPT SCANNER</span>
@@ -1389,7 +1545,7 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
   </div>
 </div>"""
 
-    scene3_html = """
+        scene3_html = """
 <div style="width:1080px;height:1920px;background:radial-gradient(circle at 50% 42%, #2E1760 0%, #160A36 52%, #0B051D 100%);display:flex;flex-direction:column;align-items:center;padding-top:230px;position:relative;">
   <div style="position:absolute;top:400px;width:720px;height:720px;background:radial-gradient(circle, rgba(16,185,129,0.22) 0%, transparent 70%);z-index:0;"></div>
   <div style="position:relative;z-index:2;background:rgba(16,185,129,0.16);border:2px solid #10B981;border-radius:50px;padding:14px 38px;margin-bottom:34px;">
@@ -1450,7 +1606,7 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
         <div style="display:flex;align-items:center;gap:14px;">
           <span style="font-size:30px;">💰</span>
           <div>
-            <div style="font-size:20px;font-weight:800;color:#0F172A;">{store_name.title()} • {item_name[:22]}</div>
+            <div style="font-size:20px;font-weight:800;color:#0F172A;">{store_name.title()} • {item_name[:26]}</div>
             <div style="font-size:16px;font-weight:600;color:#059669;">Price dropped {paid_price} → {new_price} (Claim Refund)</div>
           </div>
         </div>
@@ -1624,8 +1780,8 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
         s5_png = os.path.join(work_dir, "s5.png")
         s6_png = os.path.join(work_dir, "s6.png")
 
-        _render_chrome_card_png(scene1_overlay_html, s1_ov, transparent=True)
-        _render_chrome_card_png(scene2_overlay_html, s2_ov, transparent=True)
+        _render_chrome_card_png(scene1_overlay_html, s1_ov, transparent=not use_real_costco_receipts)
+        _render_chrome_card_png(scene2_overlay_html, s2_ov, transparent=not use_real_costco_receipts)
         _render_chrome_card_png(scene3_html, s3_png, transparent=False)
         _render_chrome_card_png(scene4_html, s4_png, transparent=False)
         _render_chrome_card_png(scene5_html, s5_png, transparent=False)
@@ -1637,7 +1793,11 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
             start=1,
         ):
             out_seg = os.path.join(work_dir, f"seg_{idx}.mp4")
-            dl_vid = download_url_to_temp(vid_url, suffix=f"_p{idx}.mp4")
+            dl_vid = (
+                None
+                if use_real_costco_receipts
+                else download_url_to_temp(vid_url, suffix=f"_p{idx}.mp4")
+            )
             if dl_vid and os.path.exists(dl_vid):
                 try:
                     subprocess.run(
