@@ -771,6 +771,14 @@ def render_timeline_payload_to_mp4(
             output_mp4_path,
         )
 
+    if payload.get("mode") == "daily_life_masterclass" or (
+        isinstance(source_obj, dict) and source_obj.get("mode") == "daily_life_masterclass"
+    ):
+        return _render_daily_life_masterclass_to_mp4(
+            source_obj if isinstance(source_obj, dict) and source_obj.get("mode") == "daily_life_masterclass" else payload,
+            output_mp4_path,
+        )
+
     if "modifications" in payload and "source" not in payload:
         return _render_template_modifications_to_mp4(payload, output_mp4_path)
 
@@ -2002,5 +2010,369 @@ def _render_keeps_commercial_to_mp4(payload: Dict[str, Any], output_mp4_path: st
         "file_size": os.path.getsize(output_mp4_path),
         "render_time_seconds": round(time.time() - t0, 2),
     }
+
+
+def _render_daily_life_masterclass_to_mp4(payload: Dict[str, Any], output_mp4_path: str) -> Dict[str, Any]:
+    """
+    Render a 6-scene Daily Life Masterclass Reel/Short (1080x1920, 30fps):
+      - Scenes 1–5: Full-bleed vertical Pexels footage with glassmorphic broadcast cards,
+        step badges, actionable protocols, and synced human voiceover subtitles.
+      - Scene 6: Save-worthy 3-Step Cheat Sheet card + 24-Hour Daily Challenge + Follow CTA.
+      - Audio: Natural ElevenLabs human voiceover mixed over a sidechain-ducked ambient bed.
+    """
+    import html as html_lib
+
+    t0 = time.time()
+    W, H, fps = 1080, 1920, 30
+
+    def esc(val: Any, fallback: str = "") -> str:
+        s = str(val if val is not None else fallback).strip()
+        return html_lib.escape(s or fallback)
+
+    pillar_badge = esc(payload.get("pillarBadge"), "🧠 DAILY LIFE LAB")
+    accent = str(payload.get("accentColor") or "#10B981").strip()
+    title = esc(payload.get("title"), "3 Science-Backed Habits That Upgrade Your Day")
+    hero_headline = esc(payload.get("heroHeadline"), "THE 90-MINUTE\nDOPAMINE RULE").replace("\n", "<br/>")
+    hero_subhead = esc(
+        payload.get("heroSubhead"),
+        "Why the first 90 minutes of your morning control the next 14 hours of focus",
+    )
+
+    raw_lines = payload.get("sceneLines") or []
+    scene_lines = [esc(x) for x in raw_lines[:6]]
+    while len(scene_lines) < 6:
+        scene_lines.append("Try this simple science-backed habit today and notice the difference.")
+
+    raw_cards = payload.get("sceneCards") or []
+    default_cards = [
+        {"badge": "⚡ THE SURPRISING TRUTH", "heading": "Why Most People Get This Backwards", "takeaway": "Small timing shifts create 3x bigger results than willpower alone."},
+        {"badge": "🔬 THE SCIENCE", "heading": "What Happens Inside Your Brain & Body", "takeaway": "Aligning with your biology removes afternoon crashes and mental friction."},
+        {"badge": "✅ ACTION STEP #1", "heading": "Start With the 90-Minute Rule", "takeaway": "Let your natural cortisol peak clear adenosine before reaching for caffeine."},
+        {"badge": "✅ ACTION STEP #2", "heading": "Use the 10-Minute Reset Protocol", "takeaway": "Step outside for natural optic flow to lower stress hormones in minutes."},
+        {"badge": "✅ ACTION STEP #3", "heading": "Lock In the Evening Shutdown", "takeaway": "Write down tomorrow's top 3 priorities so your brain stops looping at night."},
+        {"badge": "📌 SAVE THIS CHEAT SHEET", "heading": "Your 3-Step Daily Action Plan", "takeaway": "Try this for 24 hours and feel the difference."},
+    ]
+    scene_cards: List[Dict[str, str]] = []
+    for i in range(6):
+        rc = raw_cards[i] if i < len(raw_cards) and isinstance(raw_cards[i], dict) else {}
+        dc = default_cards[i]
+        scene_cards.append(
+            {
+                "badge": esc(rc.get("badge"), dc["badge"]),
+                "heading": esc(rc.get("heading"), dc["heading"]),
+                "takeaway": esc(rc.get("takeaway"), dc["takeaway"]),
+            }
+        )
+
+    raw_steps = payload.get("cheatSheetSteps") or [
+        scene_cards[2]["takeaway"],
+        scene_cards[3]["takeaway"],
+        scene_cards[4]["takeaway"],
+    ]
+    cheat_steps = [esc(s) for s in raw_steps[:3]]
+    while len(cheat_steps) < 3:
+        cheat_steps.append("Apply this habit for the next 24 hours.")
+
+    daily_challenge = esc(
+        payload.get("dailyChallenge"),
+        "Pick Step #1 and test it once in the next 24 hours — bookmark this video to check back!",
+    )
+
+    raw_durs = payload.get("videoDurations") or [8.5, 8.5, 8.5, 8.5, 8.5, 8.5]
+    seg_durations = [max(4.0, float(d)) for d in raw_durs[:6]]
+    while len(seg_durations) < 6:
+        seg_durations.append(8.5)
+    total_dur = float(payload.get("totalAudioDuration") or sum(seg_durations))
+
+    default_vids = [
+        "https://videos.pexels.com/video-files/9474093/9474093-hd_720_1280_24fps.mp4",
+        "https://videos.pexels.com/video-files/5632371/5632371-hd_720_1280_25fps.mp4",
+        "https://videos.pexels.com/video-files/7679830/7679830-hd_720_1280_25fps.mp4",
+        "https://videos.pexels.com/video-files/7308301/7308301-hd_720_1280_24fps.mp4",
+        "https://videos.pexels.com/video-files/6115066/6115066-hd_720_1366_25fps.mp4",
+        "https://videos.pexels.com/video-files/8060394/8060394-hd_720_1366_25fps.mp4",
+    ]
+    raw_vids = payload.get("video_urls") or []
+    video_urls = [str(raw_vids[i] if i < len(raw_vids) and raw_vids[i] else default_vids[i]) for i in range(6)]
+    audio_url = str(payload.get("audio_url") or "")
+
+    def build_scene_overlay(idx: int) -> str:
+        pct = int(round((idx / 6.0) * 100))
+        card = scene_cards[idx - 1]
+        sub_text = scene_lines[idx - 1]
+
+        header_html = f"""
+  <div style="width:940px;background:rgba(15,23,42,0.88);border:1.5px solid rgba(255,255,255,0.18);border-radius:26px;padding:18px 28px 14px 28px;box-shadow:0 16px 40px rgba(0,0,0,0.45);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:22px;font-weight:800;color:{accent};letter-spacing:0.8px;">{pillar_badge}</span>
+      <span style="background:rgba(255,255,255,0.10);color:#F8FAFC;font-size:20px;font-weight:800;padding:5px 16px;border-radius:16px;">PART {idx} / 6</span>
+    </div>
+    <div style="width:100%;height:8px;background:rgba(255,255,255,0.12);border-radius:4px;overflow:hidden;">
+      <div style="width:{pct}%;height:100%;background:{accent};border-radius:4px;"></div>
+    </div>
+  </div>"""
+
+        if idx == 1:
+            return f"""
+<div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(7,10,20,0.88) 0%, rgba(7,10,20,0.32) 42%, rgba(7,10,20,0.35) 60%, rgba(7,10,20,0.92) 100%);display:flex;flex-direction:column;align-items:center;padding-top:96px;justify-content:space-between;padding-bottom:250px;">
+  <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+    {header_html}
+    <div style="margin-top:42px;text-align:center;padding:0 55px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(16,185,129,0.22);border:2px solid {accent};border-radius:40px;padding:10px 28px;margin-bottom:22px;">
+        <span style="font-size:23px;font-weight:800;color:#FFFFFF;letter-spacing:1.2px;">{card["badge"]}</span>
+      </div>
+      <h1 style="font-size:68px;font-weight:900;color:#FFFFFF;line-height:1.08;text-shadow:0 12px 35px rgba(0,0,0,0.9);">
+        {hero_headline}
+      </h1>
+      <p style="font-size:30px;font-weight:600;color:#E2E8F0;line-height:1.35;margin-top:20px;text-shadow:0 6px 20px rgba(0,0,0,0.85);">
+        {hero_subhead}
+      </p>
+    </div>
+  </div>
+  <div style="width:940px;background:rgba(15,23,42,0.92);border:2px solid {accent};border-radius:34px;padding:30px 36px;box-shadow:0 28px 70px rgba(0,0,0,0.75);">
+    <div style="font-size:22px;font-weight:800;color:{accent};letter-spacing:0.8px;margin-bottom:10px;">🎙️ {card["heading"].upper()}</div>
+    <div style="font-size:29px;font-weight:700;color:#FFFFFF;line-height:1.36;">"{sub_text}"</div>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:21px;font-weight:700;color:#94A3B8;">💡 {card["takeaway"]}</span>
+      <span style="font-size:20px;font-weight:800;color:{accent};">WATCH TILL END →</span>
+    </div>
+  </div>
+</div>"""
+
+        if idx in (2, 3, 4, 5):
+            step_num = f"0{idx - 2}" if idx >= 3 else "🔬"
+            return f"""
+<div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(7,10,20,0.82) 0%, rgba(7,10,20,0.10) 32%, rgba(7,10,20,0.22) 56%, rgba(7,10,20,0.94) 100%);display:flex;flex-direction:column;align-items:center;padding-top:96px;justify-content:space-between;padding-bottom:250px;">
+  {header_html}
+  <div style="width:940px;background:rgba(15,23,42,0.93);border:2.5px solid {accent};border-radius:38px;padding:34px 38px;box-shadow:0 30px 80px rgba(0,0,0,0.80);">
+    <div style="display:flex;align-items:center;gap:22px;margin-bottom:20px;">
+      <div style="width:76px;height:76px;border-radius:22px;background:{accent};color:#04130E;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 25px rgba(0,0,0,0.35);">
+        {step_num}
+      </div>
+      <div>
+        <div style="font-size:21px;font-weight:800;color:{accent};letter-spacing:1px;">{card["badge"]}</div>
+        <div style="font-size:38px;font-weight:900;color:#FFFFFF;line-height:1.15;margin-top:4px;">{card["heading"]}</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.07);border-left:6px solid {accent};border-radius:18px;padding:18px 24px;margin-bottom:20px;">
+      <div style="font-size:20px;font-weight:800;color:#94A3B8;letter-spacing:0.6px;margin-bottom:4px;">KEY TAKEAWAY TO REMEMBER</div>
+      <div style="font-size:27px;font-weight:800;color:#F8FAFC;line-height:1.30;">{card["takeaway"]}</div>
+    </div>
+    <div style="font-size:26px;font-weight:600;color:#CBD5E1;line-height:1.38;">
+      "{sub_text}"
+    </div>
+  </div>
+</div>"""
+
+        return f"""
+<div style="width:1080px;height:1920px;position:relative;background:linear-gradient(180deg, rgba(7,10,20,0.92) 0%, rgba(15,23,42,0.88) 50%, rgba(7,10,20,0.96) 100%);display:flex;flex-direction:column;align-items:center;padding-top:96px;">
+  {header_html}
+  <div style="margin-top:28px;background:rgba(16,185,129,0.20);border:2px solid {accent};border-radius:40px;padding:10px 32px;">
+    <span style="font-size:24px;font-weight:800;color:#FFFFFF;letter-spacing:1.2px;">📌 SAVE THIS 60-SECOND CHEAT SHEET</span>
+  </div>
+  <h1 style="margin-top:18px;font-size:52px;font-weight:900;color:#FFFFFF;text-align:center;line-height:1.12;padding:0 60px;">
+    {title}
+  </h1>
+  <div style="margin-top:28px;width:940px;display:flex;flex-direction:column;gap:18px;">
+    <div style="background:rgba(15,23,42,0.95);border:2px solid rgba(255,255,255,0.16);border-radius:28px;padding:24px 30px;display:flex;align-items:center;gap:24px;">
+      <div style="width:64px;height:64px;border-radius:18px;background:{accent};color:#04130E;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">01</div>
+      <div style="font-size:27px;font-weight:800;color:#FFFFFF;line-height:1.28;">{cheat_steps[0]}</div>
+    </div>
+    <div style="background:rgba(15,23,42,0.95);border:2px solid rgba(255,255,255,0.16);border-radius:28px;padding:24px 30px;display:flex;align-items:center;gap:24px;">
+      <div style="width:64px;height:64px;border-radius:18px;background:{accent};color:#04130E;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">02</div>
+      <div style="font-size:27px;font-weight:800;color:#FFFFFF;line-height:1.28;">{cheat_steps[1]}</div>
+    </div>
+    <div style="background:rgba(15,23,42,0.95);border:2px solid rgba(255,255,255,0.16);border-radius:28px;padding:24px 30px;display:flex;align-items:center;gap:24px;">
+      <div style="width:64px;height:64px;border-radius:18px;background:{accent};color:#04130E;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">03</div>
+      <div style="font-size:27px;font-weight:800;color:#FFFFFF;line-height:1.28;">{cheat_steps[2]}</div>
+    </div>
+  </div>
+  <div style="margin-top:24px;width:940px;background:rgba(16,185,129,0.16);border:2px solid {accent};border-radius:28px;padding:24px 32px;text-align:center;">
+    <div style="font-size:21px;font-weight:900;color:{accent};letter-spacing:1px;">🎯 24-HOUR MICRO-CHALLENGE</div>
+    <div style="font-size:27px;font-weight:800;color:#FFFFFF;margin-top:8px;line-height:1.30;">{daily_challenge}</div>
+  </div>
+  <div style="margin-top:24px;background:#FFFFFF;color:#0F172A;border-radius:40px;padding:18px 44px;font-size:26px;font-weight:900;box-shadow:0 16px 40px rgba(0,0,0,0.5);">
+    🔔 Follow @bytefyi for Tomorrow's Daily Life Upgrade!
+  </div>
+</div>"""
+
+    work_dir = tempfile.mkdtemp(prefix="daily_life_")
+    try:
+        seg_files: List[str] = []
+        for idx in range(1, 7):
+            ov_png = os.path.join(work_dir, f"s{idx}_ov.png")
+            _render_chrome_card_png(build_scene_overlay(idx), ov_png, transparent=True)
+            vid_url = video_urls[idx - 1]
+            dur = seg_durations[idx - 1]
+            out_seg = os.path.join(work_dir, f"seg_{idx}.mp4")
+            dl_vid = download_url_to_temp(vid_url, suffix=f"_dl_{idx}.mp4")
+            if dl_vid and os.path.exists(dl_vid):
+                try:
+                    subprocess.run(
+                        [
+                            "ffmpeg",
+                            "-y",
+                            "-stream_loop",
+                            "-1",
+                            "-i",
+                            dl_vid,
+                            "-i",
+                            ov_png,
+                            "-t",
+                            f"{dur:.2f}",
+                            "-filter_complex",
+                            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30[v0];"
+                            "[v0][1:v]overlay=0:0:format=auto,fade=t=in:st=0:d=0.25,format=yuv420p[vout]",
+                            "-map",
+                            "[vout]",
+                            "-an",
+                            "-c:v",
+                            "libx264",
+                            "-preset",
+                            "veryfast",
+                            "-crf",
+                            "22",
+                            out_seg,
+                        ],
+                        check=True,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                finally:
+                    try:
+                        os.unlink(dl_vid)
+                    except OSError:
+                        pass
+            else:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-y",
+                        "-loop",
+                        "1",
+                        "-i",
+                        ov_png,
+                        "-t",
+                        f"{dur:.2f}",
+                        "-vf",
+                        "fps=30,fade=t=in:st=0:d=0.25,format=yuv420p",
+                        "-an",
+                        "-c:v",
+                        "libx264",
+                        "-preset",
+                        "veryfast",
+                        "-crf",
+                        "22",
+                        out_seg,
+                    ],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            seg_files.append(out_seg)
+
+        concat_txt = os.path.join(work_dir, "concat.txt")
+        with open(concat_txt, "w") as f:
+            for sf in seg_files:
+                f.write(f"file '{sf}'\n")
+
+        os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
+        bgm_path = _ensure_keeps_light_commercial_bgm()
+        vo_path = download_url_to_temp(audio_url, suffix="_vo.mp3") if audio_url else None
+
+        try:
+            if vo_path and os.path.exists(vo_path):
+                fade_start = max(0.0, total_dur - 1.5)
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-i",
+                    vo_path,
+                    "-stream_loop",
+                    "-1",
+                    "-i",
+                    bgm_path,
+                    "-filter_complex",
+                    f"[1:a]highpass=f=80,equalizer=f=2600:t=q:w=1.2:g=2.5,"
+                    f"acompressor=threshold=-22dB:ratio=3.0:attack=5:release=70:makeup=5dB,"
+                    f"volume=2.0,alimiter=limit=0.96,apad=whole_dur={total_dur:.2f},asplit=2[vo_main][vo_sc];"
+                    f"[2:a]highpass=f=110,lowpass=f=2200,volume=0.045,"
+                    f"afade=t=in:st=0:d=0.8,afade=t=out:st={fade_start:.2f}:d=1.50[bgm_pre];"
+                    f"[bgm_pre][vo_sc]sidechaincompress=threshold=0.015:ratio=6:attack=10:release=250[bgm_ducked];"
+                    f"[vo_main][bgm_ducked]amix=inputs=2:duration=first:dropout_transition=2:normalize=0,"
+                    f"alimiter=limit=0.97[aout]",
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "[aout]",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "192k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            else:
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-stream_loop",
+                    "-1",
+                    "-i",
+                    bgm_path,
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "1:a",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "192k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            subprocess.run(cmd_final, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        finally:
+            if vo_path and os.path.exists(vo_path):
+                try:
+                    os.unlink(vo_path)
+                except OSError:
+                    pass
+    finally:
+        import shutil
+
+        shutil.rmtree(work_dir, ignore_errors=True)
+
+    return {
+        "width": W,
+        "height": H,
+        "frame_rate": fps,
+        "duration": total_dur,
+        "file_size": os.path.getsize(output_mp4_path),
+        "render_time_seconds": round(time.time() - t0, 2),
+    }
+
 
 

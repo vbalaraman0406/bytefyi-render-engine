@@ -1,0 +1,1718 @@
+{
+  "id": "VkERah33RoPdKBw3",
+  "name": "Daliy-AI-Videos-V3",
+  "active": true,
+  "isArchived": false,
+  "versionId": "1a3a7a1e-2e0a-4ceb-be69-32e74b6771d0",
+  "activeVersionId": "1a3a7a1e-2e0a-4ceb-be69-32e74b6771d0",
+  "triggerCount": 1,
+  "nodeCount": 44,
+  "createdAt": "2025-10-02T23:11:06.409Z",
+  "updatedAt": "2026-11-17T01:24:37.804Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "tags": [],
+  "parentFolderId": null,
+  "scopes": [
+    "execution:delete",
+    "execution:list",
+    "execution:read",
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true,
+  "connections": {
+    "Set Pillar: Monday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Tuesday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Wednesday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Thursday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pillar: Friday": {
+      "main": [
+        [
+          {
+            "node": "Select Topic & Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Topic & Config": {
+      "main": [
+        [
+          {
+            "node": "Generate Script - OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Segments": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Google TTS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Veo Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron Trigger (9am Weekdays)": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script - OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Extract Script Array",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Script Array": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request for Wan 2.1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Video URLs": {
+      "main": [
+        [
+          {
+            "node": "Stitch Clips-Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stitch Clips-Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait - Creatomate Rendering": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Poll Creatomate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Poll Creatomate": {
+      "main": [
+        [
+          {
+            "node": "Check - Creatomate Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check - Creatomate Status": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait - Creatomate Rendering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Check to Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to Update Status": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request -Download Video for Uplaod": {
+      "main": [
+        [
+          {
+            "node": "Instagram Create Media Container",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clean & Return Safe Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Media Ready for Publish in IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for Media Creation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Container Status": {
+      "main": [
+        [
+          {
+            "node": "Check Media Ready for Publish in IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Creation": {
+      "main": [
+        [
+          {
+            "node": "Check Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Google TTS": {
+      "main": [
+        [
+          {
+            "node": "Check Audio Length",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move & Rename Binary Data": {
+      "main": [
+        [
+          {
+            "node": "GCS - Upload Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GCS - Upload Audio": {
+      "main": [
+        [
+          {
+            "node": "Collect Video URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Video URL's": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Segments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Poll Video Completion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poll Video Completion": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Get Video URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Publish Reels": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Audio Length": {
+      "main": [
+        [
+          {
+            "node": "Move & Rename Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Set Pillar: Monday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Tuesday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Wednesday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Thursday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Friday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Pillar: Friday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean & Return Safe Title": {
+      "main": [
+        [
+          {
+            "node": "Upload to YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request -Download Video for Uplaod",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Veo Prompt": {
+      "main": [
+        [
+          {
+            "node": "Build Pexels Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Pexels Query": {
+      "main": [
+        [
+          {
+            "node": "Pexels - Search Clip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pexels - Search Clip": {
+      "main": [
+        [
+          {
+            "node": "Pexels - Search Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pexels - Search Fallback": {
+      "main": [
+        [
+          {
+            "node": "Pick Pexels Clip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Pexels Clip": {
+      "main": [
+        [
+          {
+            "node": "Store Video URL's",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Now (manual)": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 18
+            }
+          ]
+        }
+      },
+      "id": "8e648836-871b-4e1c-aeaa-367b428d0d55",
+      "name": "Cron Trigger (9am Weekdays)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -912
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Technology/AI"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3ad00e82-a404-46f5-9f0f-acc41a4e93cd",
+      "name": "Set Pillar: Monday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -1200
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Cybersecurity"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "feee337e-009f-482f-ab92-29dcbf596b0a",
+      "name": "Set Pillar: Tuesday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -1024
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Finance/Investing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "afcc119b-fea8-4dd8-bcfc-0c4d17493e06",
+      "name": "Set Pillar: Wednesday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -864
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Education/Tutorial"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "92b23346-eb31-4b52-8d49-1e570096757a",
+      "name": "Set Pillar: Thursday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -720
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pillar",
+              "value": "Lifestyle/Productivity"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8d8f8951-17c2-47c6-91fc-9b9be70d5c1e",
+      "name": "Set Pillar: Friday",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -576
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const store = $getWorkflowStaticData('global');\n\n// Determine day of week in America/Los_Angeles (1=Mon .. 7=Sun)\nconst nowLA = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));\nconst jsDay = nowLA.getDay(); // 0=Sun, 1=Mon .. 6=Sat\n\n// Advance a global daily counter so even multiple runs on the same day pick a different pillar & topic\nconst runCounter = ((typeof store.dailyMasterclassRunCount === 'number' ? store.dailyMasterclassRunCount : -1) + 1);\nstore.dailyMasterclassRunCount = runCounter;\n\nconst dailyLabs = [\n  {\n    key: 'BRAIN_FOCUS',\n    pillar: 'Neuroscience, Dopamine & Peak Focus',\n    pillarBadge: '\ud83e\udde0 BRAIN & FOCUS LAB',\n    accentColor: '#10B981',\n    voiceId: 'IZXMkokQbZW2tD1sqOTx', // Vishnu_podcast natural human voice\n    fallbackQuery: 'person working focused morning sunlight',\n    topics: [\n      'The 90-Minute Adenosine Rule: Why Delaying Morning Coffee Eliminates the 2 PM Crash',\n      'How First-Hour Phone Scrolling Hijacks Your Brain Baseline Dopamine for 4 Hours',\n      'The 90-Minute Ultradian Rhythm: How Your Brain Naturally Cycles Between Deep Focus and Rest',\n      'The Zeigarnik Effect: Why Unfinished Tasks Drain Your Working Memory and the 3-Minute Shutdown Fix',\n      'Non-Sleep Deep Rest (NSDR): The 10-Minute Stanford Protocol That Replaces a Lost Hour of Sleep',\n      'The 20-Second Friction Rule: How to Break Bad Habits Without Relying on Willpower',\n      'Optic Flow Walking: Why a 10-Minute Outdoor Walk Deactivates Your Brain Stress Center',\n      'The 2-Minute Cold Water Face Reflex That Instantly Lowers Heart Rate and Anxiety',\n      'Why Writing by Hand Activates 3x More Memory Circuits Than Typing on a Screen',\n      'The Dopamine Menu Trick: Replacing Doomscrolling With 3-Minute High-Energy Resets',\n      'How Decision Fatigue Ruins Evening Willpower and How to Automate Your First 60 Minutes',\n      'The Single-Tasking Protocol: Why Switching Tabs Drops Your Effective IQ by 10 Points'\n    ]\n  },\n  {\n    key: 'LONGEVITY_SLEEP',\n    pillar: 'Longevity, Sleep Science & Body Optimization',\n    pillarBadge: '\ud83e\udec0 LONGEVITY & SLEEP LAB',\n    accentColor: '#06B6D4',\n    voiceId: 'xyat7D2ZXEzXOykdSKco', // Calm natural human storyteller\n    fallbackQuery: 'healthy morning walk nature sunlight',\n    topics: [\n      'The 10-Minute Post-Meal Walk That Cuts Blood Sugar Spikes and Post-Lunch Fatigue by 30%',\n      'The 3-2-1 Bedroom Rule for Doubling Your Deep Restorative Sleep Tonight',\n      'The Okinawan Hara Hachi Bu 80% Rule: Why Stopping Before You Feel Full Adds Years to Your Life',\n      'The Physiological Sigh: The Double-Inhale Breathing Trick That Stops Stress in 15 Seconds',\n      'Why Drinking 16oz of Water Before Coffee Fixes Morning Brain Fog Instantly',\n      'Why Eating Protein and Fiber First Changes How Your Body Absorbs Carbohydrates',\n      'The 20-20-20 Vision Rule That Stops Digital Eye Strain and Evening Headaches',\n      'Why Nasal Breathing During Daily Walks Boosts Nitric Oxide and Energy by 18%',\n      'How a Warm Shower 60 Minutes Before Bed Drops Core Body Temperature to Trigger Deep Sleep',\n      'Exercise Snacks: Why 2 Minutes of Movement Every Hour Beats Sitting All Day',\n      'Why Morning Sunlight Within 30 Minutes of Waking Sets Your Nighttime Melatonin Timer',\n      'Standing on One Leg While Brushing Your Teeth: The 60-Second Longevity & Balance Habit'\n    ]\n  },\n  {\n    key: 'PSYCHOLOGY_SOCIAL',\n    pillar: 'Human Psychology, Communication & Persuasion',\n    pillarBadge: '\ud83d\udcac HUMAN PSYCHOLOGY LAB',\n    accentColor: '#8B5CF6',\n    voiceId: 'IZXMkokQbZW2tD1sqOTx',\n    fallbackQuery: 'two people talking coffee shop conversation',\n    topics: [\n      'The FBI Last 3 Words Mirroring Trick That Makes Anyone Open Up in Conversations',\n      'Why Saying Thank You for Your Patience Beats Saying I Am Sorry I Am Late Every Time',\n      'The Benjamin Franklin Effect: Why Asking for a Small Favor Makes People Like You More',\n      'The 4-Second Silence Rule: How Pausing Before You Answer Gives You Upper Hand in Negotiations',\n      'Emotional Labeling: The 3-Word Phrase Hostage Negotiators Use to Calm Angry People in 10 Seconds',\n      'The Spotlight Effect: Scientific Proof That People Notice Your Mistakes 90% Less Than You Think',\n      'Why You Should Ask What Questions Do You Have Instead of Do You Have Any Questions',\n      'The Pratfall Effect: Why Admitting One Small Flaw Makes People Trust You Instantly',\n      'How to Say No Without Guilt Using the Priority Swap Question',\n      'The Harvard Xerox Study: Why Adding the Word Because Increases Yes Responses by 34%',\n      'Why Complimenting Someone Effort and Choices Builds Deeper Respect Than Complimenting Talent',\n      'The 5-by-5 Rule to Stop Overthinking Any Awkward Social Moment in 10 Seconds'\n    ]\n  },\n  {\n    key: 'SMART_MONEY_LIFE',\n    pillar: 'Smart Consumer Psychology & Everyday Wealth Rules',\n    pillarBadge: '\ud83d\udca1 SMART MONEY & LIFE LAB',\n    accentColor: '#F59E0B',\n    voiceId: 'xyat7D2ZXEzXOykdSKco',\n    fallbackQuery: 'person budgeting smart shopping lifestyle',\n    topics: [\n      'The 72-Hour Waiting Rule That Eliminates 80% of Impulse Purchases Automatically',\n      'The Cost-Per-Use Formula: Why a $200 Item Used Daily Is Cheaper Than a $30 Item Worn Once',\n      '3 Hidden Credit Card Protections You Already Have: Cell Phone Damage, Extended Warranty & Price Drops',\n      'The Diderot Effect: How One Small Upgrade Purchase Tricks You Into Spending Hundreds More',\n      'The Hours-of-Life Test: Converting Every Price Tag Into Hours of Your Real Take-Home Pay',\n      'Why Reading Unit Price Per Ounce Instead of the Sale Tag Cuts Grocery Bills by 22%',\n      'The 1-In 1-Out Ownership Rule That Keeps Your Home Clutter-Free and Saves Thousands',\n      'Why Paying Your Credit Card 3 Days Before the Statement Closing Date Boosts Your Credit Score',\n      'The 5-Minute Subscription Audit: How to Catch and Cancel Forgotten Recurring Drains',\n      'How to Negotiate Any Internet, Phone, or Insurance Bill With One Polite 30-Second Question',\n      'Why Automating Transfers on Payday Morning Beats Budgeting With Willpower at Month End',\n      'The 30-Day Retailer Price Adjustment Secret Most Shoppers Forget to Claim'\n    ]\n  },\n  {\n    key: 'MENTAL_MODELS_LEARNING',\n    pillar: 'Mental Models, Fast Learning & Peak Systems',\n    pillarBadge: '\u26a1 MENTAL MODELS LAB',\n    accentColor: '#F43F5E',\n    voiceId: 'IZXMkokQbZW2tD1sqOTx',\n    fallbackQuery: 'person writing notebook desk study',\n    topics: [\n      'The Richard Feynman Technique: How to Master Any Subject in 20 Minutes by Explaining It Simply',\n      'Parkinson Law: Why Setting a 45-Minute Timer Finishes Work That Normally Takes 4 Hours',\n      'Japanese Kaizen: How the 1-Minute Daily Rule Beats Big New Year Resolutions Every Time',\n      'Active Recall vs Re-Reading: Why Testing Yourself Locks Knowledge Into Memory 3x Faster',\n      'The 2-Minute Touch-Once Rule That Keeps Your Inbox, Kitchen, and Desk Effortlessly Clean',\n      'The Ivy Lee 6-Item Method: The 100-Year-Old Nightly Habit That Beats Complex To-Do Apps',\n      'Inversion Thinking: Charlie Munger Favorite Mental Model for Solving Hard Life Problems Backwards',\n      'Spaced Repetition (The 1-3-7-21 Day Rule): How to Never Forget What You Read in Books',\n      'The Sunday 15-Minute Weekly Reset That Eliminates Monday Morning Stress',\n      'Why Keeping a Evening Done List Alongside Your To-Do List Cures Burnout',\n      'Second-Order Thinking: Asking And Then What Before Making Any Big Decision',\n      'The Eat-the-Frog 90-Minute Morning Block That Doubles Your Free Time Every Evening'\n    ]\n  }\n];\n\nconst labIdx = ((jsDay >= 1 && jsDay <= 5 ? jsDay - 1 : 0) + runCounter) % dailyLabs.length;\nconst lab = dailyLabs[labIdx];\n\nif (!store.pillarTopicCursor || typeof store.pillarTopicCursor !== 'object') {\n  store.pillarTopicCursor = {};\n}\nif (!Array.isArray(store.usedTopicsHistory)) {\n  store.usedTopicsHistory = [];\n}\n\nconst usedSet = new Set(store.usedTopicsHistory);\nlet cursor = typeof store.pillarTopicCursor[lab.key] === 'number' ? store.pillarTopicCursor[lab.key] : 0;\n\nlet selectedTopic = lab.topics[cursor % lab.topics.length];\nfor (let offset = 0; offset < lab.topics.length; offset++) {\n  const candidate = lab.topics[(cursor + offset) % lab.topics.length];\n  if (!usedSet.has(candidate)) {\n    selectedTopic = candidate;\n    cursor = (cursor + offset + 1) % lab.topics.length;\n    break;\n  }\n}\nstore.pillarTopicCursor[lab.key] = cursor;\nstore.usedTopicsHistory = [...store.usedTopicsHistory.slice(-80), selectedTopic];\n\nreturn [{\n  json: {\n    pillarKey: lab.key,\n    pillar: lab.pillar,\n    pillarBadge: lab.pillarBadge,\n    accentColor: lab.accentColor,\n    voiceId: lab.voiceId,\n    fallbackQuery: lab.fallbackQuery,\n    topic: selectedTopic,\n    recentUsedTopics: store.usedTopicsHistory.slice(-25),\n    targetDuration: 52,\n    numClips: 6,\n    platform: 'Instagram Reels & YouTube Shorts'\n  }\n}];"
+      },
+      "id": "f45ca42f-773d-4e63-bcca-99c90174149b",
+      "name": "Select Topic & Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dcf76bc6-0cca-41aa-ba68-70f06087d116",
+      "name": "Loop Over Segments",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        880,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "prompt_text",
+              "value": "={{ 'Narration: ' + $json.falPrompt + '\\nVisuals: ' + $json.visualDirection }}"
+            },
+            {
+              "name": "message_content",
+              "value": "={{ $('Select Topic & Config').item.json.pillar }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5eba4d62-9b68-485e-8af3-b7eb88376071",
+      "name": "Prepare Veo Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an elite science-backed lifestyle educator and short-form documentary storyteller (in the style of Andrew Huberman, Ali Abdaal, and WSJ Your Health).\nYour mission is to create deeply helpful, zero-fluff 50-second daily masterclass scripts where viewers genuinely learn a concrete, counter-intuitive life skill, neuroscience protocol, psychology trick, or smart habit they can test in the next 24 hours.\n\nCRITICAL VOICE & TONE RULES (MUST SOUND 100% LIKE A REAL HUMAN):\n- Write the way a warm, articulate human friend talks out loud over coffee.\n- NEVER use robotic AI phrases like \"In today's fast-paced world\", \"Unlock your potential\", \"Game-changer\", \"Delve into\", \"Let's dive in\", or \"Elevate your routine\".\n- Start immediately with a surprising, concrete scenario, number, or mistake people make every day.\n- Explain the real mechanism (WHY it works in the brain, body, or human psychology) in plain, memorable English.\n- Give 3 specific, numbered, actionable steps with exact timings or phrases so the viewer wants to bookmark/save the video.\n- Return ONLY a single valid JSON object with no markdown fences or extra text.",
+              "role": "system"
+            },
+            {
+              "content": "=Create a 6-scene vertical video masterclass script for:\n- Daily Lab / Pillar: **{{ $json.pillar }}** ({{ $json.pillarBadge }})\n- Today's Specific Topic: **\"{{ $json.topic }}\"**\n- Avoid repeating these recently covered angles: {{ JSON.stringify($json.recentUsedTopics || []) }}\n\nReturn ONLY a single valid JSON object (no markdown fences) with these exact keys:\n{\n  \"title\": \"string (compelling curiosity-gap video title, max 52 chars, no colons)\",\n  \"heroHeadline\": \"string (2-line punchy ALL-CAPS headline for Scene 1, max 6 words, separated by \\\\n, e.g. THE 90-MINUTE\\\\nCAFFEINE RULE)\",\n  \"heroSubhead\": \"string (1 clear sentence under 14 words explaining the surprising benefit)\",\n  \"hook\": \"string (Scene 1 spoken opening sentence, 16-22 words, conversational and immediately intriguing)\",\n  \"sceneLines\": [\n    \"string (Scene 1 spoken hook + setup, 18-24 words, natural human speech)\",\n    \"string (Scene 2 spoken explanation of the science/psychology behind why this happens, 20-25 words)\",\n    \"string (Scene 3 spoken Action Step 1 with exact timing or phrase, 20-25 words)\",\n    \"string (Scene 4 spoken Action Step 2 with exact timing or phrase, 20-25 words)\",\n    \"string (Scene 5 spoken Action Step 3 with exact timing or phrase, 20-25 words)\",\n    \"string (Scene 6 spoken 24-hour challenge + invitation to save this cheat sheet and follow for tomorrow's daily upgrade, 18-24 words)\"\n  ],\n  \"sceneCards\": [\n    { \"badge\": \"\u26a1 THE SURPRISING TRUTH\", \"heading\": \"string (max 32 chars)\", \"takeaway\": \"string (1 crisp sentence, max 85 chars)\" },\n    { \"badge\": \"\ud83d\udd2c WHY THIS WORKS\", \"heading\": \"string (max 32 chars)\", \"takeaway\": \"string (1 crisp sentence explaining the mechanism, max 85 chars)\" },\n    { \"badge\": \"\u2705 ACTION STEP #1 OF 3\", \"heading\": \"string (max 32 chars)\", \"takeaway\": \"string (concrete step #1 with exact numbers/timing, max 85 chars)\" },\n    { \"badge\": \"\u2705 ACTION STEP #2 OF 3\", \"heading\": \"string (max 32 chars)\", \"takeaway\": \"string (concrete step #2 with exact numbers/timing, max 85 chars)\" },\n    { \"badge\": \"\u2705 ACTION STEP #3 OF 3\", \"heading\": \"string (max 32 chars)\", \"takeaway\": \"string (concrete step #3 with exact numbers/timing, max 85 chars)\" },\n    { \"badge\": \"\ud83d\udccc SAVE THIS CHEAT SHEET\", \"heading\": \"Your 3-Step Action Plan\", \"takeaway\": \"Bookmark this video and test Step #1 in the next 24 hours.\" }\n  ],\n  \"cheatSheetSteps\": [\n    \"string (Step 1 summary for the final Cheat Sheet screen, max 72 chars)\",\n    \"string (Step 2 summary for the final Cheat Sheet screen, max 72 chars)\",\n    \"string (Step 3 summary for the final Cheat Sheet screen, max 72 chars)\"\n  ],\n  \"dailyChallenge\": \"string (a specific, easy 24-hour test the viewer can do today, max 85 chars)\",\n  \"clipSearchTerms\": [\n    \"string (2-4 plain words for Pexels portrait video clip 1, e.g. person drinking morning coffee)\",\n    \"string (2-4 plain words for Pexels portrait video clip 2, visually distinct)\",\n    \"string (2-4 plain words for Pexels portrait video clip 3, visually distinct)\",\n    \"string (2-4 plain words for Pexels portrait video clip 4, visually distinct)\",\n    \"string (2-4 plain words for Pexels portrait video clip 5, visually distinct)\",\n    \"string (2-4 plain words for Pexels portrait video clip 6, visually distinct)\"\n  ],\n  \"hashtags\": {\n    \"pillar\": [\"#brainhacks\", \"#lifehacks\", \"#selfimprovement\"],\n    \"platform\": [\"#dailyhabits\", \"#sciencebacked\", \"#productivitytips\"],\n    \"engagement\": [\"#learnsomethingnew\", \"#mindset\", \"#bytefyi\"]\n  }\n}",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        -960
+      ],
+      "id": "328b09e1-1de4-4658-b937-38207128590c",
+      "name": "Generate Script - OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "vvBt1Pyu6TiA3t1p",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const cfg = $('Select Topic & Config').first().json;\nconst rawContent = ($input.first().json.message?.content || '{}')\n  .replace(/^```json\\s*/i, '')\n  .replace(/^```\\s*/i, '')\n  .replace(/```\\s*$/, '')\n  .trim();\n\nlet parsed = {};\ntry {\n  parsed = JSON.parse(rawContent);\n} catch (e) {\n  parsed = {};\n}\n\nconst numClips = 6;\nlet sceneLines = Array.isArray(parsed.sceneLines) && parsed.sceneLines.length === 6\n  ? parsed.sceneLines.map(s => String(s || '').trim())\n  : [];\n\nif (sceneLines.length < 6) {\n  const fullText = [parsed.hook, parsed.mainContent, parsed.cta].filter(Boolean).join(' ') || cfg.topic;\n  const words = fullText.split(/\\s+/).filter(Boolean);\n  const chunk = Math.max(1, Math.ceil(words.length / 6));\n  sceneLines = [];\n  for (let i = 0; i < 6; i++) {\n    let seg = words.slice(i * chunk, (i + 1) * chunk).join(' ').trim();\n    if (seg && !/[.?!]$/.test(seg)) seg += '.';\n    sceneLines.push(seg || 'Try this simple science-backed habit today.');\n  }\n}\n\nconst fullVoiceoverText = sceneLines.join(' ');\n\nlet flatHashtags = ['#lifehacks', '#dailyhabits', '#selfimprovement', '#brainhacks', '#productivitytips', '#learnsomethingnew', '#sciencebacked', '#bytefyi'];\nif (parsed.hashtags) {\n  const combined = [\n    ...(parsed.hashtags.pillar || []),\n    ...(parsed.hashtags.platform || []),\n    ...(parsed.hashtags.engagement || [])\n  ].filter(Boolean);\n  if (combined.length >= 4) flatHashtags = combined;\n}\n\nconst sceneCards = Array.isArray(parsed.sceneCards) && parsed.sceneCards.length === 6\n  ? parsed.sceneCards\n  : [];\n\nconst cheatSheetSteps = Array.isArray(parsed.cheatSheetSteps) && parsed.cheatSheetSteps.length === 3\n  ? parsed.cheatSheetSteps\n  : (sceneCards.slice(2, 5).map(c => c?.takeaway).filter(Boolean));\n\nconst dailyChallenge = String(parsed.dailyChallenge || 'Pick Step #1 and test it once in the next 24 hours!').trim();\nconst title = String(parsed.title || cfg.topic).slice(0, 65).trim();\nconst heroHeadline = String(parsed.heroHeadline || '3 SCIENCE-BACKED\\nDAILY UPGRADES').replace(/\\\\[nN]/g, '\\n').trim();\nconst heroSubhead = String(parsed.heroSubhead || cfg.topic).trim();\nconst clipTerms = Array.isArray(parsed.clipSearchTerms) ? parsed.clipSearchTerms : [];\n\nconst instagramCaption = `${title}\\n\\n${heroSubhead}\\n\\n\ud83d\udccc 60-Second Cheat Sheet:\\n1\ufe0f\u20e3 ${cheatSheetSteps[0] || 'Step 1'}\\n2\ufe0f\u20e3 ${cheatSheetSteps[1] || 'Step 2'}\\n3\ufe0f\u20e3 ${cheatSheetSteps[2] || 'Step 3'}\\n\\n\ud83c\udfaf 24-Hour Challenge: ${dailyChallenge}\\n\\nSave this post for later & follow @bytefyi for tomorrow's daily life upgrade!\\n\\n${flatHashtags.join(' ')}`;\n\nconst newItems = [];\nfor (let i = 0; i < numClips; i++) {\n  newItems.push({\n    json: {\n      ...cfg,\n      title,\n      heroHeadline,\n      heroSubhead,\n      hook: sceneLines[0],\n      mainContent: sceneLines.slice(1, 5).join(' '),\n      cta: sceneLines[5],\n      fullVoiceoverText,\n      sceneLines,\n      sceneCards,\n      cheatSheetSteps,\n      dailyChallenge,\n      hashtags: flatHashtags,\n      instagramCaption,\n      clipNumber: i + 1,\n      mainContentSegment: sceneLines[i],\n      aiClipSearchTerm: String(clipTerms[i] || '').trim(),\n      falPrompt: sceneLines[i],\n      visualDirection: heroSubhead\n    }\n  });\n}\n\nreturn newItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        -960
+      ],
+      "id": "feb88d23-f038-4453-8de1-cfcf387701dd",
+      "name": "Extract Script Array"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n{\n  prompt: $json.prompt_text,\n  aspect_ratio: \"9:16\",\n  resolution: \"480p\", \n  duration_seconds: 300,\n  enable_audio: false\n}\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1424,
+        -960
+      ],
+      "id": "8ca62945-a99c-4ed6-b6c3-854ee6572097",
+      "name": "HTTP Request for Wan 2.1",
+      "disabled": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "S1ICi6sR1zlpmpth",
+          "name": "fal.ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const videoUrls = [];\nconst loopData = $('Loop Over Segments').all();\nfor (const item of loopData) {\n  if (item.json.video && item.json.video.url) {\n    videoUrls.push(item.json.video.url);\n  }\n}\n\nconst d = $('Extract Script Array').first().json;\nconst durInfo = $('Check Audio Length').first().json;\nconst audioUrl = $('GCS - Upload Audio').first().json.mediaLink;\n\nreturn [{\n  json: {\n    mode: 'daily_life_masterclass',\n    pillar: d.pillar,\n    pillarBadge: d.pillarBadge,\n    accentColor: d.accentColor,\n    title: d.title,\n    heroHeadline: d.heroHeadline,\n    heroSubhead: d.heroSubhead,\n    sceneLines: d.sceneLines,\n    sceneCards: d.sceneCards,\n    cheatSheetSteps: d.cheatSheetSteps,\n    dailyChallenge: d.dailyChallenge,\n    video_urls: videoUrls,\n    videoDurations: durInfo.videoDurations,\n    totalAudioDuration: durInfo.totalAudioDuration,\n    audio_url: audioUrl\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        -1456
+      ],
+      "id": "1b068795-0695-4e9f-92a3-104a5a2a5f2b",
+      "name": "Collect Video URLs"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source: $json }) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "8f0ea876-0aa4-4881-ae5b-c9dff50046b9",
+      "name": "Stitch Clips-Creatomate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1776,
+        -1456
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2048,
+        -1456
+      ],
+      "id": "64b730eb-82aa-4e69-8bb4-52a406a58d20",
+      "name": "Wait - Creatomate Rendering",
+      "webhookId": "e650ab33-17a0-43ce-a7b0-2680c1dbadb5"
+    },
+    {
+      "parameters": {
+        "url": "=https://bytefyi-render-engine-427780532217.us-central1.run.app/v1/renders/{{ $json.id || $('Stitch Clips-Creatomate').first().json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer <REDACTED_TOKEN>"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        -1456
+      ],
+      "id": "9662cf91-5566-40a0-b816-874a41b949d9",
+      "name": "HTTP Request - Poll Creatomate",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput",
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "82613f0a-96d0-4436-8537-d82e11f8c989",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "succeeded",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2528,
+        -1456
+      ],
+      "id": "3e4b4293-dae1-45d8-ac84-832ec10fde40",
+      "name": "Check - Creatomate Status",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json.title }}\n",
+        "regionCode": "US",
+        "categoryId": "23",
+        "binaryProperty": "=data",
+        "options": {
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -176
+      ],
+      "id": "2838a24b-8c52-4949-b952-5b401eb56c34",
+      "name": "Upload to YouTube Short",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "CPrv38AHnni8Ydui",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2289ccca-bc0c-46b5-85d1-64d64b34e2e1",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1b5d3718-6c3c-402f-b47a-f41b85116496",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        -176
+      ],
+      "id": "43e25674-dca8-4189-a382-264b0226ec51",
+      "name": "Check to Update Status"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request - Poll Creatomate').item.json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        -176
+      ],
+      "id": "045f4382-a68d-438f-8025-9b5ac30fa3d1",
+      "name": "HTTP Request -Download Video for Uplaod",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Daily AI Video Short Uploaded",
+        "message": "=<p>Hello,</p> <p>Your Daliy AI Video Short has been successfully generated and uploaded in Youtube</p> ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1648,
+        -176
+      ],
+      "id": "a5455a59-936a-4c09-bca7-ab230ab8b33e",
+      "name": "Send a message",
+      "webhookId": "e0dd5787-4d2b-4347-a9c5-8a5c0a25f918",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_url",
+                "value": "={{ $('HTTP Request - Poll Creatomate').last().json.url }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              },
+              {
+                "name": "share_to_feed",
+                "value": "true"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Extract Script Array').first().json.instagramCaption }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -496
+      ],
+      "id": "9466ffb0-7113-4f9b-9eb3-17dae9b6490c",
+      "name": "Instagram Create Media Container",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841404200133843",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        -512
+      ],
+      "id": "2b9e3f20-44e9-428a-a6fb-fe05a9f62cf3",
+      "name": "Instagram Publish Reels",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d70a62df-c0be-423a-be3d-0b7976616cfa",
+              "leftValue": "={{ $json.status_code }}",
+              "rightValue": "FINISHED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1808,
+        -512
+      ],
+      "id": "a6866a70-da12-4759-9c8d-bc535e649f48",
+      "name": "Check Media Ready for Publish in IG"
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $json.id }}",
+        "options": {
+          "fields": {
+            "field": [
+              {
+                "name": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -512
+      ],
+      "id": "070cdab9-8a38-4825-b6f8-a86790cb3fd4",
+      "name": "Check Container Status",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "919CDyXmalSRPmny",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        -512
+      ],
+      "id": "05196439-06d4-4f87-a39e-4b4bb0a5f2ff",
+      "name": "Wait for Media Creation",
+      "webhookId": "96839ab4-3352-4d56-86db-f828a3281e3b"
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "jsonBody": "={{ JSON.stringify({ text: $('Extract Script Array').first().json.fullVoiceoverText, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.48, similarity_boost: 0.82, style: 0.22, use_speaker_boost: true, speed: 1.0 } }) }}",
+        "method": "POST",
+        "options": {},
+        "sendBody": true,
+        "sendHeaders": true,
+        "specifyBody": "json",
+        "url": "=https://api.elevenlabs.io/v1/text-to-speech/{{ $('Select Topic & Config').first().json.voiceId || 'IZXMkokQbZW2tD1sqOTx' }}/with-timestamps?output_format=mp3_44100_128"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        -1456
+      ],
+      "id": "0fb94b0b-ffc1-4dfd-b1b8-c6300e0facd8",
+      "name": "HTTP Request - Google TTS",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "2wzz6HypiV6af1Ke",
+          "name": "Google Service Account account"
+        },
+        "googleOAuth2Api": {
+          "id": "ik24uwkAcCP0wify",
+          "name": "Google account 2"
+        },
+        "httpHeaderAuth": {
+          "id": "IMEJ5zrKdaA6SoK5",
+          "name": "ElevenLabs Native Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "object",
+        "operation": "create",
+        "bucketName": "bytesized-truths-audio-shorts",
+        "objectName": "={{ $json.fileName }}",
+        "createBinaryPropertyName": "=data",
+        "createData": {},
+        "createQuery": {},
+        "encryptionHeaders": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.googleCloudStorage",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -1456
+      ],
+      "id": "834ce927-2b83-4d2a-bfd9-1593a91b759b",
+      "name": "GCS - Upload Audio",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCloudStorageOAuth2Api": {
+          "id": "c3fdpvl2qV0PHHhz",
+          "name": "Google Cloud Storage account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const audioContent = $json.audioContent || $json.audio_base64;\nconst binaryData = Buffer.from(audioContent, 'base64');\nconst fileName = `daily_life_masterclass_${Date.now()}.mp3`;\n\nreturn [{\n  json: {\n    ...$json,\n    fileName,\n    audioContent: undefined,\n    audio_base64: undefined\n  },\n  binary: {\n    data: {\n      data: binaryData.toString('base64'),\n      mimeType: 'audio/mpeg',\n      fileName\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -1456
+      ],
+      "id": "7a2ce552-1261-4fd6-bfb3-48b185a59cb1",
+      "name": "Move & Rename Binary Data",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pass-through: each item already carries video.url from Pick Pexels Clip.\n// (Previously wrote to $vars, which is read-only in n8n.)\nconsole.log('Clip', $json.clipNumber, '->', $json.video && $json.video.url);\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2720,
+        -960
+      ],
+      "id": "53b13c7a-2e30-4d94-b183-78e494abdaad",
+      "name": "Store Video URL's",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1648,
+        -960
+      ],
+      "id": "f771fea9-97bb-49eb-b3d5-0438115bfece",
+      "name": "Wait",
+      "webhookId": "d6e3b6ba-cb3d-4474-9477-bec2ab0cb8d5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/wan-25-preview/requests/{{$json.request_id}}/status\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1856,
+        -960
+      ],
+      "id": "3724489e-92b5-45ef-ba7a-163a22322939",
+      "name": "Poll Video Completion",
+      "disabled": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "S1ICi6sR1zlpmpth",
+          "name": "fal.ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8fc0ccde-4e20-4a69-bbb2-daa3424a4040",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "COMPLETED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2064,
+        -960
+      ],
+      "id": "0fc714b1-a05e-43a6-9559-028fec06f66c",
+      "name": "Check Status",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/wan-25-preview/requests/{{$json.request_id}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2336,
+        -960
+      ],
+      "id": "3c908140-f1b5-4b88-bfbf-247b28b6d1fd",
+      "name": "Get Video URL",
+      "disabled": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "S1ICi6sR1zlpmpth",
+          "name": "fal.ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "COOLVISHNU@GMAIL.COM",
+        "subject": "Daily AI Video Short Uploaded",
+        "message": "=<p>Hello,</p> <p>Your Daliy AI Video Short has been successfully generated and uploaded in Instragram</p> ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2320,
+        -512
+      ],
+      "id": "4dde0a8e-abf1-498b-b074-9b00c336a6ba",
+      "name": "Send a message1",
+      "webhookId": "05d82e32-26af-416c-a968-ff7b13768425",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wbu2ratCymOfvY5X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\nconst audioContent = inputData.audio_base64 || inputData.audioContent;\n\nif (!audioContent) {\n  throw new Error('No audio_base64 or audioContent found from ElevenLabs TTS');\n}\n\nconst binaryData = Buffer.from(audioContent, 'base64');\n// ElevenLabs mp3_44100_128 is 128kbps = 16,000 bytes per second\nconst exactAudioSeconds = binaryData.length / 16000;\nconst totalAudioDuration = Number(Math.max(28, exactAudioSeconds + 0.8).toFixed(2));\n\nconst scriptItem = $('Extract Script Array').first().json;\nconst sceneLines = Array.isArray(scriptItem.sceneLines) && scriptItem.sceneLines.length === 6\n  ? scriptItem.sceneLines\n  : ['Scene 1', 'Scene 2', 'Scene 3', 'Scene 4', 'Scene 5', 'Scene 6'];\n\nfunction speechWeight(text) {\n  const s = String(text || '').trim();\n  if (!s) return 10;\n  const syllables = (s.toLowerCase().match(/[aeiouy]{1,2}/g) || []).length;\n  const pauses = (s.match(/[,.;:!?\u2014-]/g) || []).length * 2.2;\n  return Math.max(8, syllables + pauses);\n}\n\nconst weights = sceneLines.map(speechWeight);\nconst totalWeight = weights.reduce((a, b) => a + b, 0) || 60;\n\nconst videoDurations = weights.map(w => Number(Math.max(4.2, (w / totalWeight) * totalAudioDuration).toFixed(2)));\nconst sumFirst5 = videoDurations.slice(0, 5).reduce((a, b) => a + b, 0);\nvideoDurations[5] = Number(Math.max(4.5, totalAudioDuration - sumFirst5).toFixed(2));\nconst finalDuration = Number(videoDurations.reduce((a, b) => a + b, 0).toFixed(2));\n\nreturn [{\n  json: {\n    ...scriptItem,\n    audioContent,\n    audioSize: binaryData.length,\n    totalAudioDuration: finalDuration,\n    videoDurations,\n    totalVideos: 6,\n    durationStatus: 'good',\n    targetDuration: finalDuration\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        -1456
+      ],
+      "id": "8b8e2d5a-6655-4fab-9de7-62edbca6b044",
+      "name": "Check Audio Length"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "6a5a227c-d606-4d6d-ad27-050d2e83541f",
+                    "leftValue": "={{ DateTime.now().setZone($timezone).weekday }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 1
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "a410a4f9-a132-427c-ad78-a76ca8daadf1",
+                    "leftValue": "={{ DateTime.now().setZone($timezone).weekday }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 2
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "fe476a66-4459-4392-af63-14f31075b3b9",
+                    "leftValue": "={{ DateTime.now().setZone($timezone).weekday }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 3
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "88afeb79-b860-443b-9ece-b1e1c640754d",
+                    "leftValue": "={{ DateTime.now().setZone($timezone).weekday }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 4
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "f417f5b3-eb9e-4335-88a5-8b4e007ad86b",
+                    "leftValue": "={{ DateTime.now().setZone($timezone).weekday }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "number"
+                    },
+                    "rightValue": 5
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                }
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -688,
+        -960
+      ],
+      "id": "34cd9425-ecf9-4724-9e33-b40db14c4851",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst scriptData = $('Extract Script Array').first().json;\nconst rawTitle = scriptData.title || item.json.title || 'Daily Life Upgrade';\n\nconst safe = rawTitle\n  .replace(/[:]/g, ' ')\n  .replace(/\\r?\\n|\\r/g, ' ')\n  .replace(/[^\\p{L}\\p{N}\\p{P}\\p{Z}]/gu, '')\n  .replace(/\\s+/g, ' ')\n  .trim()\n  .substring(0, 58);\n\nconst finalTitle = `${safe} #LifeHacks #DailyHabits #ScienceBacked #Shorts`;\n\nreturn [{\n  json: {\n    title: finalTitle,\n    description: scriptData.instagramCaption || finalTitle\n  },\n  binary: item.binary\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -176
+      ],
+      "id": "6339964b-8694-4576-9beb-5bf61a5a9066",
+      "name": "Clean & Return Safe Title"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        -176
+      ],
+      "id": "c1057fe7-79b3-4b80-af00-d88de57af654",
+      "name": "Wait1",
+      "webhookId": "9f91db0d-98c5-4667-9b22-af2831a9a74d"
+    },
+    {
+      "id": "c209d83f-fb7f-4c7a-be02-c6bd6b1d220c",
+      "name": "Build Pexels Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -760
+      ],
+      "parameters": {
+        "jsCode": "const STOP = new Set(['about','above','after','again','against','also','because','been','before','being','below','between','both','cannot','could','does','doing','down','during','each','even','ever','every','from','further','have','having','here','into','itself','just','like','little','make','makes','many','more','most','much','must','need','never','next','only','other','ought','over','really','right','same','should','some','such','than','that','their','theirs','them','then','there','these','they','thing','things','this','those','through','today','under','until','very','want','what','when','where','which','while','will','with','would','your','yours','yourself','youre','dont','lets','heres','thats','first','finally','start','great','time','know','keep','take','better','best','since','still','ready','video','follow']);\n\nconst cfg = $('Select Topic & Config').first().json;\nconst fallbackQuery = cfg.fallbackQuery || 'person working morning sunlight';\n\nreturn $input.all().map(item => {\n  const aiTerm = String(item.json.aiClipSearchTerm || '').replace(/[^a-zA-Z0-9\\s-]/g, ' ').replace(/\\s+/g, ' ').trim();\n  const text = (item.json.mainContentSegment || item.json.title || '').toLowerCase();\n  const words = text.replace(/[^a-z\\s']/g, ' ').split(/\\s+/)\n    .map(w => w.replace(/'/g, ''))\n    .filter(w => w.length >= 4 && !STOP.has(w));\n  const keywordQuery = [...new Set(words)].slice(0, 3).join(' ');\n  const pexelsQuery = aiTerm || keywordQuery || fallbackQuery;\n  return {\n    json: {\n      ...item.json,\n      pexelsQuery,\n      querySource: aiTerm ? 'openai' : (keywordQuery ? 'keywords' : 'pillar'),\n      fallbackQuery\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "07ee2fad-fbfa-4ecd-92f7-db926870518d",
+      "name": "Pexels - Search Clip",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1648,
+        -760
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.pexels.com/videos/search?query={{ encodeURIComponent($json.pexelsQuery) }}&orientation=portrait&per_page=15",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "UgwAMM08Pl3xQmFv",
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "id": "d51c0444-8c29-4881-a643-73d62f9f147c",
+      "name": "Pexels - Search Fallback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1856,
+        -760
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.pexels.com/videos/search?query={{ encodeURIComponent($('Build Pexels Query').item.json.fallbackQuery) }}&orientation=portrait&per_page=40",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "UgwAMM08Pl3xQmFv",
+          "name": "Pexels API"
+        }
+      }
+    },
+    {
+      "id": "8a47c48d-9b99-4652-9457-500ade1b0aa6",
+      "name": "Pick Pexels Clip",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2064,
+        -760
+      ],
+      "parameters": {
+        "jsCode": "// Choose one portrait Pexels clip per segment, avoiding repeats within the same day\nconst q = $('Build Pexels Query').first().json;\nconst primary = $('Pexels - Search Clip').first().json.videos || [];\nconst fallback = $('Pexels - Search Fallback').first().json.videos || [];\n\nconst store = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().slice(0, 10);\nif (store.pexelsDay !== today) { store.pexelsDay = today; store.pexelsUsed = []; }\nconst used = new Set(store.pexelsUsed);\n\nconst usable = v => v.duration >= 8 && !used.has(v.id) && (v.video_files || []).some(f => f.height > f.width);\nlet pool = primary.filter(usable);\nlet source = 'primary';\nif (!pool.length) { pool = fallback.filter(usable); source = 'fallback'; }\nif (!pool.length) { pool = primary.concat(fallback).filter(v => (v.video_files || []).length); source = 'any'; }\nif (!pool.length) throw new Error(`No Pexels videos found for \"${q.pexelsQuery}\" or \"${q.fallbackQuery}\"`);\n\nconst video = pool.slice(0, 8)[Math.floor(Math.random() * Math.min(8, pool.length))];\nconst portrait = video.video_files.filter(f => f.height > f.width && f.file_type === 'video/mp4');\nconst files = portrait.length ? portrait : video.video_files;\n// Prefer 720x1280 (good quality, smaller download), otherwise closest to it\nconst file = files.slice().sort((a, b) => Math.abs(a.height - 1280) - Math.abs(b.height - 1280))[0];\n\nstore.pexelsUsed.push(video.id);\n\nreturn [{ json: {\n  ...q,\n  video: { url: file.link, width: file.width, height: file.height, duration: video.duration },\n  pexels: { id: video.id, page: video.url, author: video.user && video.user.name, source }\n} }];"
+      }
+    },
+    {
+      "id": "3ccfd871-d52c-4d07-bf4b-41ab0a61c159",
+      "name": "Run Now (manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -720
+      ],
+      "parameters": {}
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "sameAsDraft": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  }
+}
