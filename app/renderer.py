@@ -771,6 +771,14 @@ def render_timeline_payload_to_mp4(
             output_mp4_path,
         )
 
+    if payload.get("mode") == "keeps_editorial" or (
+        isinstance(source_obj, dict) and source_obj.get("mode") == "keeps_editorial"
+    ):
+        return _render_keeps_editorial_to_mp4(
+            source_obj if isinstance(source_obj, dict) and source_obj.get("mode") == "keeps_editorial" else payload,
+            output_mp4_path,
+        )
+
     if payload.get("mode") == "daily_life_masterclass" or (
         isinstance(source_obj, dict) and source_obj.get("mode") == "daily_life_masterclass"
     ):
@@ -2373,6 +2381,510 @@ def _render_daily_life_masterclass_to_mp4(payload: Dict[str, Any], output_mp4_pa
         "file_size": os.path.getsize(output_mp4_path),
         "render_time_seconds": round(time.time() - t0, 2),
     }
+
+
+def _render_keeps_editorial_to_mp4(payload: Dict[str, Any], output_mp4_path: str) -> Dict[str, Any]:
+    """
+    Render a calm, trust-first Editorial Consumer Guide & Honest Founder Story Reel/Short
+    for Keeps: Receipt Scanner Tracker (1080x1920, 30fps):
+      - Clean warm-ivory Apple / Wirecutter editorial aesthetic (zero neon, zero spam emojis,
+        zero fake star ratings, zero invented dollar amounts).
+      - Uses real Keeps Google Play screenshots (keeps_real_dashboard.png, keeps_real_scan.png)
+        and optionally real Costco refund receipts (costco_refund_4356.jpg, costco_refund_1634.jpg).
+      - Clean studio-EQ human voiceover with NO cheesy synthetic commercial jingle.
+    """
+    import base64
+    import html as html_lib
+
+    t0 = time.time()
+    W, H, fps = 1080, 1920, 30
+
+    def esc(val: Any, fallback: str = "") -> str:
+        s = str(val if val is not None else fallback).strip()
+        return html_lib.escape(s or fallback)
+
+    def load_b64(fname: str, mime: str) -> str:
+        p = os.path.join(os.path.dirname(__file__), fname)
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                return f"data:{mime};base64," + base64.b64encode(f.read()).decode("ascii")
+        return ""
+
+    app_icon_b64 = load_b64("keeps_icon.png", "image/png")
+    real_dash_b64 = load_b64("keeps_real_dashboard.png", "image/png")
+    real_scan_b64 = load_b64("keeps_real_scan.png", "image/png")
+    r4356_b64 = load_b64("costco_refund_4356.jpg", "image/jpeg")
+    r1634_b64 = load_b64("costco_refund_1634.jpg", "image/jpeg")
+
+    include_costco_receipts = bool(
+        r4356_b64
+        and r1634_b64
+        and (payload.get("includeRealCostcoReceipts") or payload.get("styleKey") == "COSTCO_POLICY_PROOF")
+    )
+
+    kicker = esc(payload.get("kicker"), "CONSUMER POLICY GUIDE  •  COSTCO")
+    headline = esc(
+        payload.get("headline"),
+        "Costco has a 30-day price adjustment policy. Most members never use it.",
+    )
+    subhead = esc(
+        payload.get("subhead"),
+        "If an item drops in price within 30 days of purchase, you can request the difference at the membership desk — without returning the item.",
+    )
+    policy_steps = payload.get("policySteps") or [
+        {"label": "Step 1", "title": "Buy & Keep the Receipt", "detail": "Applies to in-warehouse and Costco.com purchases."},
+        {"label": "Step 2", "title": "Price Drops Within 30 Days", "detail": "Watch for monthly coupon books or markdowns."},
+        {"label": "Step 3", "title": "Request the Adjustment", "detail": "Show your receipt at the membership desk for a card refund."},
+    ]
+    miss_reasons = payload.get("missReasons") or [
+        {"title": "Paper receipts get lost or fade", "detail": "Thermal ink degrades inside wallets and car gloveboxes within months."},
+        {"title": "Return windows pass quietly", "detail": "14 days at Target, 15 days at Best Buy, and 30 days for Costco price adjustments."},
+        {"title": "Nobody checks old prices manually", "detail": "Once you bring items home, it is easy to forget what you paid."},
+    ]
+    founder_headline = esc(
+        payload.get("founderHeadline"),
+        "That is why I built Keeps — a quiet, private receipt tracker.",
+    )
+    store_availability = esc(
+        payload.get("storeAvailability"),
+        "Search \"Keeps Receipt Scanner\" on Google Play",
+    )
+
+    raw_lines = payload.get("sceneLines") or [
+        "Most Costco members do not realize there is an official thirty-day price adjustment policy.",
+        "Last week, I checked my own Costco run after getting an alert and walked out with a forty-three dollar and fifty-six cent refund back on my Visa.",
+        "The very next day, a second item from that trip went on sale for another sixteen dollars and thirty-four cents back — almost sixty dollars total without returning anything.",
+        "The only reason people miss these policies is simple: paper receipts get buried, thermal ink fades, and nobody remembers to re-check prices.",
+        "That is why I built a small, private app called Keeps. You just snap a photo of your receipt — no bank login or card linking required.",
+        "It tracks your return windows, warranties, and optional price-drop alerts in one place. It is free to try on Google Play if you find it useful.",
+    ]
+    scene_lines = [esc(x) for x in raw_lines[:6]]
+    while len(scene_lines) < 6:
+        scene_lines.append("Simple receipt and return window tracking, stored privately.")
+
+    raw_durs = payload.get("videoDurations") or [6.5, 6.5, 6.5, 6.5, 7.0, 6.0]
+    seg_durations = [max(4.0, float(d)) for d in raw_durs[:6]]
+    while len(seg_durations) < 6:
+        seg_durations.append(6.5)
+    total_dur = float(payload.get("totalAudioDuration") or sum(seg_durations))
+    audio_url = str(payload.get("audio_url") or "")
+
+    def top_bar(idx: int, label: str) -> str:
+        pct = int(round((idx / 6.0) * 100))
+        return f"""
+  <div style="width:920px;margin-bottom:38px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span style="font-size:21px;font-weight:700;color:#0F766E;letter-spacing:1.4px;text-transform:uppercase;">{esc(label)}</span>
+      <span style="font-size:20px;font-weight:600;color:#64748B;">0{idx} / 06</span>
+    </div>
+    <div style="width:100%;height:5px;background:#E2E8F0;border-radius:3px;overflow:hidden;">
+      <div style="width:{pct}%;height:100%;background:#0F766E;border-radius:3px;"></div>
+    </div>
+  </div>"""
+
+    def caption_footer(text: str) -> str:
+        return f"""
+  <div style="width:920px;margin-top:auto;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:24px 32px;box-shadow:0 10px 30px rgba(15,23,42,0.05);">
+    <div style="font-size:26px;font-weight:600;color:#1E293B;line-height:1.38;">"{text}"</div>
+  </div>"""
+
+    # Build Policy Steps HTML
+    steps_html_parts = []
+    for idx_s, st in enumerate(policy_steps[:3], start=1):
+        st_title = esc(st.get("title") if isinstance(st, dict) else st)
+        st_detail = esc(st.get("detail") if isinstance(st, dict) else "")
+        steps_html_parts.append(
+            f"""
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:28px 32px;display:flex;align-items:flex-start;gap:24px;box-shadow:0 8px 24px rgba(15,23,42,0.04);">
+      <div style="width:54px;height:54px;border-radius:16px;background:#F0FDFA;border:1.5px solid #99F6E4;color:#0F766E;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{idx_s}</div>
+      <div>
+        <div style="font-size:30px;font-weight:800;color:#0F172A;line-height:1.2;">{st_title}</div>
+        <div style="font-size:24px;font-weight:500;color:#475569;margin-top:6px;line-height:1.35;">{st_detail}</div>
+      </div>
+    </div>"""
+        )
+    steps_block = "\n".join(steps_html_parts)
+
+    # Build Miss Reasons HTML
+    miss_html_parts = []
+    for idx_m, mr in enumerate(miss_reasons[:3], start=1):
+        mr_title = esc(mr.get("title") if isinstance(mr, dict) else mr)
+        mr_detail = esc(mr.get("detail") if isinstance(mr, dict) else "")
+        miss_html_parts.append(
+            f"""
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:28px;padding:32px 36px;box-shadow:0 10px 28px rgba(15,23,42,0.04);">
+      <div style="font-size:19px;font-weight:700;color:#6366F1;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">REASON 0{idx_m}</div>
+      <div style="font-size:33px;font-weight:800;color:#0F172A;line-height:1.2;">{mr_title}</div>
+      <div style="font-size:25px;font-weight:500;color:#475569;margin-top:10px;line-height:1.38;">{mr_detail}</div>
+    </div>"""
+        )
+    miss_block = "\n".join(miss_html_parts)
+
+    # Scene 1 — Clean Editorial Policy Fact
+    s1_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(1, kicker)}
+  <div style="width:920px;">
+    <h1 style="font-size:60px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-1px;">{headline}</h1>
+    <p style="font-size:29px;font-weight:500;color:#475569;line-height:1.42;margin-top:24px;">{subhead}</p>
+  </div>
+  <div style="width:920px;margin-top:44px;display:flex;flex-direction:column;gap:26px;">
+    {steps_block}
+  </div>
+  <div style="width:920px;margin-top:30px;background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:20px;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:22px;font-weight:700;color:#0F766E;">Verifiable Store Policy</span>
+    <span style="font-size:21px;font-weight:600;color:#115E59;">Works in-warehouse &amp; online within 30 days</span>
+  </div>
+  {caption_footer(scene_lines[0])}
+</div>"""
+
+    if include_costco_receipts:
+        # Scene 2 — Real Unedited Costco Refund Slip #1 ($43.56)
+        s2_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(2, "REAL EXAMPLE  •  NOV 10")}
+  <div style="width:920px;">
+    <h1 style="font-size:54px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">What happened on my own Costco trip.</h1>
+    <p style="font-size:26px;font-weight:500;color:#475569;margin-top:14px;">Unedited tender receipt from the Costco membership desk.</p>
+  </div>
+  <div style="width:920px;margin-top:34px;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:32px;padding:24px;box-shadow:0 16px 40px rgba(15,23,42,0.06);display:flex;gap:28px;align-items:stretch;">
+    <div style="width:450px;height:760px;border-radius:22px;overflow:hidden;border:1px solid #CBD5E1;background:#111;">
+      <img src="{r4356_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 48%;" />
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:12px 10px;">
+      <div>
+        <div style="font-size:20px;font-weight:700;color:#64748B;letter-spacing:1px;">DATE &amp; LOCATION</div>
+        <div style="font-size:30px;font-weight:800;color:#0F172A;margin-top:6px;">Nov 10 • Costco Desk</div>
+      </div>
+      <div style="height:1.5px;background:#E2E8F0;"></div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:#64748B;letter-spacing:1px;">TENDER RESULT</div>
+        <div style="font-size:30px;font-weight:800;color:#0F172A;margin-top:6px;">Approved — Refund</div>
+      </div>
+      <div style="height:1.5px;background:#E2E8F0;"></div>
+      <div style="background:#F0FDFA;border:1.5px solid #99F6E4;border-radius:22px;padding:22px 24px;">
+        <div style="font-size:19px;font-weight:700;color:#0F766E;letter-spacing:0.8px;">CREDITED TO VISA</div>
+        <div style="font-size:56px;font-weight:900;color:#0F766E;line-height:1.1;margin-top:6px;">$43.56</div>
+      </div>
+      <div style="font-size:22px;font-weight:500;color:#475569;line-height:1.4;">No return needed — just showed the receipt at the counter.</div>
+    </div>
+  </div>
+  {caption_footer(scene_lines[1])}
+</div>"""
+
+        # Scene 3 — Both Real Unedited Costco Refund Slips ($43.56 + $16.34)
+        s3_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(3, "REAL EXAMPLE  •  NOV 11")}
+  <div style="width:920px;">
+    <h1 style="font-size:52px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">A second item dropped the next day.</h1>
+    <p style="font-size:26px;font-weight:500;color:#475569;margin-top:14px;">Two real adjustment slips from the same week — $59.90 total back on Visa.</p>
+  </div>
+  <div style="width:920px;margin-top:34px;display:flex;gap:24px;">
+    <div style="flex:1;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:28px;padding:18px;box-shadow:0 12px 32px rgba(15,23,42,0.05);">
+      <div style="height:560px;border-radius:18px;overflow:hidden;border:1px solid #CBD5E1;margin-bottom:16px;">
+        <img src="{r4356_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 48%;" />
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;">
+        <div>
+          <div style="font-size:19px;font-weight:700;color:#64748B;">SLIP 1 • NOV 10</div>
+          <div style="font-size:24px;font-weight:800;color:#0F172A;">Visa Refund</div>
+        </div>
+        <span style="background:#F0FDFA;border:1.5px solid #99F6E4;color:#0F766E;font-size:28px;font-weight:900;padding:8px 18px;border-radius:14px;">$43.56</span>
+      </div>
+    </div>
+    <div style="flex:1;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:28px;padding:18px;box-shadow:0 12px 32px rgba(15,23,42,0.05);">
+      <div style="height:560px;border-radius:18px;overflow:hidden;border:1px solid #CBD5E1;margin-bottom:16px;">
+        <img src="{r1634_b64}" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;" />
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;">
+        <div>
+          <div style="font-size:19px;font-weight:700;color:#64748B;">SLIP 2 • NOV 11</div>
+          <div style="font-size:24px;font-weight:800;color:#0F172A;">Visa Refund</div>
+        </div>
+        <span style="background:#F0FDFA;border:1.5px solid #99F6E4;color:#0F766E;font-size:28px;font-weight:900;padding:8px 18px;border-radius:14px;">$16.34</span>
+      </div>
+    </div>
+  </div>
+  <div style="width:920px;margin-top:24px;background:#FFFFFF;border:1.5px solid #99F6E4;border-radius:22px;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:25px;font-weight:700;color:#334155;">Combined Visa Credit (No Items Returned)</span>
+    <span style="font-size:34px;font-weight:900;color:#0F766E;">$59.90</span>
+  </div>
+  {caption_footer(scene_lines[2])}
+</div>"""
+    else:
+        # Non-Costco editorial scenes 2 & 3 using real Keeps scan screenshot & policy comparison
+        s2_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(2, "VERIFIED STORE POLICIES")}
+  <div style="width:920px;">
+    <h1 style="font-size:54px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">Standard return &amp; adjustment windows.</h1>
+    <p style="font-size:26px;font-weight:500;color:#475569;margin-top:14px;">Published policies you can verify on each retailer's website.</p>
+  </div>
+  <div style="width:920px;margin-top:42px;display:flex;flex-direction:column;gap:22px;">
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:30px 34px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:32px;font-weight:800;color:#0F172A;">Costco</div>
+        <div style="font-size:23px;font-weight:500;color:#475569;margin-top:4px;">Price adjustment at membership desk or online</div>
+      </div>
+      <span style="background:#F0FDFA;border:1.5px solid #99F6E4;color:#0F766E;font-size:26px;font-weight:800;padding:10px 22px;border-radius:16px;">30 Days</span>
+    </div>
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:30px 34px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:32px;font-weight:800;color:#0F172A;">Best Buy</div>
+        <div style="font-size:23px;font-weight:500;color:#475569;margin-top:4px;">Standard return &amp; price-match eligibility window</div>
+      </div>
+      <span style="background:#EEF2FF;border:1.5px solid #C7D2FE;color:#4338CA;font-size:26px;font-weight:800;padding:10px 22px;border-radius:16px;">15 Days</span>
+    </div>
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:30px 34px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:32px;font-weight:800;color:#0F172A;">Target</div>
+        <div style="font-size:23px;font-weight:500;color:#475569;margin-top:4px;">Post-purchase price match with receipt</div>
+      </div>
+      <span style="background:#FFFBEB;border:1.5px solid #FDE68A;color:#B45309;font-size:26px;font-weight:800;padding:10px 22px;border-radius:16px;">14 Days</span>
+    </div>
+    <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:26px;padding:30px 34px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:32px;font-weight:800;color:#0F172A;">Manufacturer Warranties</div>
+        <div style="font-size:23px;font-weight:500;color:#475569;margin-top:4px;">Require a legible proof-of-purchase receipt</div>
+      </div>
+      <span style="background:#F1F5F9;border:1.5px solid #CBD5E1;color:#334155;font-size:26px;font-weight:800;padding:10px 22px;border-radius:16px;">1–2 Years</span>
+    </div>
+  </div>
+  {caption_footer(scene_lines[1])}
+</div>"""
+
+        s3_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(3, "HOW TO KEEP RECEIPTS ORGANIZED")}
+  <div style="width:920px;">
+    <h1 style="font-size:54px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">A simple 2-second habit right after checkout.</h1>
+    <p style="font-size:26px;font-weight:500;color:#475569;margin-top:14px;">Digitize the receipt before thermal paper fades or gets tossed.</p>
+  </div>
+  <div style="width:920px;margin-top:36px;display:flex;gap:34px;align-items:center;">
+    <div style="width:410px;height:820px;border-radius:48px;border:10px solid #0F172A;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,0.16);background:#FFFFFF;flex-shrink:0;">
+      <img src="{real_scan_b64}" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px;">
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:25px;font-weight:800;color:#0F172A;">Snap Once</div>
+        <div style="font-size:22px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Saves the receipt copy so faded ink never blocks a warranty claim.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:25px;font-weight:800;color:#0F172A;">Auto Return Dates</div>
+        <div style="font-size:22px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Logs the purchase date and reminds you before the return cutoff.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:25px;font-weight:800;color:#0F172A;">Local-First Privacy</div>
+        <div style="font-size:22px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Stored on your phone — no bank account credentials needed.</div>
+      </div>
+    </div>
+  </div>
+  {caption_footer(scene_lines[2])}
+</div>"""
+
+    # Scene 4 — Why Most Shoppers Miss These Policies
+    s4_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(4, "THE EVERYDAY PROBLEM")}
+  <div style="width:920px;">
+    <h1 style="font-size:56px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">Nobody has time to track old receipts manually.</h1>
+    <p style="font-size:27px;font-weight:500;color:#475569;margin-top:16px;">Even when you know the store policy, three small things get in the way.</p>
+  </div>
+  <div style="width:920px;margin-top:48px;display:flex;flex-direction:column;gap:30px;">
+    {miss_block}
+  </div>
+  <div style="width:920px;margin-top:32px;background:#EEF2FF;border:1.5px solid #C7D2FE;border-radius:20px;padding:22px 28px;text-align:center;">
+    <span style="font-size:23px;font-weight:700;color:#3730A3;">Keeping receipts organized shouldn't require handing over your bank login.</span>
+  </div>
+  {caption_footer(scene_lines[3])}
+</div>"""
+
+    # Scene 5 — Honest Founder Intro + Real Keeps App Dashboard Screenshot
+    s5_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(5, "WHY I BUILT KEEPS")}
+  <div style="width:920px;">
+    <h1 style="font-size:52px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-0.8px;">{founder_headline}</h1>
+  </div>
+  <div style="width:920px;margin-top:34px;display:flex;gap:34px;align-items:center;">
+    <div style="width:410px;height:820px;border-radius:48px;border:10px solid #0F172A;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,0.16);background:#FFFFFF;flex-shrink:0;">
+      <img src="{real_dash_b64}" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:22px;">
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:18px;font-weight:700;color:#0F766E;letter-spacing:1px;">PRIVACY FIRST</div>
+        <div style="font-size:26px;font-weight:800;color:#0F172A;margin-top:6px;">No Bank Login Needed</div>
+        <div style="font-size:21px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Never asks for your bank or credit card passwords. Just scan your receipt.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:18px;font-weight:700;color:#4F46E5;letter-spacing:1px;">SIMPLE TRACKING</div>
+        <div style="font-size:26px;font-weight:800;color:#0F172A;margin-top:6px;">Returns &amp; Warranties</div>
+        <div style="font-size:21px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Keeps every receipt legible in one dashboard with return countdowns.</div>
+      </div>
+      <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:24px;padding:24px 26px;">
+        <div style="font-size:18px;font-weight:700;color:#0F766E;letter-spacing:1px;">OPTIONAL ALERTS</div>
+        <div style="font-size:26px;font-weight:800;color:#0F172A;margin-top:6px;">Price Drop Reminders</div>
+        <div style="font-size:21px;font-weight:500;color:#475569;margin-top:6px;line-height:1.38;">Get a quiet email or push reminder if a tracked item drops in price.</div>
+      </div>
+    </div>
+  </div>
+  {caption_footer(scene_lines[4])}
+</div>"""
+
+    # Scene 6 — Quiet, Credible Minimalist Brand Card (Zero Scammy Hype)
+    s6_html = f"""
+<div style="width:1080px;height:1920px;background:#F8F7F4;display:flex;flex-direction:column;align-items:center;padding:110px 80px 260px 80px;">
+  {top_bar(6, "KEEPS  •  RECEIPT & RETURN TRACKER")}
+  <div style="flex:1;width:920px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="width:100%;background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:42px;padding:64px 56px;box-shadow:0 24px 60px rgba(15,23,42,0.06);display:flex;flex-direction:column;align-items:center;text-align:center;">
+      <img src="{app_icon_b64}" style="width:176px;height:176px;border-radius:40px;box-shadow:0 16px 36px rgba(99,102,241,0.22);margin-bottom:34px;" />
+      <h1 style="font-size:58px;font-weight:900;color:#0F172A;line-height:1.12;letter-spacing:-1px;">Keeps: Receipt Scanner Tracker</h1>
+      <p style="font-size:29px;font-weight:500;color:#475569;line-height:1.45;margin-top:20px;max-width:740px;">
+        Organize receipts, track return windows and warranties, and catch store price adjustments — without linking your bank account.
+      </p>
+      <div style="width:100%;height:1.5px;background:#E2E8F0;margin:40px 0;"></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;">
+        <span style="background:#F8FAFC;border:1.5px solid #CBD5E1;color:#1E293B;font-size:22px;font-weight:700;padding:12px 24px;border-radius:16px;">Local-First Privacy</span>
+        <span style="background:#F8FAFC;border:1.5px solid #CBD5E1;color:#1E293B;font-size:22px;font-weight:700;padding:12px 24px;border-radius:16px;">No Bank Login</span>
+        <span style="background:#F8FAFC;border:1.5px solid #CBD5E1;color:#1E293B;font-size:22px;font-weight:700;padding:12px 24px;border-radius:16px;">Free to Start</span>
+      </div>
+      <div style="background:#0F172A;color:#FFFFFF;font-size:26px;font-weight:700;padding:22px 42px;border-radius:20px;">
+        {store_availability}
+      </div>
+    </div>
+  </div>
+  {caption_footer(scene_lines[5])}
+</div>"""
+
+    work_dir = tempfile.mkdtemp(prefix="keeps_ed_")
+    try:
+        card_htmls = [s1_html, s2_html, s3_html, s4_html, s5_html, s6_html]
+        seg_files: List[str] = []
+        for idx, (chtml, dur) in enumerate(zip(card_htmls, seg_durations), start=1):
+            png_path = os.path.join(work_dir, f"ed_{idx}.png")
+            _render_chrome_card_png(chtml, png_path, transparent=False)
+            out_seg = os.path.join(work_dir, f"seg_{idx}.mp4")
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-loop",
+                    "1",
+                    "-i",
+                    png_path,
+                    "-t",
+                    f"{dur:.2f}",
+                    "-vf",
+                    "fps=30,fade=t=in:st=0:d=0.25,format=yuv420p",
+                    "-an",
+                    "-c:v",
+                    "libx264",
+                    "-preset",
+                    "veryfast",
+                    "-crf",
+                    "21",
+                    out_seg,
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            seg_files.append(out_seg)
+
+        concat_txt = os.path.join(work_dir, "concat.txt")
+        with open(concat_txt, "w") as f:
+            for sf in seg_files:
+                f.write(f"file '{sf}'\n")
+
+        os.makedirs(os.path.dirname(os.path.abspath(output_mp4_path)), exist_ok=True)
+        vo_path = download_url_to_temp(audio_url, suffix="_vo.mp3") if audio_url else None
+        try:
+            if vo_path and os.path.exists(vo_path):
+                # Clean, warm studio-podcast vocal EQ — NO cheesy synthetic marimba jingle!
+                fade_start = max(0.0, total_dur - 0.6)
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-i",
+                    vo_path,
+                    "-af",
+                    f"highpass=f=75,equalizer=f=2400:t=q:w=1.2:g=1.8,"
+                    f"acompressor=threshold=-20dB:ratio=2.2:attack=8:release=80:makeup=3dB,"
+                    f"alimiter=limit=0.95,apad=whole_dur={total_dur:.2f},afade=t=out:st={fade_start:.2f}:d=0.60",
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "1:a",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "192k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            else:
+                cmd_final = [
+                    "ffmpeg",
+                    "-y",
+                    "-f",
+                    "concat",
+                    "-safe",
+                    "0",
+                    "-i",
+                    concat_txt,
+                    "-f",
+                    "lavfi",
+                    "-i",
+                    "anullsrc=channel_layout=stereo:sample_rate=44100",
+                    "-map",
+                    "0:v",
+                    "-map",
+                    "1:a",
+                    "-c:v",
+                    "copy",
+                    "-c:a",
+                    "aac",
+                    "-b:a",
+                    "128k",
+                    "-t",
+                    f"{total_dur:.2f}",
+                    "-movflags",
+                    "+faststart",
+                    output_mp4_path,
+                ]
+            subprocess.run(cmd_final, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        finally:
+            if vo_path and os.path.exists(vo_path):
+                try:
+                    os.unlink(vo_path)
+                except OSError:
+                    pass
+    finally:
+        import shutil
+
+        shutil.rmtree(work_dir, ignore_errors=True)
+
+    return {
+        "width": W,
+        "height": H,
+        "frame_rate": fps,
+        "duration": total_dur,
+        "file_size": os.path.getsize(output_mp4_path),
+        "render_time_seconds": round(time.time() - t0, 2),
+    }
+
 
 
 
